@@ -1,0 +1,71 @@
+.dialogs {
+    display: grid;
+    grid-template-columns: 2.5fr 10fr;
+    padding: 15px;
+    
+}
+
+.item {
+    color: black;
+    transition: 0.4s;
+    
+}
+
+.person:hover {
+    color: gold;
+    transition: 0.4s;
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0), 60%, rgba(255, 215, 0, 0.5));
+}
+
+
+.item.active {
+    color: gold;
+    transition: 0.7s;
+    text-decoration: none;
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0), 60%, rgba(255, 215, 0, 0.5));
+}
+
+.item img {
+    width: 50px;
+    height: 50px;
+    border-radius: 30px;
+    object-fit: cover;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.person {
+    display: inline-block;
+    text-align: left;
+    padding: 17px 15px;
+    width: 100px;
+
+}
+
+.usersColumn {
+    border-right: 2px solid gold;
+    
+}
+
+.messageColumn {
+    padding-left: 15px;
+}
+
+.textArea {
+    display: block;
+    float: right;
+    
+}
+
+.buttonWrapper {
+    float: right;
+}
+
+
+/* при наведении мыши на пользователя, подсвечивался его коммент */
+
+/* .item:hover +  .messages .message{
+    color: gold;
+    transition: 0.7s;
+    border-bottom: 2px solid gold;
+} */

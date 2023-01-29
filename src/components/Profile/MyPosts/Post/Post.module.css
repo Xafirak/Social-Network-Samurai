@@ -1,0 +1,20 @@
+
+.item {
+    color: grey;
+}
+
+.otherPosts {
+    color: lightgreen;
+    padding-left: 15px;
+    
+}
+
+.otherPosts img {
+    border-radius: 50px;
+    width: 50px !important;
+    height: 50px !important;
+}
+
+.likes {
+    color: red;
+}
