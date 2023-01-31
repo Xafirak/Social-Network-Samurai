@@ -1,11 +1,10 @@
 // @ts-nocheck
 
 import { useEffect, useRef } from "react";
-import { useState } from "react";
 
 export default function useScroll(parentRef, childRef, callback) {
     const observer = useRef();
-
+    const child = childRef.current;
     useEffect(() => {
         const options = {
             root: parentRef.current,
@@ -14,15 +13,14 @@ export default function useScroll(parentRef, childRef, callback) {
         };
         observer.current = new IntersectionObserver(([target]) => {
             if (target.isIntersecting) {
-                console.log("intersected");
                 callback();
             }
         }, options);
 
-        observer.current.observe(childRef.current);
+        observer.current.observe(child);
 
         return function () {
-            observer.current.unobserve(childRef.current);
+            observer.current.unobserve(child);
         };
     }, [callback]);
 }
