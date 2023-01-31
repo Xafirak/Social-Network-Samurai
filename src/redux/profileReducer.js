@@ -56,7 +56,7 @@ let initialState = {
     ],
     newPostText: "KAWABANGA!",
     profile: null,
-    status: "///",
+    status: "",
 };
 
 const profileReducer = (state = initialState, action) => {
