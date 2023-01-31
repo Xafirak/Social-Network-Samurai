@@ -27,14 +27,13 @@ export const usersAPI = {
                 .then((response) => response.data.resultCode);
         }
     },
-    AuthMe() {
-        return instance.get(`auth/me`).then((response) => response.data);
-    },
+
     getProfile(id) {
-        console.warn('Старый метод. Пожаулуйста используйте ProfileAPI обьект');
-        return profileAPI.getProfile(id)
+        console.warn("Старый метод. Пожаулуйста используйте ProfileAPI обьект");
+        return profileAPI.getProfile(id);
     },
 };
+
 export const profileAPI = {
     getProfile(id) {
         return instance.get(`profile/${id}`);
@@ -46,5 +45,18 @@ export const profileAPI = {
         return instance.put(`profile/status`, {
             status: status,
         });
-    }
+    },
 };
+
+export const AuthAPI = {
+    AuthMe() {
+        return instance.get(`auth/me`).then((response) => response.data);
+    },
+    LoginMe(email, password, rememberMe){
+        return instance.post('auth/login',{
+            email,
+            password,
+            rememberMe,
+        }).then((response) => response.data)
+    }
+}

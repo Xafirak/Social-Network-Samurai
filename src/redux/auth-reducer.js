@@ -1,13 +1,17 @@
 // @ts-nocheck
-import { usersAPI } from "./../API/api";
+
+import { AuthAPI } from './../API/api';
 const SET_USER_DATA = "SET_USER_DATA";
 
 let initialState = {
-    userId: 2,
-    email: "defEmail@mail.com",
-    login: "defaultLogin",
+    userId: null,
+    email: "Your email?",
+    login: "Your login",
+    password: "Secret word?",
     isFetching: false,
     isAuth: false,
+    isRemembed: false,
+
 };
 
 const authReducer = (state = initialState, action) => {
@@ -29,7 +33,7 @@ export const setAuthUserData = (userId, email, login) => ({
 });
 export const getAuthData = () => {
     return (dispatch) => {
-        usersAPI
+        AuthAPI
             .AuthMe()
             .then((data) => {
                 if (data.resultCode === 0) {
@@ -40,4 +44,19 @@ export const getAuthData = () => {
             .catch((e) => console.error(e));
     };
 };
+
+export const LoginUser =(email, password, rememberMe) => {
+    return (dispatch) => {
+        AuthAPI.LoginMe(email, password, rememberMe)
+        .then(data => {
+            if (data.resultCode === 0){
+                console.log('success');
+                let {id} = data.data
+                dispatch(setAuthUserData(id));
+            }else {
+                console.log('doesnt work');
+            }
+        })
+    }
+}
 export default authReducer;
