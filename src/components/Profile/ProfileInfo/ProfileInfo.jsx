@@ -1,10 +1,9 @@
 import React from "react";
 import Preloader from "../../common/Preloader/preloader";
 import classes from "./ProfileInfo.module.css";
-import ProfileStatus from './ProfileStatus';
+import ProfileStatus from "./ProfileStatus";
 
 const ProfileInfo = (props) => {
-    
     if (!props.profile) {
         return <Preloader />;
     }
@@ -22,7 +21,10 @@ const ProfileInfo = (props) => {
                 <div className={classes.description}>
                     <img src={props.profile.photos.large} alt="" />
                     <span className={classes.aboutMe}>
-                        <ProfileStatus  status={'Sup bro'}/>
+                        <ProfileStatus
+                            status={props.status}
+                            updateStatus={props.updateStatus}
+                        />
                         {/* {props.profile.aboutMe}  */}
                     </span>
                 </div>
@@ -66,14 +68,14 @@ const ProfileInfo = (props) => {
                                 </span>
                             </div>
                         </div>
-                        {props.profile.lookingForAJob 
-                        ? <div>
-                            Ищу работу ✓  <br />                            
-                            {props.profile.lookingForAJobDescription}
-                        </div> 
-                        : <div>
-                            Ищу работу ✖
-                        </div>}                        
+                        {props.profile.lookingForAJob ? (
+                            <div>
+                                Ищу работу ✓ <br />
+                                {props.profile.lookingForAJobDescription}
+                            </div>
+                        ) : (
+                            <div>Ищу работу ✖</div>
+                        )}
                     </span>
                 </div>
             </div>

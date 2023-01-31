@@ -31,6 +31,20 @@ export const usersAPI = {
         return instance.get(`auth/me`).then((response) => response.data);
     },
     getProfile(id) {
+        console.warn('Старый метод. Пожаулуйста используйте ProfileAPI обьект');
+        return profileAPI.getProfile(id)
+    },
+};
+export const profileAPI = {
+    getProfile(id) {
         return instance.get(`profile/${id}`);
     },
+    getStatus(id) {
+        return instance.get(`profile/status/${id}`);
+    },
+    updateStatus(status) {
+        return instance.put(`profile/status`, {
+            status: status,
+        });
+    }
 };
