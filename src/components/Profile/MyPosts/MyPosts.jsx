@@ -23,7 +23,7 @@ const MyPosts = (props) => {
             <TextInputWithButton
                 profile
                 profilePage={props.profilePage}
-                dispatch={props.dispatch}
+                addMessage={props.addMessage}
             />
             <div className={cl.posts}>{posts}</div>
         </div>

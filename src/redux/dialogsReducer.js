@@ -1,16 +1,13 @@
 // @ts-nocheck
 
-
 const ADD_DIALOG = "ADD-DIALOG";
-const UPDATE_DIALOG_TEXT = "UPDATE-DIALOG-TEXT";
-export const addDialogCreator = () => ({ type: ADD_DIALOG });
-export const updateDialogText = (text) => ({
-    type: UPDATE_DIALOG_TEXT,
-    newText: text,
+
+export const addDialogCreator = (messageBody) => ({
+    type: ADD_DIALOG,
+    messageBody,
 });
 
 let initialState = {
-    newDialogText: "",
     messagesData: [
         { id: 1, message: "Sup bro" },
         { id: 2, message: "Howdy partner =)" },
@@ -51,25 +48,19 @@ let initialState = {
             avatar: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fcdn.polscygracze.pl%2Fuploads%2F2018%2F05%2Fpyke_the_bloodharbor_ripper_yt_thumbnail_phase_1_base_180504_final-1024x576.jpg&f=1&nofb=1&ipt=30cc48af65466efb071fff116b6e5dcb8f675924e26056e8c6443c1170974742&ipo=images",
         },
     ],
-}
+};
 const dialogsReducer = (state = initialState, action) => {
-
     switch (action.type) {
         case "ADD-DIALOG": {
             let newDialog = {
                 id: state.messagesData.length + 1,
-                message: state.newDialogText,
+                message: action.messageBody,
             };
             let stateCopy = JSON.parse(JSON.stringify(state));
             stateCopy.messagesData.push(newDialog);
-            stateCopy.newDialogText = "";
             return stateCopy;
         }
-        case "UPDATE-DIALOG-TEXT": {
-            let stateCopy = JSON.parse(JSON.stringify(state));
-            stateCopy.newDialogText = action.newText;
-            return stateCopy;
-        }
+
         default:
             return state;
     }

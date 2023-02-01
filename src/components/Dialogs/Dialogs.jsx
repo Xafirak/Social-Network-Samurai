@@ -4,7 +4,6 @@ import cl from "./Dialogs.module.css";
 import DialogItem from "./DialogItem/DialogItem";
 import Message from "./Message/Message";
 import TextInputWithButton from "../TextInputWithButton/TextInputWithButton";
-import { Navigate } from "react-router-dom";
 
 const Dialogs = (props) => {
     const users = props.dialogPage.usersData.map((el) => {
@@ -21,9 +20,7 @@ const Dialogs = (props) => {
     const messages = props.dialogPage.messagesData.map((el) => {
         return <Message message={el.message} id={el.id} key={el.id} />;
     });
-    ///----------
-    if (!props.isAuth) return <Navigate to={"/login"} />;
-    ///----------
+
     return (
         <div className={cl.dialogs}>
             <div className={cl.usersColumn}>{users}</div>
@@ -33,6 +30,7 @@ const Dialogs = (props) => {
                     dialog
                     dialogPage={props.dialogPage}
                     dispatch={props.dispatch}
+                    addMessage={props.addDialogCreator}
                 />
             </div>
         </div>

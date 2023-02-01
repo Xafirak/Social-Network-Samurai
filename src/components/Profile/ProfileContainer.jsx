@@ -6,6 +6,7 @@ import { getStatus, showProfile } from "../../redux/profileReducer";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { compose } from "redux";
 import { updateStatus } from "./../../redux/profileReducer";
+import { addActionCreator } from './../../redux/profileReducer';
 
 class ProfileContainer extends React.Component {
     componentDidMount() {
@@ -22,6 +23,7 @@ class ProfileContainer extends React.Component {
                     profile={this.props.profile}
                     status={this.props.status}
                     updateStatus={this.props.updateStatus}
+                    addMessage={this.props.addActionCreator}
                 />
             </div>
         );
@@ -46,10 +48,11 @@ let withRouter = (Comp) => {
 };
 
 export default compose(
-    connect(mapStateToProps, {
+    connect(mapStateToProps,  {
         showProfile,
         getStatus,
         updateStatus,
+        addActionCreator
     }),
     withRouter
 )(ProfileContainer);

@@ -14,7 +14,7 @@ const Profile = (props) => {
             />
             <MyPosts
                 profilePage={props.profilePage}
-                dispatch={props.dispatch}
+                addMessage={props.addMessage}
             />
         </div>
     );
