@@ -32,10 +32,10 @@ function App() {
                     <Route path="/users" element={ <UsersContainer /> } />
                     <Route path="/login" element={ <Login /> } />
                     {/* <Route path="hooks" element={ <Hooks /> } /> */}
-                    {/* <Route path="hover" element={ <Hover /> } />
-                    <Route path="list" element={ <List /> } />
-                    <Route path="shit" element={ <Shit /> } />
-                    <Route path="anothasht" element={ <AnothaSht /> } /> */}
+                    {/* <Route path="hover" element={ <Hover /> } /> */}
+                    {/* <Route path="list" element={ <List /> } /> */}
+                    {/* <Route path="shit" element={ <Shit /> } /> */}
+                    {/* <Route path="anothasht" element={ <AnothaSht /> } /> */}
                 </Routes>
             </div>
         </div>

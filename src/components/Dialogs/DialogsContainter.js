@@ -13,8 +13,6 @@ let mapStateToProps = (state) => {
 };
 
 export default compose(
-    connect(mapStateToProps, {
-        addDialogCreator,
-    }),
+    connect(mapStateToProps, { addDialogCreator }),
     WithAuthRedirect
 )(Dialogs);

@@ -6,12 +6,14 @@ import { getStatus, showProfile } from "../../redux/profileReducer";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { compose } from "redux";
 import { updateStatus } from "./../../redux/profileReducer";
-import { addActionCreator } from './../../redux/profileReducer';
+import { addActionCreator } from "./../../redux/profileReducer";
+import { WithAuthRedirect } from "../../HOC/AuthRedirect";
 
 class ProfileContainer extends React.Component {
     componentDidMount() {
         let userId = this.props.router.params.userId;
-        if (!userId) userId = 27645; //2
+        if (!userId) userId = this.props.authorizedUserId;
+
         this.props.showProfile(userId);
         this.props.getStatus(userId);
     }
@@ -34,6 +36,8 @@ let mapStateToProps = (state) => ({
     profilePage: state.profilePage,
     profile: state.profilePage.profile,
     status: state.profilePage.status,
+    authorizedUserId: state.auth.userId,
+    isAuth: state.auth.isAuth,
 });
 
 // wrapper идентичный натуральному, без пальмового масла
@@ -48,11 +52,12 @@ let withRouter = (Comp) => {
 };
 
 export default compose(
-    connect(mapStateToProps,  {
+    connect(mapStateToProps, {
         showProfile,
         getStatus,
         updateStatus,
-        addActionCreator
+        addActionCreator,
     }),
-    withRouter
+    withRouter,
+    WithAuthRedirect
 )(ProfileContainer);

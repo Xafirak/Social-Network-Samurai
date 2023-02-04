@@ -52,12 +52,15 @@ export const AuthAPI = {
     AuthMe() {
         return instance.get(`auth/me`).then((response) => response.data);
     },
-    LoginMe(email, password, rememberMe){
-        debugger
-        return instance.post('auth/login',{
+    LoginMe(email, password, rememberMe = false) {
+        
+        return instance.post("auth/login", {
             email,
             password,
             rememberMe,
-        }).then((response) => response.data)
-    }
-}
+        });
+    },
+    Logout() {
+        return instance.delete("auth/login");
+    },
+};

@@ -18,7 +18,8 @@ const AnothaSht = () => {
 
     return (
         <div>
-            {todos && todos.map((todo) => (
+            {todos &&
+                todos.map((todo) => (
                     <div
                         key={todo.id}
                         style={{ padding: 30, border: "2px solid black" }}
@@ -29,5 +30,4 @@ const AnothaSht = () => {
         </div>
     );
 };
-
 export default AnothaSht;

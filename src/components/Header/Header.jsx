@@ -2,7 +2,6 @@ import React from "react";
 import classes from "./Header.module.css";
 import { NavLink } from "react-router-dom";
 
-
 // запросить показ аву, в контейнере
 const Header = (props) => {
     return (
@@ -12,9 +11,12 @@ const Header = (props) => {
                 alt="Dp"
             />
 
-            <div className={classes.loginBlock}>
+            <div className={classes.loginBlock}> 
                 {props.isAuth ? (
-                     props.login
+                    <div>
+                        {props.login} <br />
+                        <button onClick={props.Logout}>Logout</button>
+                    </div>
                 ) : (
                     <NavLink to={"login"}>Login</NavLink>
                 )}
