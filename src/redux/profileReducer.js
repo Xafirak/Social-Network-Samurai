@@ -20,7 +20,7 @@ export const setStatus = (status) => ({
 
 export const showProfile = (userId) => {
     return (dispatch) => {
-        usersAPI
+        profileAPI
             .getProfile(userId)
             .then((response) => dispatch(setUserProfile(response.data)))
             .catch((e) => console.error(e));

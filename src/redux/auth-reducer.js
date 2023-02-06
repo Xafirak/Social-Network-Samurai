@@ -37,24 +37,21 @@ export const setAuthUserData = (userId, email, login, isAuth) => ({
     type: SET_USER_DATA,
     payload: { userId, email, login, isAuth },
 });
-export const getAuthData = () => {
-    return (dispatch) => {
-        AuthAPI.AuthMe()
-            .then((data) => {
-                if (data.resultCode === 0) {
-                    let { id, email, login } = data.data;
-                    dispatch(setAuthUserData(id, email, login, true));
-                }
-            })
-            .catch((e) => console.error(e));
-    };
+export const getAuthData = () => (dispatch) => {
+    return AuthAPI.AuthMe()
+        .then((data) => {
+            if (data.resultCode === 0) {
+                let { id, email, login } = data.data;
+                dispatch(setAuthUserData(id, email, login, true));
+            }
+        })
+        .catch((e) => console.error(e));
 };
 
 export const LoginUser = (email, password, rememberMe) => {
     return (dispatch) => {
         AuthAPI.LoginMe(email, password, rememberMe)
             .then((response) => {
-                console.log(response);
                 if (response.data.resultCode === 0) {
                     dispatch(getAuthData());
                 } else if (response.data.resultCode === 1) {

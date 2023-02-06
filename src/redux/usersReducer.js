@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { usersAPI } from './../API/api';
+import { usersAPI } from "./../API/api";
 const FOLLOW = "FOLLOW";
 const UNFOLLOW = "UNFOLLOW";
 const SET_USERS = "SET_USERS";
@@ -98,13 +98,13 @@ export const toggleProgress = (onProgress, userId) => ({
     userId,
 });
 
-export const getUsers = (pageSize, currentPage) => {
+export const getUsers = (pageSize, page) => {
     return (dispatch) => {
         dispatch(toggleIsFetching(true));
+        dispatch(setPage(page));
         usersAPI
-            .getUsers(pageSize, currentPage)
+            .getUsers(pageSize, page)
             .then((data) => {
-                dispatch(setPage(currentPage));
                 dispatch(setTotalUsers(data.totalCount));
                 dispatch(setUsers(data.items));
                 dispatch(toggleIsFetching(false));
@@ -120,20 +120,16 @@ export const toggleFollowUnfollow = (userId, type) => {
         usersAPI
             .toggleFollowUser(userId, type)
             .then((resultCode) => {
-
-                // надо ли итог ".then" инкапсулировать в API.js 
+                // надо ли итог ".then" инкапсулировать в API.js
                 // чтобы не спрашивать тип, он уже спрашивается в toggleFollowUser
 
-                if (resultCode === 0 && type === 'unfollow') {
-                    dispatch(unfollow(userId));                    
+                if (resultCode === 0 && type === "unfollow") {
+                    dispatch(unfollow(userId));
                 }
-                if (resultCode === 0 && type === 'follow') {
-                    dispatch(follow(userId));                    
+                if (resultCode === 0 && type === "follow") {
+                    dispatch(follow(userId));
                 }
-                dispatch(toggleProgress(
-                    false,
-                    userId
-                ));
+                dispatch(toggleProgress(false, userId));
             })
             .catch((e) => console.error(e));
     };

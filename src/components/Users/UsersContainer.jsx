@@ -11,9 +11,15 @@ import {
 } from "./../../redux/usersReducer";
 import Users from "./Users";
 import Preloader from "../common/Preloader/preloader";
-import { Navigate } from "react-router-dom";
-import { WithAuthRedirect } from "./../../HOC/AuthRedirect";
 import { compose } from "redux";
+import {
+    getAllUsers,
+    getCurrentPage,
+    getOnProgress,
+    getPageSize,
+    getTotalUsers,
+    getIsFetching,
+} from "../../redux/users-selectors";
 
 //как пофиксить вечную "загрузку" юзеров
 //если поменять страницу и снова вернутся в users
@@ -29,7 +35,7 @@ class UsersContainer extends React.Component {
 
     render() {
         ///----------
-        if (!this.props.isAuth) return <Navigate to={"/login"} />;
+        // if (!this.props.isAuth) return <Navigate to={"/login"} />;
         ///----------
         return (
             <>
@@ -57,19 +63,29 @@ class UsersContainer extends React.Component {
     }
 }
 
+// let mapStateToProps = (state) => {
+//     return {
+//         users: state.usersPage.users,
+//         pageSize: state.usersPage.pageSize,
+//         totalUsers: state.usersPage.totalUsers,
+//         currentPage: state.usersPage.currentPage,
+//         isFetching: state.usersPage.isFetching,
+//         onProgress: state.usersPage.onProgress,
+//     };
+// };
+
 let mapStateToProps = (state) => {
     return {
-        users: state.usersPage.users,
-        pageSize: state.usersPage.pageSize,
-        totalUsers: state.usersPage.totalUsers,
-        currentPage: state.usersPage.currentPage,
-        isFetching: state.usersPage.isFetching,
-        onProgress: state.usersPage.onProgress,
+        users: getAllUsers(state),
+        pageSize: getPageSize(state),
+        totalUsers: getTotalUsers(state),
+        currentPage: getCurrentPage(state),
+        isFetching: getIsFetching(state),
+        onProgress: getOnProgress(state),
     };
 };
 
 export default compose(
-    WithAuthRedirect,
     connect(mapStateToProps, {
         follow,
         unfollow,

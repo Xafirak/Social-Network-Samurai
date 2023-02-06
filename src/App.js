@@ -1,5 +1,5 @@
 // @ts-nocheck
-import React from "react";
+import React, { Component } from "react";
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
 import News from "./components/News/News";
@@ -10,36 +10,71 @@ import DialogsContainter from "./components/Dialogs/DialogsContainter";
 import ProfileContainer from "./components/Profile/ProfileContainer";
 import UsersContainer from "./components/Users/UsersContainer";
 import Hooks from "./hooks/Hooks";
-import Hover from './hooks/Hover';
+import Hover from "./hooks/Hover";
 import List from "./hooks/List";
-import Shit from './hooks/Shit';
+import Shit from "./hooks/Shit";
 import AnothaSht from "./hooks/anothaSht";
 import HeaderContainer from "./components/Header/HeaderContainer";
-import Login from './components/Login/Login';
+import Login from "./components/Login/Login";
+import { connect } from "react-redux";
+import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+import { compose } from "redux";
+import { initializeApp } from "./redux/app-reducer";
+import Preloader from "./components/common/Preloader/preloader";
 
-function App() {
-    return (
-        <div className="app-wrapper">
-            <HeaderContainer />
-            <NavbarContainer />
-            <div className="app-wrapper-content">
-                <Routes>                    
-                    <Route path="/profile/:userId?" element={<ProfileContainer />} />
-                    <Route path="/dialogs" element={<DialogsContainter />} />
-                    <Route path="/news" element={<News />} />
-                    <Route path="/music" element={<Music />} />
-                    <Route path="/settings" element={<Settings />} />
-                    <Route path="/users" element={ <UsersContainer /> } />
-                    <Route path="/login" element={ <Login /> } />
-                    {/* <Route path="hooks" element={ <Hooks /> } /> */}
-                    {/* <Route path="hover" element={ <Hover /> } /> */}
-                    {/* <Route path="list" element={ <List /> } /> */}
-                    {/* <Route path="shit" element={ <Shit /> } /> */}
-                    {/* <Route path="anothasht" element={ <AnothaSht /> } /> */}
-                </Routes>
+class App extends Component {
+    componentDidMount() {
+        this.props.initializeApp();
+    }
+    render() {
+        if (!this.props.initialized) return <Preloader />;
+
+        return (
+            <div className="app-wrapper">
+                <HeaderContainer />
+                <NavbarContainer />
+                <div className="app-wrapper-content">
+                    <Routes>
+                        <Route
+                            path="/profile/:userId?"
+                            element={<ProfileContainer />}
+                        />
+                        <Route
+                            path="/dialogs"
+                            element={<DialogsContainter />}
+                        />
+                        <Route path="/news" element={<News />} />
+                        <Route path="/music" element={<Music />} />
+                        <Route path="/settings" element={<Settings />} />
+                        <Route path="/users" element={<UsersContainer />} />
+                        <Route path="/login" element={<Login />} />
+                        {/* <Route path="hooks" element={ <Hooks /> } /> */}
+                        {/* <Route path="hover" element={ <Hover /> } /> */}
+                        {/* <Route path="list" element={ <List /> } /> */}
+                        {/* <Route path="shit" element={ <Shit /> } /> */}
+                        {/* <Route path="anothasht" element={ <AnothaSht /> } /> */}
+                    </Routes>
+                </div>
             </div>
-        </div>
-    );
+        );
+    }
 }
-/// САМОМСТОЯТЕЛЬНО ПИДР СДЕЛАЙ ХОКККУ  HOC  гуглим
-export default App;
+let withRouter = (Comp) => {
+    function ComponentWithRouterProp(props) {
+        let location = useLocation();
+        let navigate = useNavigate();
+        let params = useParams();
+        return <Comp {...props} router={{ location, navigate, params }} />;
+    }
+    return ComponentWithRouterProp;
+};
+
+const MapStateToProps = (state) => ({
+    initialized: state.app.initialized,
+});
+export default compose(
+    withRouter,
+    connect(MapStateToProps, { initializeApp })
+)(App);

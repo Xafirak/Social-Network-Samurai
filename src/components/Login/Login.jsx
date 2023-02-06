@@ -13,7 +13,7 @@ import s from './../common/FormsControl/FormsControl.module.css'
 
 
 const LoginForm = (props) => {
-    console.log(props);
+    
     const maxLength = maxLengthCreator(25);
     const composeValidators =
         (...validators) =>
