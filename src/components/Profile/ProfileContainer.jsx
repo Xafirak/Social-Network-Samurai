@@ -7,7 +7,6 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { compose } from "redux";
 import { updateStatus } from "./../../redux/profileReducer";
 import { addActionCreator } from "./../../redux/profileReducer";
-import { WithAuthRedirect } from "../../HOC/AuthRedirect";
 import { Navigate } from "react-router-dom";
 
 class ProfileContainer extends React.Component {
@@ -39,6 +38,10 @@ class ProfileContainer extends React.Component {
         );
     }
 }
+
+
+//==================
+
 
 let mapStateToProps = (state) => ({
     profilePage: state.profilePage,

@@ -1,11 +1,12 @@
 // @ts-nocheck
-import React from "react";
-import Post from "./Post/Post";
-import cl from "./MyPosts.module.css";
-import TextInputWithButton from "../../TextInputWithButton/TextInputWithButton";
+import React from 'react';
+import Post from './Post/Post';
+import cl from './MyPosts.module.css';
+import TextInputWithButton from '../../TextInputWithButton/TextInputWithButton';
+
 
 const MyPosts = (props) => {
-    
+    console.log('render');
     const posts = props.profilePage.postData.map((el) => {
         return (
             <Post
@@ -29,6 +30,5 @@ const MyPosts = (props) => {
         </div>
     );
 };
-
 
 export default MyPosts;

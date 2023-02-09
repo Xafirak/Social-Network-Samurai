@@ -1,15 +1,14 @@
 // @ts-nocheck
-import React from "react";
-import Post from "./Post/Post";
-import cl from "./MyPosts.module.css";
-import TextInputWithButton from "../../TextInputWithButton/TextInputWithButton";
+import React from 'react';
+import Post from './Post/Post';
+import cl from './MyPosts.module.css';
+import TextInputWithButton from '../../TextInputWithButton/TextInputWithButton';
 import { connect } from 'react-redux';
 import MyPosts from './MyPosts';
 
 //Читай ниже, файл не нужен=================
 
 const MyPostsContainer = (props) => {
-    
     const posts = props.state.profilePage.postData.map((el) => {
         return (
             <Post
@@ -21,7 +20,6 @@ const MyPostsContainer = (props) => {
         );
     });
 
-   
     // } придумать как увеличить кол-во лайков при нажатии LikeBtn
     // function increaseLikeCount (id) {
     //     postData.id == id ? postData.likes +=1 : false
@@ -29,10 +27,10 @@ const MyPostsContainer = (props) => {
     return (
         <div className={cl.postBlock}>
             <h3>myPosts</h3>
-            <TextInputWithButton 
-                profile 
-                state = { props.state } 
-                dispatch = { props.dispatch }
+            <TextInputWithButton
+                profile
+                state={props.state}
+                dispatch={props.dispatch}
             />
             <div className={cl.posts}>{posts}</div>
         </div>
@@ -56,3 +54,4 @@ const MyPostsContainer = (props) => {
 
 //==================================================
 // не нужен ибо в ProfileContainer приходит вся необходимая дата
+// компонента оставлена, чтобы не было диссонанса с видео(там есть тут нету)
