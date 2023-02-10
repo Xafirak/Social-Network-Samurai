@@ -1,10 +1,10 @@
 // @ts-nocheck
-import { profileAPI, usersAPI } from "./../API/api";
+import { profileAPI } from './../API/api';
 
-const ADD_POST = "ADD-POST";
-const SET_USER_PROFILE = "SET_USER_PROFILE";
-const SET_STATUS = "SET_STATUS";
-const DELETE_POST = "DELETE_POST";
+const ADD_POST = 'ADD-POST';
+const SET_USER_PROFILE = 'SET_USER_PROFILE';
+const SET_STATUS = 'SET_STATUS';
+const DELETE_POST = 'DELETE_POST';
 
 export const addActionCreator = (messageBody) => ({
     type: ADD_POST,
@@ -23,55 +23,46 @@ export const deletePost = (postId) => ({
     postId,
 });
 
-export const showProfile = (userId) => {
-    return (dispatch) => {
-        profileAPI
-            .getProfile(userId)
-            .then((response) => dispatch(setUserProfile(response.data)))
-            .catch((e) => console.error(e));
-    };
+export const showProfile = (userId) => async (dispatch) => {
+    let response = await profileAPI.getProfile(userId);
+    dispatch(setUserProfile(response.data));
 };
 
-export const getStatus = (userId) => {
-    return (dispatch) => {
-        profileAPI
-            .getStatus(userId)
-            .then((response) => dispatch(setStatus(response.data)))
-            .catch((e) => console.error(e));
-    };
+export const getStatus = (userId) => async (dispatch) => {
+    let response = await profileAPI.getStatus(userId);
+    dispatch(setStatus(response.data));
 };
-export const updateStatus = (status) => {
-    return (dispatch) => {
-        profileAPI
-            .updateStatus(status)
-            .then((response) => {
-                if (response.data.resultCode === 0) dispatch(setStatus(status));
-            })
-            .catch((e) => console.error(e));
-    };
+
+export const updateStatus = (status) => async (dispatch) => {
+    let response = await profileAPI.updateStatus(status);
+
+    if (response.data.resultCode === 0) dispatch(setStatus(status));
 };
 
 let initialState = {
     postData: [
-        { id: 1, message: "HOWDY partner!", likes: 2 },
+        { id: 1, message: 'HOWDY partner!', likes: 2 },
         { id: 2, message: "It's my first post", likes: 7 },
-        { id: 3, message: "Hahahhaha", likes: 1 },
-        { id: 4, message: "l2p nub", likes: 420 },
+        { id: 3, message: 'Hahahhaha', likes: 1 },
+        { id: 4, message: 'l2p nub', likes: 420 },
     ],
 
     profile: null,
-    status: "",
+    status: '',
 };
 
 const profileReducer = (state = initialState, action) => {
     switch (action.type) {
-        case "ADD-POST": {
+        case 'ADD-POST': {
             let newPost = {
                 id: state.postData.length + 1,
                 message: action.messageBody,
                 likes: 0,
             };
-            let stateCopy = JSON.parse(JSON.stringify(state));
+
+            // let stateCopy = JSON.parse(JSON.stringify(state));
+            // использую новый метод клонирования
+            let stateCopy = structuredClone(state);
             stateCopy.postData.push(newPost);
             return stateCopy;
         }
@@ -83,7 +74,10 @@ const profileReducer = (state = initialState, action) => {
             return { ...state, status: action.status };
         }
         case DELETE_POST: {
-            return { ...state, postData: state.postData.filter(p => p.id !== action.postId) };
+            return {
+                ...state,
+                postData: state.postData.filter((p) => p.id !== action.postId),
+            };
         }
         default:
             return state;

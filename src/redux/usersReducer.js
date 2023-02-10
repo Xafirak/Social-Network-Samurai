@@ -1,12 +1,14 @@
 // @ts-nocheck
-import { usersAPI } from "./../API/api";
-const FOLLOW = "FOLLOW";
-const UNFOLLOW = "UNFOLLOW";
-const SET_USERS = "SET_USERS";
-const SET_CURRENT_PAGE = "SET_CURRENT_PAGE";
-const SET_TOTAL_USERS = "SET_TOTAL_USERS";
-const TOGGLE_IS_FETCHING = "TOGGLE_IS_FETCHING";
-const TOGGLE_IS_PROGRESS = "TOGGLE_IS_PROGRESS";
+import { usersAPI } from './../API/api';
+// import { updateOnjectInArray } from './../utils/object-helpers';
+const FOLLOW = 'FOLLOW';
+const UNFOLLOW = 'UNFOLLOW';
+const SET_USERS = 'SET_USERS';
+const SET_CURRENT_PAGE = 'SET_CURRENT_PAGE';
+const SET_TOTAL_USERS = 'SET_TOTAL_USERS';
+const TOGGLE_IS_FETCHING = 'TOGGLE_IS_FETCHING';
+const TOGGLE_IS_PROGRESS = 'TOGGLE_IS_PROGRESS';
+const TOGGLE_FOLLOW = 'TOGGLE_FOLLOW';
 
 let initialState = {
     users: [],
@@ -19,29 +21,62 @@ let initialState = {
 
 // Создать toggle чтобы переключать isFollowed одной функцией ||| Надо ли?
 
+// Jobs done, 'toggle' implemented! Вопрос такой же как и ниже - надо ли
+// делать один 'case' для похожих случаев, где меняется один параметр
+// или можно оставить оба  одинаковых 'case'-а, и там сделать рефакторинг
+
+//  Рефакторинг : идет уменьшение кода вместо переписания \ создания
+// существующих, как правильно - пересоздавать или переписывать
+
 const usersReducer = (state = initialState, action) => {
     switch (action.type) {
-        case FOLLOW: {
+        case TOGGLE_FOLLOW: {
             return {
                 ...state,
                 users: state.users.map((u) => {
                     if (u.id === action.userId) {
-                        return { ...u, followed: true };
+                        return { ...u, followed: !u.followed };
                     }
                     return u;
                 }),
             };
         }
 
+        case FOLLOW: {
+            return {
+
+                // AFTER
+                // ...state,
+                // users: updateOnjectInArray(state.users, action.userId, 'id', {
+                //     followed: true,
+                // }),
+
+                // BEFORE
+                // users: state.users.map((u) => {
+                //     if (u.id === action.userId) {
+                //         return { ...u, followed: true };
+                //     }
+                //     return u;
+                // }),
+            };
+        }
+
         case UNFOLLOW: {
             return {
-                ...state,
-                users: state.users.map((u) => {
-                    if (u.id === action.userId) {
-                        return { ...u, followed: false };
-                    }
-                    return u;
-                }),
+
+                // AFTER
+                // ...state,
+                // users: updateOnjectInArray(state.users, action.userId, 'id', {
+                //     followed: false,
+                // }),
+
+                // BEFORE 
+                // users: state.users.map((u) => {
+                //     if (u.id === action.userId) {
+                //         return { ...u, followed: false };
+                //     }
+                //     return u;
+                // }),
             };
         }
 
@@ -76,63 +111,50 @@ const usersReducer = (state = initialState, action) => {
             return state;
     }
 };
-
-export const follow = (userId) => ({ type: FOLLOW, userId });
-export const unfollow = (userId) => ({ type: UNFOLLOW, userId });
-export const setUsers = (users) => ({ type: SET_USERS, users });
-export const setPage = (currentPage) => ({
+const toggleFollow = (userId) => ({ type: TOGGLE_FOLLOW, userId });
+// const follow = (userId) => ({ type: FOLLOW, userId });
+// const unfollow = (userId) => ({ type: UNFOLLOW, userId });
+const setUsers = (users) => ({ type: SET_USERS, users });
+const setPage = (currentPage) => ({
     type: SET_CURRENT_PAGE,
     currentPage,
 });
-export const setTotalUsers = (totalUsers) => ({
+const setTotalUsers = (totalUsers) => ({
     type: SET_TOTAL_USERS,
     count: totalUsers,
 });
-export const toggleIsFetching = (isFetching) => ({
+const toggleIsFetching = (isFetching) => ({
     type: TOGGLE_IS_FETCHING,
     isFetching,
 });
-export const toggleProgress = (onProgress, userId) => ({
+const toggleProgress = (onProgress, userId) => ({
     type: TOGGLE_IS_PROGRESS,
     onProgress,
     userId,
 });
 
-export const getUsers = (pageSize, page) => {
-    return (dispatch) => {
-        dispatch(toggleIsFetching(true));
-        dispatch(setPage(page));
-        usersAPI
-            .getUsers(pageSize, page)
-            .then((data) => {
-                dispatch(setTotalUsers(data.totalCount));
-                dispatch(setUsers(data.items));
-                dispatch(toggleIsFetching(false));
-            })
-            .catch((e) => console.log(e));
-    };
+export const getUsers = (pageSize, page) => async (dispatch) => {
+    dispatch(toggleIsFetching(true));
+    dispatch(setPage(page));
+    let response = await usersAPI.getUsers(pageSize, page);
+
+    dispatch(setTotalUsers(response.data.totalCount));
+    dispatch(setUsers(response.data.items));
+    dispatch(toggleIsFetching(false));
 };
 
-export const toggleFollowUnfollow = (userId, type) => {
-    return (dispatch) => {
-        dispatch(toggleProgress(true, userId));
+export const toggleFollowUnfollow = (userId, type) => async (dispatch) => {
+    dispatch(toggleProgress(true, userId));
 
-        usersAPI
-            .toggleFollowUser(userId, type)
-            .then((resultCode) => {
-                // надо ли итог ".then" инкапсулировать в API.js
-                // чтобы не спрашивать тип, он уже спрашивается в toggleFollowUser
+    let response = await usersAPI.toggleFollowUser(userId, type);
 
-                if (resultCode === 0 && type === "unfollow") {
-                    dispatch(unfollow(userId));
-                }
-                if (resultCode === 0 && type === "follow") {
-                    dispatch(follow(userId));
-                }
-                dispatch(toggleProgress(false, userId));
-            })
-            .catch((e) => console.error(e));
-    };
+    if (response.data.resultCode === 0 && type === 'unfollow') {
+        dispatch(toggleFollow(userId));
+    }
+    if (response.data.resultCode === 0 && type === 'follow') {
+        dispatch(toggleFollow(userId));
+    }
+    dispatch(toggleProgress(false, userId));
 };
 
 export default usersReducer;

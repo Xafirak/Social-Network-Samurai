@@ -1,25 +1,9 @@
 .body {
-   margin: 15px; 
+    margin: 15px;
 }
 
 .img {
     width: 100px;
     height: 100px;
     object-fit: cover;
-}
-
-.selectedPage {
-    margin: 5px;
-    font-weight: bold;
-    font: 2em sans-serif;
-}
-.page{
-    
-    border-radius: 4px;
-    margin: 5px;
-    height: 2px;
-    width: 5px;
-}
-.page:hover {
-    cursor: pointer;
 }

@@ -25,3 +25,6 @@ let store = legacy_createStore(reducers, applyMiddleware(thunkMiddleware));
 
 window.store = store;
 export default store;
+
+
+// переписать на новый синтаксис редакса

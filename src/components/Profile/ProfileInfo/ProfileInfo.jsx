@@ -1,11 +1,11 @@
-import React from "react";
-import Preloader from "../../common/Preloader/preloader";
-import classes from "./ProfileInfo.module.css";
-import ProfileStatus from "./ProfileStatus";
+import React from 'react';
+import Preloader from '../../common/Preloader/preloader';
+import classes from './ProfileInfo.module.css';
+import ProfileStatus from './ProfileStatus';
 import ProfileStatusWithHooks from './ProfileStatusWithHooks';
 
-const ProfileInfo = (props) => {
-    if (!props.profile) {
+const ProfileInfo = ({ profile, status, updateStatus }) => {
+    if (!profile) {
         return <Preloader />;
     }
 
@@ -20,19 +20,18 @@ const ProfileInfo = (props) => {
             </div>
             <div className={classes.descriptionBlock}>
                 <div className={classes.description}>
-                    <img src={props.profile.photos.large} alt="" />
+                    <img src={profile.photos.large} alt="" />
                     <span className={classes.aboutMe}>
                         <ProfileStatusWithHooks
-                            status={props.status}
-                            updateStatus={props.updateStatus}
+                            status={status}
+                            updateStatus={updateStatus}
                         />
-                        {/* {props.profile.aboutMe}  */}
                     </span>
                 </div>
                 <div className={classes.description}>
                     <span>
                         <div className={classes.fullName}>
-                            {props.profile.fullName}
+                            {profile.fullName}
                         </div>
                         <div className={classes.contacts}>
                             Контакты:
@@ -41,7 +40,7 @@ const ProfileInfo = (props) => {
                                     Facebook
                                 </span>
                                 <span className={classes.contact_link}>
-                                    {props.profile.contacts.facebook}
+                                    {profile.contacts.facebook}
                                 </span>
                             </div>
                             <div className={classes.contact}>
@@ -49,7 +48,7 @@ const ProfileInfo = (props) => {
                                     Vk
                                 </span>
                                 <span className={classes.contact_link}>
-                                    {props.profile.contacts.vk}
+                                    {profile.contacts.vk}
                                 </span>
                             </div>
                             <div className={classes.contact}>
@@ -57,7 +56,7 @@ const ProfileInfo = (props) => {
                                     Instagram
                                 </span>
                                 <span className={classes.contact_link}>
-                                    {props.profile.contacts.instagram}
+                                    {profile.contacts.instagram}
                                 </span>
                             </div>
                             <div className={classes.contact}>
@@ -65,14 +64,14 @@ const ProfileInfo = (props) => {
                                     GitHub
                                 </span>
                                 <span className={classes.contact_link}>
-                                    {props.profile.contacts.github}
+                                    {profile.contacts.github}
                                 </span>
                             </div>
                         </div>
-                        {props.profile.lookingForAJob ? (
+                        {profile.lookingForAJob ? (
                             <div>
                                 Ищу работу ✓ <br />
-                                {props.profile.lookingForAJobDescription}
+                                {profile.lookingForAJobDescription}
                             </div>
                         ) : (
                             <div>Ищу работу ✖</div>

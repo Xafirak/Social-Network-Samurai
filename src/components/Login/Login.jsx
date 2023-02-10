@@ -1,20 +1,20 @@
 // @ts-nocheck
-import React from "react";
-import { Form, Field } from "react-final-form";
-import { connect } from "react-redux";
-import { Navigate } from "react-router-dom";
-import { Input } from "../common/FormsControl/FormsControl";
-import { LoginUser } from "./../../redux/auth-reducer";
+import React from 'react';
+import { Form } from 'react-final-form';
+import { connect } from 'react-redux';
+import { Navigate } from 'react-router-dom';
+import { Input } from '../common/FormsControl/FormsControl';
+import { LoginUser } from './../../redux/auth-reducer';
 import {
     maxLengthCreator,
     required,
-} from "./../../utils/validators/validators";
-import s from './../common/FormsControl/FormsControl.module.css'
+} from './../../utils/validators/validators';
+import s from './../common/FormsControl/FormsControl.module.css';
+import { createField } from './../common/FormsControl/FormsControl';
 
-
-const LoginForm = (props) => {
-    
+const LoginForm = ({ onSubmit, error }) => {
     const maxLength = maxLengthCreator(25);
+
     const composeValidators =
         (...validators) =>
         (value) =>
@@ -22,39 +22,66 @@ const LoginForm = (props) => {
                 (error, validator) => error || validator(value),
                 undefined
             );
+
     return (
         <Form
-            onSubmit={props.onSubmit}
+            onSubmit={onSubmit}
             render={({ handleSubmit }) => (
                 <form onSubmit={handleSubmit}>
-                    <div>
+                    {createField(
+                        composeValidators(required, maxLength),
+                        'email',
+                        Input,
+                        'Email'
+                    )}
+                    {/* <div>
                         <Field
                             validate={composeValidators(required, maxLength)}
-                            name={"email"}
+                            name={'email'}
                             component={Input}
                             placeholder="Email"
                         />
-                    </div>
-                    <div>
+                    </div> */}
+                    {createField(
+                        composeValidators(required, maxLength),
+                        'password',
+                        Input,
+                        'Password',
+                        { type: 'password' }
+                    )}
+                    {/* <div>
                         <Field
                             validate={composeValidators(required, maxLength)}
-                            name={"password"}
+                            name={'password'}
                             component={Input}
                             placeholder="Password"
                             type="password"
                         />
-                    </div>
-                    <div>
+                    </div> */}
+                    {createField(
+                        null,
+                        'rememberMe',
+                        'input',
+                        null,
+                        { type: 'checkbox' },
+                        'remember me!'
+                    )}
+                    {/* <div>
                         <Field
-                            name={"rememberMe"}
-                            component={"input"}
+                            name={'rememberMe'}
+                            component={'input'}
                             type="checkbox"
-                        />{" "}
+                        />
                         remember me
-                    </div>
-                    { props.error && <div className={s.formError}>
-                    {typeof props.error === 'string' ? props.error : 'Неправильное мыло или пароль!'}
-                    </div>}
+                    </div> */}
+
+                    {error && (
+                        <div className={s.formError}>
+                            {typeof error === 'string'
+                                ? error
+                                : 'Неправильное мыло или пароль!'}
+                        </div>
+                    )}
                     <div>
                         <button>Login</button>
                     </div>
@@ -65,12 +92,11 @@ const LoginForm = (props) => {
 };
 
 const Login = (props) => {
-    
     const onSubmit = ({ email, password, rememberMe }) => {
         props.LoginUser(email, password, rememberMe);
     };
     if (props.isAuth) {
-        return <Navigate to={'/profile'} />
+        return <Navigate to={'/profile'} />;
     }
 
     return (
