@@ -1,6 +1,12 @@
 // @ts-nocheck
 import React from "react";
 
+
+
+
+// НЕ ИСПОЛЬЗУЕТСЯ, юзается profileStatusWithHooks
+
+
 class ProfileStatus extends React.Component {
     state = {
         editMode: false,
@@ -65,3 +71,5 @@ class ProfileStatus extends React.Component {
 }
 
 export default ProfileStatus;
+
+// НЕ ИСПОЛЬЗУЕТСЯ, юзается profileStatusWithHooks
