@@ -6,8 +6,10 @@ import News from './components/News/News';
 import Music from './components/Music/Music';
 import Settings from './components/Settings/Settings';
 import NavbarContainer from './components/Navbar/NavbarContainer';
-import DialogsContainter from './components/Dialogs/DialogsContainter';
-import ProfileContainer from './components/Profile/ProfileContainer';
+
+// import DialogsContainter from './components/Dialogs/DialogsContainter';
+// import ProfileContainer from './components/Profile/ProfileContainer';
+
 import UsersContainer from './components/Users/UsersContainer';
 import Hooks from './hooks/Hooks';
 import Hover from './hooks/Hover';
@@ -26,9 +28,13 @@ import Preloader from './components/common/Preloader/preloader';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import store from './redux/reduxStore';
-
-
-
+import { Suspense } from 'react';
+const DialogsContainter = React.lazy(() =>
+    import('./components/Dialogs/DialogsContainter')
+);
+const ProfileContainer = React.lazy(() =>
+    import('./components/Profile/ProfileContainer')
+);
 
 class App extends Component {
     componentDidMount() {
@@ -45,11 +51,19 @@ class App extends Component {
                     <Routes>
                         <Route
                             path="/profile/:userId?"
-                            element={<ProfileContainer />}
+                            element={
+                                <Suspense fallback={<Preloader/>}>
+                                    <ProfileContainer />
+                                </Suspense>
+                            }
                         />
                         <Route
                             path="/dialogs"
-                            element={<DialogsContainter />}
+                            element={
+                                <Suspense fallback={<Preloader/>}>
+                                    <DialogsContainter />
+                                </Suspense>
+                            }
                         />
                         <Route path="/news" element={<News />} />
                         <Route path="/music" element={<Music />} />
@@ -96,6 +110,5 @@ const SamuraiAppJS = (props) => {
         </BrowserRouter>
     );
 };
-
 
 export default SamuraiAppJS;

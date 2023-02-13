@@ -70,12 +70,12 @@ const ProfileInfo = ({ profile, status, updateStatus }) => {
                         </div>
                         {profile.lookingForAJob ? (
                             <div>
-                                Ищу работу ✓ <br />
-                                {profile.lookingForAJobDescription}
+                                Ищу работу ✓ 
                             </div>
                         ) : (
                             <div>Ищу работу ✖</div>
                         )}
+                        <div>{profile.lookingForAJobDescription}</div>
                     </span>
                 </div>
             </div>
