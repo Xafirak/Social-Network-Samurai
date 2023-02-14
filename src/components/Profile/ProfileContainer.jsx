@@ -1,47 +1,56 @@
 // @ts-nocheck
-import React from "react";
-import Profile from "./Profile";
-import { connect } from "react-redux";
-import { getStatus, showProfile } from "../../redux/profileReducer";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { compose } from "redux";
-import { updateStatus } from "./../../redux/profileReducer";
-import { addActionCreator } from "./../../redux/profileReducer";
-import { Navigate } from "react-router-dom";
+import React from 'react';
+import Profile from './Profile';
+import { connect } from 'react-redux';
+import { getStatus, showProfile, savePhoto } from '../../redux/profileReducer';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { compose } from 'redux';
+import { updateStatus } from './../../redux/profileReducer';
+import { addActionCreator } from './../../redux/profileReducer';
+import { Navigate } from 'react-router-dom';
 
 class ProfileContainer extends React.Component {
-    componentDidMount() {
+    refreshProfile() {
         let userId = this.props.router.params.userId;
         if (!userId) {
             userId = this.props.authorizedUserId;
-            if (!userId) return
+            if (!userId) return;
         }
-
+//////////////////попробовать переписать в классовую компоненту
+/// при загрузке авы - страница падает, найти ошибку
         this.props.showProfile(userId);
         this.props.getStatus(userId);
     }
-    
+    componentDidMount() {
+        this.refreshProfile();
+    }
+    // старый метод для классовых компонент, сейчас юзают useEffect
+    componentDidUpdate(prevProps, prevState, shot) {
+        if (this.props.router.params.userId !== prevProps.router.params.userId)
+            this.refreshProfile();
+    }
+
     render() {
         if (!this.props.authorizedUserId && !this.props.router.params.userId) {
-            return <Navigate to={"/login"} />;
+            return <Navigate to={'/login'} />;
         }
         return (
             <div>
                 <Profile
+                    isOwner={!this.props.router.params.userId}
                     {...this.props}
                     profile={this.props.profile}
                     status={this.props.status}
                     updateStatus={this.props.updateStatus}
                     addMessage={this.props.addActionCreator}
+                    savePhoto={this.props.savePhoto}
                 />
             </div>
         );
     }
 }
 
-
 //==================
-
 
 let mapStateToProps = (state) => ({
     profilePage: state.profilePage,
@@ -68,6 +77,7 @@ export default compose(
         getStatus,
         updateStatus,
         addActionCreator,
+        savePhoto,
     }),
     withRouter
     // WithAuthRedirect

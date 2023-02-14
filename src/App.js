@@ -1,6 +1,6 @@
 // @ts-nocheck
 import React, { Component } from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { HashRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
 import News from './components/News/News';
 import Music from './components/Music/Music';
@@ -103,7 +103,7 @@ let AppContainer = compose(
 
 const SamuraiAppJS = (props) => {
     return (
-        <BrowserRouter>
+        <BrowserRouter  basename ="/">
             <Provider store={store}>
                 <AppContainer />
             </Provider>
