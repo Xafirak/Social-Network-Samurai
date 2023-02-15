@@ -8,16 +8,19 @@ import { compose } from 'redux';
 import { updateStatus } from './../../redux/profileReducer';
 import { addActionCreator } from './../../redux/profileReducer';
 import { Navigate } from 'react-router-dom';
+import Preloader from '../common/Preloader/preloader';
 
 class ProfileContainer extends React.Component {
+    
     refreshProfile() {
         let userId = this.props.router.params.userId;
         if (!userId) {
             userId = this.props.authorizedUserId;
             if (!userId) return;
         }
-//////////////////попробовать переписать в классовую компоненту
-/// при загрузке авы - страница падает, найти ошибку
+        //////////////////попробовать переписать в классовую компоненту
+        /// при загрузке авы - страница падает, найти ошибку
+        // возможно потому что фотка отправляется 2 раза
         this.props.showProfile(userId);
         this.props.getStatus(userId);
     }
@@ -30,10 +33,15 @@ class ProfileContainer extends React.Component {
             this.refreshProfile();
     }
 
+    //     this.props.ProfilePage.profile, this.props.ProfilePage.status = ProfileAndStatus
+
     render() {
         if (!this.props.authorizedUserId && !this.props.router.params.userId) {
             return <Navigate to={'/login'} />;
         }
+
+        console.log(this.props);
+
         return (
             <div>
                 <Profile

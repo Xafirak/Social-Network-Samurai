@@ -4,9 +4,8 @@ import Post from './Post/Post';
 import cl from './MyPosts.module.css';
 import TextInputWithButton from '../../TextInputWithButton/TextInputWithButton';
 
-
 const MyPosts = (props) => {
-    console.log('render');
+
     const posts = props.profilePage.postData.map((el) => {
         return (
             <Post

@@ -29,6 +29,8 @@ import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import store from './redux/reduxStore';
 import { Suspense } from 'react';
+import ProfileFUNC from './components/Profile/ProfileFUNC';
+
 const DialogsContainter = React.lazy(() =>
     import('./components/Dialogs/DialogsContainter')
 );
@@ -52,15 +54,15 @@ class App extends Component {
                         <Route
                             path="/profile/:userId?"
                             element={
-                                <Suspense fallback={<Preloader/>}>
-                                    <ProfileContainer />
+                                <Suspense fallback={<Preloader />}>
+                                    <ProfileFUNC />
                                 </Suspense>
                             }
                         />
                         <Route
                             path="/dialogs"
                             element={
-                                <Suspense fallback={<Preloader/>}>
+                                <Suspense fallback={<Preloader />}>
                                     <DialogsContainter />
                                 </Suspense>
                             }
@@ -103,7 +105,7 @@ let AppContainer = compose(
 
 const SamuraiAppJS = (props) => {
     return (
-        <BrowserRouter  basename ="/">
+        <BrowserRouter basename="/">
             <Provider store={store}>
                 <AppContainer />
             </Provider>

@@ -4,6 +4,7 @@ import { useEffect,useState } from 'react';
 
 
 const ProfileStatusWithHooks = (props) => {
+    
     const [editMode, setEditMode] = useState(false);
     const [status, setStatus] = useState(props.status);
 
@@ -12,7 +13,7 @@ const ProfileStatusWithHooks = (props) => {
     }, [props.status])
 
     const toggleActivateEditMode = () => {
-        return editMode === false
+        return !editMode 
             ? (setEditMode(true), console.log('editmode tru'))
             : (setEditMode(false),
               console.log('editmode false'),

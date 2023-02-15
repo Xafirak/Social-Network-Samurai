@@ -60,8 +60,8 @@ let initialState = {
         { id: 4, message: 'l2p nub', likes: 420 },
     ],
 
-    profile: null,
-    status: '',
+    profile: false,
+    status: false,
 };
 
 const profileReducer = (state = initialState, action) => {
@@ -95,7 +95,7 @@ const profileReducer = (state = initialState, action) => {
         case SAVE_PHOTO_SUCCES: {
             return {
                 ...state,
-                postData: { ...state.postData, photos: action.photos },
+                profile: { ...state.profile, photos: action.photos },
             };
         }
         default:
