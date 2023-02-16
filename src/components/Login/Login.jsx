@@ -34,14 +34,7 @@ const LoginForm = ({ onSubmit, error }) => {
                         Input,
                         'Email'
                     )}
-                    {/* <div>
-                        <Field
-                            validate={composeValidators(required, maxLength)}
-                            name={'email'}
-                            component={Input}
-                            placeholder="Email"
-                        />
-                    </div> */}
+
                     {createField(
                         composeValidators(required, maxLength),
                         'password',
@@ -49,15 +42,7 @@ const LoginForm = ({ onSubmit, error }) => {
                         'Password',
                         { type: 'password' }
                     )}
-                    {/* <div>
-                        <Field
-                            validate={composeValidators(required, maxLength)}
-                            name={'password'}
-                            component={Input}
-                            placeholder="Password"
-                            type="password"
-                        />
-                    </div> */}
+
                     {createField(
                         null,
                         'rememberMe',
@@ -66,14 +51,6 @@ const LoginForm = ({ onSubmit, error }) => {
                         { type: 'checkbox' },
                         'remember me!'
                     )}
-                    {/* <div>
-                        <Field
-                            name={'rememberMe'}
-                            component={'input'}
-                            type="checkbox"
-                        />
-                        remember me
-                    </div> */}
 
                     {error && (
                         <div className={s.formError}>

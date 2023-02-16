@@ -54,7 +54,7 @@ const FormControl = ({ input, meta, ...props }) => {
 };
 
 export const createField = (
-    validators,
+    validators = null,
     name,
     component,
     placeholder,

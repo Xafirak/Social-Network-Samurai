@@ -2,15 +2,18 @@
 import React from 'react';
 import Profile from './Profile';
 import { connect } from 'react-redux';
-import { getStatus, showProfile, savePhoto } from '../../redux/profileReducer';
+import {
+    getStatus,
+    showProfile,
+    savePhoto,
+    saveProfile,
+} from '../../redux/profileReducer';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { compose } from 'redux';
 import { updateStatus } from '../../redux/profileReducer';
 import { addActionCreator } from '../../redux/profileReducer';
-import { Navigate } from 'react-router-dom';
 import Preloader from '../common/Preloader/preloader';
 import { useEffect } from 'react';
-import { useState } from 'react';
 
 const ProfileFUNC = (props) => {
     useEffect(() => {
@@ -19,14 +22,10 @@ const ProfileFUNC = (props) => {
             userId = props.authorizedUserId;
             if (!userId) return;
         }
-
         props.showProfile(userId);
         props.getStatus(userId);
     }, []);
-    // window.props = [];
-    // window.props.push(props);
-    // console.log('render',  props.profilePage);   
-    // продолжить искать проблему ререндера, если она есть (проблема)
+
     return (
         <div>
             {props.profilePage.status && props.profilePage.profile ? (
@@ -36,6 +35,8 @@ const ProfileFUNC = (props) => {
                     updateStatus={props.updateStatus}
                     addMessage={props.addActionCreator}
                     savePhoto={props.savePhoto}
+                    saveProfile={props.saveProfile}
+                    error={props.error}
                 />
             ) : (
                 <Preloader />
@@ -48,6 +49,7 @@ let mapStateToProps = (state) => ({
     profilePage: state.profilePage,
     authorizedUserId: state.auth.userId,
     isAuth: state.auth.isAuth,
+    error: state.profilePage.error,
 });
 
 // wrapper идентичный натуральному, без пальмового масла
@@ -68,6 +70,7 @@ export default compose(
         updateStatus,
         addActionCreator,
         savePhoto,
+        saveProfile,
     }),
     withRouter
     // WithAuthRedirect

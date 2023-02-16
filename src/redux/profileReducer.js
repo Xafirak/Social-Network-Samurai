@@ -6,6 +6,7 @@ const SET_USER_PROFILE = 'SET_USER_PROFILE';
 const SET_STATUS = 'SET_STATUS';
 const DELETE_POST = 'DELETE_POST';
 const SAVE_PHOTO_SUCCES = 'SAVE_PHOTO_SUCCES';
+const SET_PROFILE_ERROR = 'profile/SET_ERROR';
 
 export const addActionCreator = (messageBody) => ({
     type: ADD_POST,
@@ -27,6 +28,10 @@ export const deletePost = (postId) => ({
 export const savePhotoSuccess = (photos) => ({
     type: SAVE_PHOTO_SUCCES,
     photos,
+});
+export const setProfileError = (error = true) => ({
+    type: SET_PROFILE_ERROR,
+    error,
 });
 
 export const showProfile = (userId) => async (dispatch) => {
@@ -52,6 +57,18 @@ export const savePhoto = (photos) => async (dispatch) => {
         dispatch(savePhotoSuccess(response.data.data.photos));
 };
 
+export const saveProfile = (profile) => async (dispatch, getState) => {
+    const userId = getState().auth.userId;
+    const response = await profileAPI.saveProfile(profile);
+
+    if (response.data.resultCode === 0) {
+        dispatch(showProfile(userId));
+    } else if (response.data.resultCode === 1) {
+        let message = response.data.messages[0]
+        dispatch(setProfileError(message));
+    }
+};
+
 let initialState = {
     postData: [
         { id: 1, message: 'HOWDY partner!', likes: 2 },
@@ -62,11 +79,12 @@ let initialState = {
 
     profile: false,
     status: false,
+    error: false,
 };
 
 const profileReducer = (state = initialState, action) => {
     switch (action.type) {
-        case 'ADD-POST': {
+        case ADD_POST: {
             let newPost = {
                 id: state.postData.length + 1,
                 message: action.messageBody,
@@ -96,6 +114,12 @@ const profileReducer = (state = initialState, action) => {
             return {
                 ...state,
                 profile: { ...state.profile, photos: action.photos },
+            };
+        }
+        case SET_PROFILE_ERROR: {
+            return {
+                ...state,
+                error: action.error,
             };
         }
         default:

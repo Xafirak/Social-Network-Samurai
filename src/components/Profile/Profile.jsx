@@ -2,10 +2,13 @@
 import React from 'react';
 import ProfileInfo from './ProfileInfo/ProfileInfo';
 import MyPosts from './MyPosts/MyPosts';
-import { memo } from 'react';
+
+window.props = [];
 
 const Profile = (props) => {
-    console.log('render', props );
+    // console.log('render', props);
+    //при обновлении страницы F5, компонент рендерится 1 раз, но если перейти на
+    // другую страницу и вернутся обратно - компонент ререндерится 3 раза - почему?
     return (
         <div>
             <ProfileInfo
@@ -14,6 +17,8 @@ const Profile = (props) => {
                 profile={props.profilePage.profile}
                 status={props.profilePage.status}
                 updateStatus={props.updateStatus}
+                saveProfile= {props.saveProfile}
+                error={props.error}
             />
             <MyPosts
                 profilePage={props.profilePage}

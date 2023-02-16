@@ -29,7 +29,7 @@ const authReducer = (state = initialState, action) => {
     }
 };
 
-export const setError = (error = true) => ({
+export const setAuthError = (error = true) => ({
     type: SET_ERROR,
     error,
 });
@@ -52,10 +52,10 @@ export const LoginUser = (email, password, rememberMe) => async (dispatch) => {
     if (response.data.resultCode === 0) {
         dispatch(getAuthData());
     } else if (response.data.resultCode === 1) {
-        dispatch(setError());
+        dispatch(setAuthError());
     } else if (response.data.resultCode === 10) {
         let message = response.data.messages[0];
-        dispatch(setError(message));
+        dispatch(setAuthError(message));
     }
 };
 

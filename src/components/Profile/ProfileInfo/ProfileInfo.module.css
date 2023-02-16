@@ -10,8 +10,18 @@
 
 .descriptionBlock {
     padding: 10px;
-    height: 400px;
-    background-color: whitesmoke
+    display: inline-block;
+
+    background-color: whitesmoke;
+    width: 100%;
+    overflow: auto;
+}
+
+.description {
+
+    float: left;
+    margin: 5px;
+
 }
 
 .descriptionBlock img {
@@ -20,15 +30,7 @@
     height: 200px;
     width: 200px;
     border-radius: 10px;
-
-}
-
-.description {
-    float: left;
-    margin: 5px;
-    display: inline-block;
-    width: 250px;
-
+    width: auto;
 }
 
 .fullName {
@@ -49,6 +51,7 @@
     display: inline-block;
     width: 70px;
     padding-right: 30px;
+    padding-left: 30px;
 }
 
 .contact {
@@ -56,11 +59,26 @@
 }
 
 .contacts {
-    width: 300px;
+    width: 400px;
     border-bottom: 2px solid black;
 }
 
 .aboutMe {
     display: block;
     width: 220px;
+}
+
+.formControl.error input,
+.formControl.error textarea {
+    border: 4px solid red;
+}
+
+.formControl.error span {
+    color: red;
+}
+
+.formError {
+    border: 4px solid red;
+    padding: 5px;
+    color: brown;
 }
