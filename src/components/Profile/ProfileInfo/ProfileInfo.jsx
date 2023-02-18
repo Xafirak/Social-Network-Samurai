@@ -17,7 +17,7 @@ const ProfileInfo = ({
     error,
 }) => {
     const [editMode, setEditMode] = useState(false);
-    console.log(error);
+
     if (!profile) {
         return <Preloader />;
     }
@@ -28,11 +28,11 @@ const ProfileInfo = ({
         }
     };
     const onSubmit = (formData) => {
-        console.log(formData);
+        // console.log(formData);
         saveProfile(formData);
         // setEditMode(false);
     };
-// ДЗ - добавить эррор к определенному полю, урок 97 1:07:54
+    // ДЗ - добавить эррор к определенному полю, урок 97 1:07:54
     return (
         <div className="profileInfo">
             <div>
@@ -61,6 +61,7 @@ const ProfileInfo = ({
                         <ProfileStatusWithHooks
                             status={status}
                             updateStatus={updateStatus}
+                            isOwner={isOwner}
                         />
                     </span>
                 </div>
@@ -69,7 +70,6 @@ const ProfileInfo = ({
                         <ProfileDataForm
                             profile={profile}
                             onSubmit={onSubmit}
-                            profile={profile}
                             error={error}
                         />
                     ) : (
@@ -138,8 +138,10 @@ const Contact = ({ contactName, contactURL }) => {
         <div>
             <div className={classes.contact}>
                 <span className={classes.contact_media}>
-                    <b>{contactName}</b>:
-                    <span className={classes.contact_link}>{contactURL} </span>
+                    <b>
+                        {contactName.replace(/\b\w/g, (c) => c.toUpperCase())}
+                    </b>
+                    :<span className={classes.contact_link}>{contactURL} </span>
                 </span>
             </div>
         </div>

@@ -7,7 +7,27 @@ import {
 import { Form } from 'react-final-form';
 import classes from './ProfileInfo.module.css';
 
+const incError = (errorsArr, profile, error) => {
+    return errorsArr.includes(profile.contacts) ? console.log(error) : undefined;
+};
+
 const ProfileDataForm = ({ onSubmit, profile, error }) => {
+    console.log(error);
+    console.log(profile.contacts);
+
+    if (error) {
+        // console.log(error.map( e => e.includes(profile.map)));
+        console.log(
+            error.map((e) => e.split('>')[1].toLowerCase().slice(0, -1))
+        );
+        let errorsArr = error.map((e) =>
+            e.split('>')[1].toLowerCase().slice(0, -1)
+        );
+        incError(errorsArr, profile, error)
+        
+    } 
+console.log(incError);
+    
     return (
         <Form
             onSubmit={onSubmit}
@@ -17,13 +37,7 @@ const ProfileDataForm = ({ onSubmit, profile, error }) => {
                     <div>
                         <button>Save changes</button>
                     </div>
-                    {error && (
-                        <div className={classes.formError}>
-                            {typeof error === 'string'
-                                ? error
-                                : 'Неправильное мыло или пароль!'}
-                        </div>
-                    )}
+                    {error && <div className={classes.formError}>{error}</div>}
                     <div>
                         <b>Full Name</b>
                         {createField(null, 'fullName', Input, 'Full name')}
@@ -60,8 +74,13 @@ const ProfileDataForm = ({ onSubmit, profile, error }) => {
                         <b className={classes.contacts}>Контакты</b>:
                         {Object.keys(profile.contacts).map((key) => {
                             return (
-                                <div key={key} >
-                                    <b>{key}</b>:
+                                <div key={key}>
+                                    <b>
+                                        {key.replace(/\b\w/g, (c) =>
+                                            c.toUpperCase()
+                                        )}
+                                    </b>
+                                    :
                                     {createField(
                                         null,
                                         'contacts.' + key,
@@ -75,15 +94,6 @@ const ProfileDataForm = ({ onSubmit, profile, error }) => {
                 </form>
             )}
         />
-        //  {profile.lookingForAJob ? (
-        //             <div>
-        //                 <b>Ищу работу </b>✓
-        //             </div>
-        //         ) : (
-        //             <div>
-        //                 <b>Ищу работу </b>✖
-        //             </div>
-        //         )}
     );
 };
 

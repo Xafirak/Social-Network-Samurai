@@ -9,7 +9,7 @@ const MyPosts = (props) => {
         <div className={cl.postBlock}>
             {props.profilePage.postData.map((el) => {
                 return (
-                    <div>
+                    <div key={el.id}>
                         <Post
                             message={el.message}
                             likes={el.likes}

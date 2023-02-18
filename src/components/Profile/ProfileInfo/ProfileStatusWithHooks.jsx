@@ -4,7 +4,6 @@ import { useEffect,useState } from 'react';
 
 
 const ProfileStatusWithHooks = (props) => {
-    
     const [editMode, setEditMode] = useState(false);
     const [status, setStatus] = useState(props.status);
 
@@ -25,13 +24,13 @@ const ProfileStatusWithHooks = (props) => {
 
     return (
         <div>
-            {!editMode && (
+            { props.isOwner ? !editMode && (
                 <div>
                     <span onDoubleClick={toggleActivateEditMode}>
                         {props.status || '_____'}
                     </span>
                 </div>
-            )}
+            ) : true}
             {editMode && (
                 <div>
                     <input

@@ -64,7 +64,7 @@ export const saveProfile = (profile) => async (dispatch, getState) => {
     if (response.data.resultCode === 0) {
         dispatch(showProfile(userId));
     } else if (response.data.resultCode === 1) {
-        let message = response.data.messages[0]
+        let message = response.data.messages
         dispatch(setProfileError(message));
     }
 };

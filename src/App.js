@@ -65,7 +65,7 @@ class App extends Component {
                                 <Suspense fallback={<Preloader />}>
                                     <DialogsContainter />
                                 </Suspense>
-                            }
+                            }  
                         />
                         <Route path="/news" element={<News />} />
                         <Route path="/music" element={<Music />} />

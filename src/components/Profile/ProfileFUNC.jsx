@@ -16,31 +16,55 @@ import Preloader from '../common/Preloader/preloader';
 import { useEffect } from 'react';
 
 const ProfileFUNC = (props) => {
-    useEffect(() => {
-        let userId = props.router.params.userId;
+    // console.log('render');
+    const navigate = useNavigate();
+    let userId = props.router.params.userId;
+
+    function refreshingProfile(userId) {
         if (!userId) {
             userId = props.authorizedUserId;
-            if (!userId) return;
+            if (!userId) return navigate('/login');
         }
         props.showProfile(userId);
         props.getStatus(userId);
-    }, []);
+    }
+
+    useEffect(() => {
+        refreshingProfile(userId);
+    }, [userId]);
+
+    //=============
+    // получить ошибку и передать ее ProfileInfo, а там дальше делать
+    // логику обработки
+
+    let errorsArr;
+    if (props.error) {
+        // console.log(error.map( e => e.includes(profile.map)));
+        console.log(
+            props.error.map((e) => e.split('>')[1].toLowerCase().slice(0, -1))
+        );
+        let errorsArr = props.error.map((e) =>
+            e.split('>')[1].toLowerCase().slice(0, -1)
+        );
+        return errorsArr; 
+    }
+    // let newErr = errorsArr;
 
     return (
         <div>
-            {props.profilePage.status && props.profilePage.profile ? (
-                <Profile
-                    isOwner={!props.router.params.userId}
-                    profilePage={props.profilePage}
-                    updateStatus={props.updateStatus}
-                    addMessage={props.addActionCreator}
-                    savePhoto={props.savePhoto}
-                    saveProfile={props.saveProfile}
-                    error={props.error}
-                />
-            ) : (
+            {/* {props.profilePage.status && props.profilePage.profile ? ( */}
+            <Profile
+                isOwner={!props.router.params.userId}
+                profilePage={props.profilePage}
+                updateStatus={props.updateStatus}
+                addMessage={props.addActionCreator}
+                savePhoto={props.savePhoto}
+                saveProfile={props.saveProfile}
+                error={props.error}
+            />
+            {/* ) : (
                 <Preloader />
-            )}
+            )} */}
         </div>
     );
 };
