@@ -12,8 +12,8 @@ import {
 import s from './../common/FormsControl/FormsControl.module.css';
 import { createField } from './../common/FormsControl/FormsControl';
 
-const LoginForm = ({ onSubmit, error }) => {
-    const maxLength = maxLengthCreator(25);
+const LoginForm = ({ onSubmit, error, captchaUrl }) => {
+    const maxLength = maxLengthCreator(30);
 
     const composeValidators =
         (...validators) =>
@@ -34,7 +34,6 @@ const LoginForm = ({ onSubmit, error }) => {
                         Input,
                         'Email'
                     )}
-
                     {createField(
                         composeValidators(required, maxLength),
                         'password',
@@ -42,16 +41,26 @@ const LoginForm = ({ onSubmit, error }) => {
                         'Password',
                         { type: 'password' }
                     )}
-
                     {createField(
                         null,
                         'rememberMe',
-                        'input',
+                        Input,
                         null,
                         { type: 'checkbox' },
                         'remember me!'
                     )}
-
+                    {captchaUrl && <img src={captchaUrl} alt="" />}
+                    {/* ПОЧЕМУ ОНО ИГНОРИТ УСЛОВИЕ??????????????? ВТФ */}
+                    {/* только после добавления 2ого условия '&&' поле ввода исчезло,
+                    но снова косяк - поле не появляется при запрашивании капчи, убрал */}
+                    {captchaUrl &&
+                        createField(
+                            composeValidators(required),
+                            'captcha',
+                            Input,
+                            'enter symbols pls',
+                            {}
+                        ) }
                     {error && (
                         <div className={s.formError}>
                             {typeof error === 'string'
@@ -69,8 +78,8 @@ const LoginForm = ({ onSubmit, error }) => {
 };
 
 const Login = (props) => {
-    const onSubmit = ({ email, password, rememberMe }) => {
-        props.LoginUser(email, password, rememberMe);
+    const onSubmit = ({ email, password, rememberMe, captcha }) => {
+        props.LoginUser(email, password, rememberMe, captcha);
     };
     if (props.isAuth) {
         return <Navigate to={'/profile'} />;
@@ -79,12 +88,21 @@ const Login = (props) => {
     return (
         <div>
             <h1>LOGIN</h1>
-            <LoginForm onSubmit={onSubmit} error={props.error} />
+            <h3>Псст! Нужен тестовый акк? </h3>
+            <div>
+                Email: free@samuraijs.com <br /> Password: free
+            </div>
+            <LoginForm
+                onSubmit={onSubmit}
+                error={props.error}
+                captchaUrl={[props.captchaUrl]}
+            />
         </div>
     );
 };
 
 let mapStateToProps = (state) => ({
+    captchaUrl: state.auth.captchaUrl,
     error: state.auth.error,
     isAuth: state.auth.isAuth,
 });

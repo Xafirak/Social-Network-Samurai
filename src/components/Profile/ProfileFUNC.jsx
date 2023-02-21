@@ -18,25 +18,23 @@ import { useEffect } from 'react';
 const ProfileFUNC = (props) => {
     // console.log('render');
     const navigate = useNavigate();
-    let userId = props.router.params.userId;
+    let anotherUserId = props.router.params.userId;
+    let userId = props.authorizedUserId;
 
-    function refreshingProfile(userId) {
-        if (!userId) {
-            userId = props.authorizedUserId;
-            if (!userId) return navigate('/login');
-        }
+    function refreshingProfile(a, b) {
+        if (!a && !b) return navigate('/login');
+
         props.showProfile(userId);
         props.getStatus(userId);
     }
 
     useEffect(() => {
-        refreshingProfile(userId);
-    }, [userId]);
+        refreshingProfile(anotherUserId, userId);
+    }, [anotherUserId, userId]);
 
     //=============
     // получить ошибку и передать ее ProfileInfo, а там дальше делать
     // логику обработки
-
 
     return (
         <div>
