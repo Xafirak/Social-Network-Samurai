@@ -2,8 +2,6 @@
 import React from 'react';
 import ProfileInfo from './ProfileInfo/ProfileInfo';
 import MyPosts from './MyPosts/MyPosts';
-import ProfileFUNC from './ProfileFUNC';
-
 window.props = [];
 
 const Profile = (props) => {

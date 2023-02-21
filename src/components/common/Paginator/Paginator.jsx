@@ -19,8 +19,8 @@ let Paginator = ({
     for (let i = 1; i <= pagesCount; i++) {
         pages.push(i);
     }
-    
-     useEffect(
+
+    useEffect(
         () => setPageNumber(Math.ceil(currentPage / portionSize)),
         [currentPage]
     );

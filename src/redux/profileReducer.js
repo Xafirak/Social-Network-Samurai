@@ -45,9 +45,13 @@ export const getStatus = (userId) => async (dispatch) => {
 };
 
 export const updateStatus = (status) => async (dispatch) => {
-    let response = await profileAPI.updateStatus(status);
+    try {
+        let response = await profileAPI.updateStatus(status);
 
-    if (response.data.resultCode === 0) dispatch(setStatus(status));
+        if (response.data.resultCode === 0) dispatch(setStatus(status));
+    } catch (error) {
+        //сделать логику если сюда приходит resultCode === 1, вывести ошибку
+    }
 };
 
 export const savePhoto = (photos) => async (dispatch) => {
@@ -61,7 +65,7 @@ export const saveProfile = (profile) => async (dispatch, getState) => {
     const userId = getState().auth.userId;
     const response = await profileAPI.saveProfile(profile);
 
-    // это мое, дальше вообще без понятия как преобразовать для выдачи 
+    // это мое, дальше вообще без понятия как преобразовать для выдачи
     // ошибки, и правильно ли я сделал
     // const getErrors = (messages) => {
     //     let name = messages.map((e) =>

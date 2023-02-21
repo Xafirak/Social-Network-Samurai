@@ -12,30 +12,29 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { compose } from 'redux';
 import { updateStatus } from '../../redux/profileReducer';
 import { addActionCreator } from '../../redux/profileReducer';
-import Preloader from '../common/Preloader/preloader';
 import { useEffect } from 'react';
 
 const ProfileFUNC = (props) => {
-    // console.log('render');
     const navigate = useNavigate();
     let anotherUserId = props.router.params.userId;
     let userId = props.authorizedUserId;
 
     function refreshingProfile(a, b) {
-        if (!a && !b) return navigate('/login');
+        if (!a) {
+            a = b;
+            if (!b) {
+                return navigate('/login');
+            }
+        }
 
-        props.showProfile(userId);
-        props.getStatus(userId);
+        props.showProfile(a);
+        props.getStatus(a);
     }
 
     useEffect(() => {
         refreshingProfile(anotherUserId, userId);
     }, [anotherUserId, userId]);
-
-    //=============
-    // получить ошибку и передать ее ProfileInfo, а там дальше делать
-    // логику обработки
-
+    // ниже - попытка убрать ненужные ререндеры (ненужные ли?)
     return (
         <div>
             {/* {props.profilePage.status && props.profilePage.profile ? ( */}
@@ -83,5 +82,4 @@ export default compose(
         saveProfile,
     }),
     withRouter
-    // WithAuthRedirect
 )(ProfileFUNC);

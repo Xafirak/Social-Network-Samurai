@@ -29,19 +29,32 @@ import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import store from './redux/reduxStore';
 import { Suspense } from 'react';
-import ProfileFUNC from './components/Profile/ProfileFUNC';
+import { Navigate } from 'react-router-dom';
 
 const DialogsContainter = React.lazy(() =>
     import('./components/Dialogs/DialogsContainter')
 );
-const ProfileContainer = React.lazy(() =>
-    import('./components/Profile/ProfileContainer')
+const ProfileFUNC = React.lazy(() =>
+    import('./components/Profile/ProfileFUNC')
 );
 
 class App extends Component {
+
+    // ДЗ - показать глобальную ошибку (например нету ответа от сервера)
+    // урок 99 45:00
+    catchAllUnhandledErrors = (promiseRejectionEvent) => {
+        alert('Error happens');
+        console.error(promiseRejectionEvent);
+    };
     componentDidMount() {
         this.props.initializeApp();
+        window.addEventListener('unhandled', this.catchAllUnhandledErrors);
+        
     }
+    componentWillUnmount() {
+        window.removeEventListener('unhandled', this.catchAllUnhandledErrors);
+    }
+
     render() {
         if (!this.props.initialized) return <Preloader />;
 
@@ -51,6 +64,7 @@ class App extends Component {
                 <NavbarContainer />
                 <div className="app-wrapper-content">
                     <Routes>
+                        <Route path="/" element={<Navigate to="/profile" />} />
                         <Route
                             path="/profile/:userId?"
                             element={
@@ -65,13 +79,14 @@ class App extends Component {
                                 <Suspense fallback={<Preloader />}>
                                     <DialogsContainter />
                                 </Suspense>
-                            }  
+                            }
                         />
                         <Route path="/news" element={<News />} />
                         <Route path="/music" element={<Music />} />
                         <Route path="/settings" element={<Settings />} />
                         <Route path="/users" element={<UsersContainer />} />
                         <Route path="/login" element={<Login />} />
+                        <Route path="*" element={<div>404 NOT FOUND xD</div>} />
                         {/* <Route path="hooks" element={ <Hooks /> } /> */}
                         {/* <Route path="hover" element={ <Hover /> } /> */}
                         {/* <Route path="list" element={ <List /> } /> */}

@@ -15,8 +15,6 @@ import {
     getIsFetching,
 } from '../../redux/users-selectors';
 
-//как пофиксить вечную "загрузку" юзеров
-//если поменять страницу и снова вернутся в users
 
 class UsersContainer extends React.Component {
     componentDidMount() {

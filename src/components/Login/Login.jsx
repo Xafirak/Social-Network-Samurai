@@ -50,6 +50,7 @@ const LoginForm = ({ onSubmit, error, captchaUrl }) => {
                         'remember me!'
                     )}
                     {captchaUrl && <img src={captchaUrl} alt="" />}
+                    <div>если видно поле без капчи - вся инфа в Login.jsx <br />для входа - тыкни любой символ</div>
                     {/* ПОЧЕМУ ОНО ИГНОРИТ УСЛОВИЕ??????????????? ВТФ */}
                     {/* только после добавления 2ого условия '&&' поле ввода исчезло,
                     но снова косяк - поле не появляется при запрашивании капчи, убрал */}
@@ -60,7 +61,7 @@ const LoginForm = ({ onSubmit, error, captchaUrl }) => {
                             Input,
                             'enter symbols pls',
                             {}
-                        ) }
+                        )}
                     {error && (
                         <div className={s.formError}>
                             {typeof error === 'string'
