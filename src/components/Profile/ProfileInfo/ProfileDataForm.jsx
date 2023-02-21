@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from 'react';
 import {
     createField,
@@ -7,27 +8,22 @@ import {
 import { Form } from 'react-final-form';
 import classes from './ProfileInfo.module.css';
 
-const incError = (errorsArr, profile, error) => {
-    return errorsArr.includes(profile.contacts) ? console.log(error) : undefined;
-};
+///////
+
+/////////////
 
 const ProfileDataForm = ({ onSubmit, profile, error }) => {
+    window.err = error;
     console.log(error);
-    console.log(profile.contacts);
+    // const showError = (value, error) => {
+    //     return error ? error : undefined
+    // }
 
-    if (error) {
-        // console.log(error.map( e => e.includes(profile.map)));
-        console.log(
-            error.map((e) => e.split('>')[1].toLowerCase().slice(0, -1))
-        );
-        let errorsArr = error.map((e) =>
-            e.split('>')[1].toLowerCase().slice(0, -1)
-        );
-        incError(errorsArr, profile, error)
-        
-    } 
-console.log(incError);
-    
+    // const incError = (errorsArr, profile, error) => {
+    //     return errorsArr.includes(profile.contacts)
+    //         ? console.log(error)
+    //         : undefined;
+    // };
     return (
         <Form
             onSubmit={onSubmit}

@@ -37,18 +37,6 @@ const ProfileFUNC = (props) => {
     // получить ошибку и передать ее ProfileInfo, а там дальше делать
     // логику обработки
 
-    let errorsArr;
-    if (props.error) {
-        // console.log(error.map( e => e.includes(profile.map)));
-        console.log(
-            props.error.map((e) => e.split('>')[1].toLowerCase().slice(0, -1))
-        );
-        let errorsArr = props.error.map((e) =>
-            e.split('>')[1].toLowerCase().slice(0, -1)
-        );
-        return errorsArr; 
-    }
-    // let newErr = errorsArr;
 
     return (
         <div>

@@ -61,10 +61,36 @@ export const saveProfile = (profile) => async (dispatch, getState) => {
     const userId = getState().auth.userId;
     const response = await profileAPI.saveProfile(profile);
 
+    // это мое, дальше вообще без понятия как преобразовать для выдачи 
+    // ошибки, и правильно ли я сделал
+    // const getErrors = (messages) => {
+    //     let name = messages.map((e) =>
+    //         e.split('>')[1].toLowerCase().slice(0, -1)
+    //     );
+
+    //     console.log(name);
+    // };
+
+    // Слизано, аботает, но при передаче в компоненту реакт ругается, что пропс
+    //является обьектом, что недопустимо о_О
+    // const getErrors = (messages) => {
+    //     let errors = Object.keys(messages).reduce((acc, key) => {
+    //         let errorMessage = messages[key]
+    //             .split('>')[1]
+    //             .toLowerCase()
+    //             .slice(0, -1);
+    //         // console.log([errorMessage], messages[key]);
+    //         return { ...acc, [errorMessage]: messages[key] };
+    //     }, {});
+    //     console.log(errors);
+    //     return errors;
+    // };
+
     if (response.data.resultCode === 0) {
         dispatch(showProfile(userId));
     } else if (response.data.resultCode === 1) {
-        let message = response.data.messages
+        let message = response.data.messages;
+        // getErrors(message);
         dispatch(setProfileError(message));
     }
 };

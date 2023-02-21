@@ -15,6 +15,7 @@ const ProfileInfo = ({
     savePhoto,
     saveProfile,
     error,
+    errorsArr,
 }) => {
     const [editMode, setEditMode] = useState(false);
 
