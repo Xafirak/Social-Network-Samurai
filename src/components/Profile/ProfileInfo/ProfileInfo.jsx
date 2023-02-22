@@ -15,8 +15,8 @@ const ProfileInfo = ({
     savePhoto,
     saveProfile,
     error,
-    errorsArr,
 }) => {
+    
     const [editMode, setEditMode] = useState(false);
 
     if (!profile) {
@@ -126,7 +126,7 @@ const ProfileData = ({ profile, isOwner, activateEditMode }) => {
                         </div>
                     )}
                 </div>
-                <div>
+                <div className={classes.contact}>
                     <b>My skillZ</b>: {profile.lookingForAJobDescription}
                 </div>
             </span>
@@ -138,11 +138,17 @@ const Contact = ({ contactName, contactURL }) => {
     return (
         <div>
             <div className={classes.contact}>
-                <span className={classes.contact_media}>
-                    <b>
-                        {contactName.replace(/\b\w/g, (c) => c.toUpperCase())}
+                <span>
+                    <b className={classes.contact_media}>
+                        {contactName.replace(/\b\w/g, (c) => c.toUpperCase())}:
                     </b>
-                    :<span className={classes.contact_link}>{contactURL} </span>
+                    {contactURL ? (
+                        <span className={classes.contact_link}>
+                            {contactURL}{' '}
+                        </span>
+                    ) : (
+                        false
+                    )}
                 </span>
             </div>
         </div>

@@ -49,13 +49,14 @@
 
 .contact_media {
     display: inline-block;
-    width: 70px;
+    width: 50px;
     padding-right: 30px;
     padding-left: 30px;
 }
 
 .contact {
     padding: 5px 0;
+    width: 750px;
 }
 
 .contacts {

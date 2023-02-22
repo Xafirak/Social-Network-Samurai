@@ -49,8 +49,14 @@ export const updateStatus = (status) => async (dispatch) => {
         let response = await profileAPI.updateStatus(status);
 
         if (response.data.resultCode === 0) dispatch(setStatus(status));
+        if (response.data.resultCode === 1) {
+            let message = response.data.messages;
+            dispatch(setProfileError(message));
+        }
     } catch (error) {
         //сделать логику если сюда приходит resultCode === 1, вывести ошибку
+        // код 1 - не ошибка, поэтому не может отображатся в catch, если
+        // я правильно понимаю
     }
 };
 
@@ -75,27 +81,29 @@ export const saveProfile = (profile) => async (dispatch, getState) => {
     //     console.log(name);
     // };
 
-    // Слизано, аботает, но при передаче в компоненту реакт ругается, что пропс
+    // Слизано, работает, но при передаче в компоненту реакт ругается, что пропс
     //является обьектом, что недопустимо о_О
-    // const getErrors = (messages) => {
-    //     let errors = Object.keys(messages).reduce((acc, key) => {
-    //         let errorMessage = messages[key]
-    //             .split('>')[1]
-    //             .toLowerCase()
-    //             .slice(0, -1);
-    //         // console.log([errorMessage], messages[key]);
-    //         return { ...acc, [errorMessage]: messages[key] };
-    //     }, {});
-    //     console.log(errors);
-    //     return errors;
-    // };
+    const getErrors = (messages) => {
+        let errors = Object.keys(messages).reduce((acc, key) => {
+            let errorMessage = messages[key]
+                .split('>')[1]
+                .toLowerCase()
+                .slice(0, -1);
+            // console.log([errorMessage], messages[key]);
+            return { ...acc, [errorMessage]: messages[key] };
+        }, {});
+        // console.log(errors);
+        // let newErr = Object.keys(errors).map(e => e[e.errors[e]])
+        // console.log(newErr);
+        return errors;
+    };
 
     if (response.data.resultCode === 0) {
         dispatch(showProfile(userId));
     } else if (response.data.resultCode === 1) {
         let message = response.data.messages;
-        // getErrors(message);
-        dispatch(setProfileError(message));
+        // dispatch(setProfileError(getErrors(message)))
+        dispatch(setProfileError(getErrors(message)));
     }
 };
 

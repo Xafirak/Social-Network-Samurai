@@ -14,15 +14,50 @@ import classes from './ProfileInfo.module.css';
 
 const ProfileDataForm = ({ onSubmit, profile, error }) => {
     window.err = error;
+    window.pr = profile;
     console.log(error);
-    // const showError = (value, error) => {
-    //     return error ? error : undefined
-    // }
+
+    
+    // очередная попытка сделать валидацию ошибки, по обьекту contacts не работают
+    // ни 'map' ни 'forEach', невозможно проитерироватся
+    // let contacts = profile.contacts;
+    // const showError = (error, key) => {
+    //     if (!error) return null;
+    //     else {
+    //         return error.map(e => e.includes(key) ? error[e] : undefined);
+    //     }
+    // };
+    //     const showErrorCreator = (error, contacts) => {
+    //     if (!error) return null;
+    //     else {
+    //         let newErr = []
+    //         for(i = 0; i < contacts.length; i++){
+    //             newErr.push(contacts[i])
+    //         }
+    //         let mediaName = contacts.forEach((e) => console.log(contacts[e]));
+    //         return error.includes(mediaName) ? error : undefined;
+    //     }
+    // };
 
     // const incError = (errorsArr, profile, error) => {
     //     return errorsArr.includes(profile.contacts)
     //         ? console.log(error)
     //         : undefined;
+    // };
+    // const getErrors = (error) => {
+    //     if (!error) return null;
+    //     if (error) {
+    //         let errors = Object.keys(error).reduce((acc, key) => {
+    //             let errorMessage = error[key]
+    //                 .split('>')[1]
+    //                 .toLowerCase()
+    //                 .slice(0, -1);
+    //             // console.log([errorMessage], error[key]);
+    //             return { ...acc, [errorMessage]: error[key] };
+    //         }, {});
+    //         console.log(errors);
+    //         return errors;
+    //     }
     // };
     return (
         <Form
@@ -33,7 +68,7 @@ const ProfileDataForm = ({ onSubmit, profile, error }) => {
                     <div>
                         <button>Save changes</button>
                     </div>
-                    {error && <div className={classes.formError}>{error}</div>}
+                    {/* {error && <div className={classes.formError}>{error || error.map(e=>{return })}</div>} */}
                     <div>
                         <b>Full Name</b>
                         {createField(null, 'fullName', Input, 'Full name')}

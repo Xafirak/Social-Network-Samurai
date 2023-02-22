@@ -79,6 +79,7 @@ const LoginForm = ({ onSubmit, error, captchaUrl }) => {
 };
 
 const Login = (props) => {
+    // console.log(props.error);
     const onSubmit = ({ email, password, rememberMe, captcha }) => {
         props.LoginUser(email, password, rememberMe, captcha);
     };

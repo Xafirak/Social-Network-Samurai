@@ -30,18 +30,14 @@ import { Provider } from 'react-redux';
 import store from './redux/reduxStore';
 import { Suspense } from 'react';
 import { Navigate } from 'react-router-dom';
-
-const DialogsContainter = React.lazy(() =>
-    import('./components/Dialogs/DialogsContainter')
-);
-const ProfileFUNC = React.lazy(() =>
-    import('./components/Profile/ProfileFUNC')
-);
+import ErrorCatch from './ErrorCatch';
 
 class App extends Component {
-
     // ДЗ - показать глобальную ошибку (например нету ответа от сервера)
     // урок 99 45:00
+
+    // поставил встроенный механизм, на роуты - предохранитель(Error Boundaries) 
+    // ErrorCatch, но не знаю как получить ошибку, чтобы проверить работоспособность
     catchAllUnhandledErrors = (promiseRejectionEvent) => {
         alert('Error happens');
         console.error(promiseRejectionEvent);
@@ -49,7 +45,6 @@ class App extends Component {
     componentDidMount() {
         this.props.initializeApp();
         window.addEventListener('unhandled', this.catchAllUnhandledErrors);
-        
     }
     componentWillUnmount() {
         window.removeEventListener('unhandled', this.catchAllUnhandledErrors);
@@ -63,41 +58,56 @@ class App extends Component {
                 <HeaderContainer />
                 <NavbarContainer />
                 <div className="app-wrapper-content">
-                    <Routes>
-                        <Route path="/" element={<Navigate to="/profile" />} />
-                        <Route
-                            path="/profile/:userId?"
-                            element={
-                                <Suspense fallback={<Preloader />}>
-                                    <ProfileFUNC />
-                                </Suspense>
-                            }
-                        />
-                        <Route
-                            path="/dialogs"
-                            element={
-                                <Suspense fallback={<Preloader />}>
-                                    <DialogsContainter />
-                                </Suspense>
-                            }
-                        />
-                        <Route path="/news" element={<News />} />
-                        <Route path="/music" element={<Music />} />
-                        <Route path="/settings" element={<Settings />} />
-                        <Route path="/users" element={<UsersContainer />} />
-                        <Route path="/login" element={<Login />} />
-                        <Route path="*" element={<div>404 NOT FOUND xD</div>} />
-                        {/* <Route path="hooks" element={ <Hooks /> } /> */}
-                        {/* <Route path="hover" element={ <Hover /> } /> */}
-                        {/* <Route path="list" element={ <List /> } /> */}
-                        {/* <Route path="shit" element={ <Shit /> } /> */}
-                        {/* <Route path="anothasht" element={ <AnothaSht /> } /> */}
-                    </Routes>
+                    <ErrorCatch>
+                        <Routes>
+                            <Route
+                                path="/"
+                                element={<Navigate to="/profile" />}
+                            />
+                            <Route
+                                path="/profile/:userId?"
+                                element={
+                                    <Suspense fallback={<Preloader />}>
+                                        <ProfileFUNC />
+                                    </Suspense>
+                                }
+                            />
+                            <Route
+                                path="/dialogs"
+                                element={
+                                    <Suspense fallback={<Preloader />}>
+                                        <DialogsContainter />
+                                    </Suspense>
+                                }
+                            />
+                            <Route path="/news" element={<News />} />
+                            <Route path="/music" element={<Music />} />
+                            <Route path="/settings" element={<Settings />} />
+                            <Route path="/users" element={<UsersContainer />} />
+                            <Route path="/login" element={<Login />} />
+                            <Route
+                                path="*"
+                                element={<div>404 NOT FOUND xD</div>}
+                            />
+                            {/* <Route path="hooks" element={ <Hooks /> } /> */}
+                            {/* <Route path="hover" element={ <Hover /> } /> */}
+                            {/* <Route path="list" element={ <List /> } /> */}
+                            {/* <Route path="shit" element={ <Shit /> } /> */}
+                            {/* <Route path="anothasht" element={ <AnothaSht /> } /> */}
+                        </Routes>
+                    </ErrorCatch>
                 </div>
             </div>
         );
     }
 }
+
+const DialogsContainter = React.lazy(() =>
+    import('./components/Dialogs/DialogsContainter')
+);
+const ProfileFUNC = React.lazy(() =>
+    import('./components/Profile/ProfileFUNC')
+);
 
 let withRouter = (Comp) => {
     function ComponentWithRouterProp(props) {

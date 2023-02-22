@@ -1,5 +1,5 @@
 export const required = (value) => {
-    return value ? undefined : "Поле обязательно для ввода";
+    return value ? undefined : 'Поле обязательно для ввода';
 };
 
 export const maxLengthCreator = (maxLength) => (value) => {
@@ -7,3 +7,5 @@ export const maxLengthCreator = (maxLength) => (value) => {
         ? `Максимальное кол-во символов - ${maxLength}`
         : undefined;
 };
+
+
