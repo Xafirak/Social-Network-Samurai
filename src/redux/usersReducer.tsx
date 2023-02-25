@@ -1,8 +1,8 @@
-// @ts-nocheck
-import { usersAPI } from './../API/api';
-// import { updateOnjectInArray } from './../utils/object-helpers';
-const FOLLOW = 'FOLLOW';
-const UNFOLLOW = 'UNFOLLOW';
+
+import { usersAPI } from '../API/api';
+import { userType } from '../types/types';
+
+
 const SET_USERS = 'SET_USERS';
 const SET_CURRENT_PAGE = 'SET_CURRENT_PAGE';
 const SET_TOTAL_USERS = 'SET_TOTAL_USERS';
@@ -10,15 +10,16 @@ const TOGGLE_IS_FETCHING = 'TOGGLE_IS_FETCHING';
 const TOGGLE_IS_PROGRESS = 'TOGGLE_IS_PROGRESS';
 const TOGGLE_FOLLOW = 'TOGGLE_FOLLOW';
 
+
 let initialState = {
-    users: [],
+    users: [] as Array<userType>,
     pageSize: 10,
     totalUsers: 0,
     currentPage: 1,
     isFetching: false,
-    onProgress: [],
+    onProgress: [] as Array<number>,  // array of users ids
 };
-
+type initialStateType = typeof initialState
 // Создать toggle чтобы переключать isFollowed одной функцией ||| Надо ли?
 
 // Jobs done, 'toggle' implemented! Вопрос такой же как и ниже - надо ли
@@ -28,7 +29,7 @@ let initialState = {
 //  Рефакторинг : идет уменьшение кода вместо переписания \ создания
 // существующих, как правильно - пересоздавать или переписывать
 
-const usersReducer = (state = initialState, action) => {
+const usersReducer = (state = initialState, action: any): initialStateType => {
     switch (action.type) {
         case TOGGLE_FOLLOW: {
             return {
@@ -42,43 +43,43 @@ const usersReducer = (state = initialState, action) => {
             };
         }
 
-        case FOLLOW: {
-            return {
+        // case FOLLOW: {
+        //     // return {
 
-                // AFTER
-                // ...state,
-                // users: updateOnjectInArray(state.users, action.userId, 'id', {
-                //     followed: true,
-                // }),
+        //     // AFTER
+        //     // ...state,
+        //     // users: updateOnjectInArray(state.users, action.userId, 'id', {
+        //     //     followed: true,
+        //     // }),
 
-                // BEFORE
-                // users: state.users.map((u) => {
-                //     if (u.id === action.userId) {
-                //         return { ...u, followed: true };
-                //     }
-                //     return u;
-                // }),
-            };
-        }
+        //     // BEFORE
+        //     // users: state.users.map((u) => {
+        //     //     if (u.id === action.userId) {
+        //     //         return { ...u, followed: true };
+        //     //     }
+        //     //     return u;
+        //     // }),
+        //     // };
+        // }
 
-        case UNFOLLOW: {
-            return {
+        // case UNFOLLOW: {
+        //     // return {
 
-                // AFTER
-                // ...state,
-                // users: updateOnjectInArray(state.users, action.userId, 'id', {
-                //     followed: false,
-                // }),
+        //     // AFTER
+        //     // ...state,
+        //     // users: updateOnjectInArray(state.users, action.userId, 'id', {
+        //     //     followed: false,
+        //     // }),
 
-                // BEFORE 
-                // users: state.users.map((u) => {
-                //     if (u.id === action.userId) {
-                //         return { ...u, followed: false };
-                //     }
-                //     return u;
-                // }),
-            };
-        }
+        //     // BEFORE 
+        //     // users: state.users.map((u) => {
+        //     //     if (u.id === action.userId) {
+        //     //         return { ...u, followed: false };
+        //     //     }
+        //     //     return u;
+        //     // }),
+        //     // };
+        // }
 
         case SET_USERS: {
             return { ...state, users: action.users };
@@ -100,10 +101,10 @@ const usersReducer = (state = initialState, action) => {
                 onProgress: action.onProgress
                     ? [...state.onProgress, action.userId]
                     : [
-                          ...state.onProgress.filter(
-                              (id) => id !== action.userId
-                          ),
-                      ],
+                        ...state.onProgress.filter(
+                            (id) => id !== action.userId
+                        ),
+                    ],
             };
         }
 
@@ -111,29 +112,69 @@ const usersReducer = (state = initialState, action) => {
             return state;
     }
 };
-const toggleFollow = (userId) => ({ type: TOGGLE_FOLLOW, userId });
+
+const toggleFollow = (userId: number): toggleFollowActionType => ({ type: TOGGLE_FOLLOW, userId });
+type toggleFollowActionType = {
+    type: typeof TOGGLE_FOLLOW
+    userId: number
+}
+
 // const follow = (userId) => ({ type: FOLLOW, userId });
 // const unfollow = (userId) => ({ type: UNFOLLOW, userId });
-const setUsers = (users) => ({ type: SET_USERS, users });
-const setPage = (currentPage) => ({
+
+
+const setUsers = (users: Array<userType>): setUsersActionType => ({ type: SET_USERS, users });
+type setUsersActionType = {
+    type: typeof SET_USERS
+    users: Array<userType>
+}
+
+const setPage = (currentPage: number): setPageActionType => ({
     type: SET_CURRENT_PAGE,
     currentPage,
 });
-const setTotalUsers = (totalUsers) => ({
+type setPageActionType = {
+    type: typeof SET_CURRENT_PAGE
+    currentPage: number
+}
+
+
+const setTotalUsers = (totalUsers: number): setTotalUsersActionType => ({
     type: SET_TOTAL_USERS,
     count: totalUsers,
 });
-const toggleIsFetching = (isFetching) => ({
+type setTotalUsersActionType = {
+    type: typeof SET_TOTAL_USERS
+    count: number
+}
+
+
+
+const toggleIsFetching = (isFetching: boolean): toggleIsFetchingActionType => ({
     type: TOGGLE_IS_FETCHING,
     isFetching,
 });
-const toggleProgress = (onProgress, userId) => ({
+type toggleIsFetchingActionType = {
+    type: typeof TOGGLE_IS_FETCHING
+    isFetching: boolean
+}
+
+
+
+const toggleProgress = (onProgress: boolean, userId: number): toggleProgressActionType => ({
     type: TOGGLE_IS_PROGRESS,
     onProgress,
     userId,
 });
+type toggleProgressActionType = {
+    type: typeof TOGGLE_IS_PROGRESS
+    onProgress: boolean
+    userId: number
+}
 
-export const getUsers = (pageSize, page) => async (dispatch) => {
+
+
+export const getUsers = (pageSize: number, page: number) => async (dispatch: any) => {
     dispatch(toggleIsFetching(true));
     dispatch(setPage(page));
     let response = await usersAPI.getUsers(pageSize, page);
@@ -143,15 +184,15 @@ export const getUsers = (pageSize, page) => async (dispatch) => {
     dispatch(toggleIsFetching(false));
 };
 
-export const toggleFollowUnfollow = (userId, type) => async (dispatch) => {
+export const toggleFollowUnfollow = (userId: number, type: string) => async (dispatch: any) => {
     dispatch(toggleProgress(true, userId));
 
     let response = await usersAPI.toggleFollowUser(userId, type);
 
-    if (response.data.resultCode === 0 && type === 'unfollow') {
+    if (response?.data.resultCode === 0 && type === 'unfollow') {
         dispatch(toggleFollow(userId));
     }
-    if (response.data.resultCode === 0 && type === 'follow') {
+    if (response?.data.resultCode === 0 && type === 'follow') {
         dispatch(toggleFollow(userId));
     }
     dispatch(toggleProgress(false, userId));

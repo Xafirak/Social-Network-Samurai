@@ -1,12 +1,26 @@
-// @ts-nocheck
+
 
 const ADD_DIALOG = "ADD-DIALOG";
 
-export const addDialogCreator = (messageBody) => ({
+type addDialogCreatorActionType = {
+    type: typeof ADD_DIALOG
+    messageBody: string
+}
+
+export const addDialogCreator = (messageBody: string): addDialogCreatorActionType => ({
     type: ADD_DIALOG,
     messageBody,
 });
 
+type DialogType = {
+    id: number
+    message: string
+}
+type usersDataType = {
+    id: number
+    name: string
+    avatar: string
+}
 let initialState = {
     messagesData: [
         { id: 1, message: "Sup bro" },
@@ -15,7 +29,7 @@ let initialState = {
         { id: 4, message: "One hundred billion dollars!" },
         { id: 5, message: "Raawwr!" },
         { id: 6, message: "Did I support right?" },
-    ],
+    ] as Array<DialogType>,
     usersData: [
         {
             id: 1,
@@ -47,14 +61,18 @@ let initialState = {
             name: "Pyke",
             avatar: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fcdn.polscygracze.pl%2Fuploads%2F2018%2F05%2Fpyke_the_bloodharbor_ripper_yt_thumbnail_phase_1_base_180504_final-1024x576.jpg&f=1&nofb=1&ipt=30cc48af65466efb071fff116b6e5dcb8f675924e26056e8c6443c1170974742&ipo=images",
         },
-    ],
+    ] as Array<usersDataType>,
 };
-const dialogsReducer = (state = initialState, action) => {
+
+export type iniialStateType = typeof initialState
+
+const dialogsReducer = (state = initialState, action: any): iniialStateType => {
     switch (action.type) {
         case "ADD-DIALOG": {
             let newDialog = {
                 id: state.messagesData.length + 1,
                 message: action.messageBody,
+
             };
             let stateCopy = JSON.parse(JSON.stringify(state));
             stateCopy.messagesData.push(newDialog);

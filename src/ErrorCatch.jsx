@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from 'react';
 
 class ErrorCatch extends React.Component {

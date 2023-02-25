@@ -1,12 +1,17 @@
-// @ts-nocheck
 import { getAuthData } from "./auth-reducer";
+
+
 const INITIALIZED_SUCCESS = "INITIALIZED_SUCCESS";
-let initialState = {
+
+export type initialStateType = {
+    initialized: boolean
+}
+
+let initialState: initialStateType = {
     initialized: false,
-    globalError: null,
 };
-// ДЗ - показать глобальную ошибку (например нету ответа от сервера)
-const appReducer = (state = initialState, action) => {
+
+const appReducer = (state = initialState, action: any): initialStateType => {
     switch (action.type) {
         case INITIALIZED_SUCCESS:
             return {
@@ -19,9 +24,14 @@ const appReducer = (state = initialState, action) => {
     }
 };
 
-export const initializedSuccess = () => ({ type: INITIALIZED_SUCCESS });
+export type initializedSuccessActionType = {
+    type: typeof INITIALIZED_SUCCESS //"INITIALIZED_SUCCESS"
 
-export const initializeApp = () => (dispatch) => {
+}
+
+export const initializedSuccess = (): initializedSuccessActionType => ({ type: INITIALIZED_SUCCESS });
+
+export const initializeApp = () => (dispatch: any) => {
     let promise = dispatch(getAuthData());
     Promise.all([promise]).then(() => {
         dispatch(initializedSuccess());

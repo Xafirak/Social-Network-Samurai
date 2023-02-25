@@ -1,19 +1,19 @@
 // @ts-nocheck
 import React from 'react';
-import { useEffect,useState } from 'react';
-
+import { useEffect, useState } from 'react';
+import cl from './ProfileInfo.module.css';
 
 const ProfileStatusWithHooks = (props) => {
     const [editMode, setEditMode] = useState(false);
     const [status, setStatus] = useState(props.status);
 
-    useEffect ( () => {
-        setStatus(props.status)
-    }, [props.status])
+    useEffect(() => {
+        setStatus(props.status);
+    }, [props.status]);
 
     const toggleActivateEditMode = () => {
-        return !editMode 
-            ? (setEditMode(true), console.log('editmode tru'))
+        return !editMode
+            ? (setEditMode(true), console.log('editmode true'))
             : (setEditMode(false),
               console.log('editmode false'),
               props.updateStatus(status));
@@ -24,13 +24,16 @@ const ProfileStatusWithHooks = (props) => {
 
     return (
         <div>
-            { props.isOwner ? !editMode && (
+            {!editMode ? (
                 <div>
-                    <span onDoubleClick={toggleActivateEditMode}>
+                    <span
+                        className={cl.statusText}
+                        onDoubleClick={toggleActivateEditMode}
+                    >
                         {props.status || '_____'}
                     </span>
                 </div>
-            ) : true}
+            ) : null}
             {editMode && (
                 <div>
                     <input

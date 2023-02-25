@@ -1,4 +1,12 @@
 
+type friendsType = {
+    id: Number
+    name: string
+    avatar: string
+}
+
+type initialStateType = typeof initialState
+
 let initialState = {
     friends: [
         {
@@ -16,13 +24,10 @@ let initialState = {
             name: "Totoro",
             avatar: "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/8935f23e-e9ee-4184-8a71-6012451f47f1/d9219ws-60e7e82d-b34d-4c57-94ce-35b2f34a19a2.jpg/v1/fill/w_1024,h_1365,q_75,strp/totoro_by_amandam55-d9219ws.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwic3ViIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsImF1ZCI6WyJ1cm46c2VydmljZTppbWFnZS5vcGVyYXRpb25zIl0sIm9iaiI6W1t7InBhdGgiOiIvZi84OTM1ZjIzZS1lOWVlLTQxODQtOGE3MS02MDEyNDUxZjQ3ZjEvZDkyMTl3cy02MGU3ZTgyZC1iMzRkLTRjNTctOTRjZS0zNWIyZjM0YTE5YTIuanBnIiwid2lkdGgiOiI8PTEwMjQiLCJoZWlnaHQiOiI8PTEzNjUifV1dfQ.KvUBw5Xx7UpZy0Bsi3HoEyZvKPAVfWKTrMGB1TkK3h0",
         },
-    ],
+    ] as Array<friendsType>,
 }
 
-const sidebarReducer = (state = initialState, action) => {
-    
-
-
+const sidebarReducer = (state = initialState, action: any): initialStateType => {
 
     return state;
 }
