@@ -1,9 +1,15 @@
-// @ts-nocheck
+
 import React from 'react';
 import { useEffect, useState } from 'react';
 import cl from './ProfileInfo.module.css';
+import { ChangeEvent } from 'react';
 
-const ProfileStatusWithHooks = (props) => {
+type propsType = {
+    status: string
+    updateStatus: (status: string) => void
+}
+
+const ProfileStatusWithHooks = (props: propsType) => {
     const [editMode, setEditMode] = useState(false);
     const [status, setStatus] = useState(props.status);
 
@@ -15,10 +21,10 @@ const ProfileStatusWithHooks = (props) => {
         return !editMode
             ? (setEditMode(true), console.log('editmode true'))
             : (setEditMode(false),
-              console.log('editmode false'),
-              props.updateStatus(status));
+                console.log('editmode false'),
+                props.updateStatus(status));
     };
-    const onStatusChange = (e) => {
+    const onStatusChange = (e: ChangeEvent<HTMLInputElement>) => {
         setStatus(e.currentTarget.value);
     };
 

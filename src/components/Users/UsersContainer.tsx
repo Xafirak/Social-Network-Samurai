@@ -1,8 +1,6 @@
-// @ts-nocheck
-
 import React from 'react';
 import { connect } from 'react-redux';
-import { getUsers, toggleFollowUnfollow } from './../../redux/usersReducer';
+import { getUsers, toggleFollowUnfollow } from '../../redux/usersReducer';
 import Users from './Users';
 import Preloader from '../common/Preloader/preloader';
 import { compose } from 'redux';
@@ -14,15 +12,38 @@ import {
     getTotalUsers,
     getIsFetching,
 } from '../../redux/users-selectors';
+import { userType } from '../../types/types';
+import { AppStateType } from '../../redux/reduxStore';
+import cl from './Users.module.css'
 
+type ownPropsPtype = {
+    pageTitle: string
+}
+type mapDispatchPropsType = {
 
-class UsersContainer extends React.Component {
+    getUsers: (pageSize: number, currentPage: number) => void
+    toggleFollowUnfollow: () => void
+
+}
+type mapStatePropsType = {
+
+    pageSize: number
+    currentPage: number
+    totalUsers: number
+    isFetching: boolean
+    users: Array<userType>
+    onProgress: Array<number>
+}
+
+type PropsType = mapStatePropsType & mapDispatchPropsType & ownPropsPtype
+
+class UsersContainer extends React.Component<PropsType> {
     componentDidMount() {
         const { pageSize, currentPage } = this.props;
         this.props.getUsers(pageSize, currentPage);
     }
 
-    onPageChanged(page) {
+    onPageChanged(page: number) {
         const { pageSize } = this.props;
         this.props.getUsers(pageSize, page);
     }
@@ -30,6 +51,7 @@ class UsersContainer extends React.Component {
     render() {
         return (
             <>
+                <h2 className={cl.h2}>{this.props.pageTitle}</h2>
                 {this.props.isFetching ? (
                     <Preloader />
                 ) : (
@@ -51,7 +73,7 @@ class UsersContainer extends React.Component {
     }
 }
 
-let mapStateToProps = (state) => {
+let mapStateToProps = (state: AppStateType): mapStatePropsType => {
     return {
         users: getAllUsers(state),
         pageSize: getPageSize(state),
@@ -62,7 +84,7 @@ let mapStateToProps = (state) => {
     };
 };
 
-export default compose(
+export default compose<PropsType>(
     connect(mapStateToProps, {
         getUsers,
         toggleFollowUnfollow,

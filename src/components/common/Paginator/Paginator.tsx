@@ -1,18 +1,27 @@
-// @ts-nocheck
+
 import React from 'react';
 import cl from './Paginator.module.css';
 import { useState } from 'react';
 import { useEffect } from 'react';
 
-let Paginator = ({
+type PropsType = {
+    totalItems: number
+    pageSize: number
+    currentPage: number
+    onPageChanged: (pageNumber: number) => void
+    portionSize?: number
+}
+
+let Paginator: React.FC<PropsType> = ({
     totalItems,
     pageSize,
     currentPage,
     onPageChanged,
     portionSize = 10,
 }) => {
+
     let pagesCount = Math.ceil(totalItems / pageSize);
-    let pages = [];
+    let pages: Array<number> = [];
     if (pagesCount > 100) {
         pagesCount = 100;
     }

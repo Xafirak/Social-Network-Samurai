@@ -1,13 +1,18 @@
-// @ts-nocheck
+
 import React from 'react';
 import Post from './Post/Post';
 import cl from './MyPosts.module.css';
 import TextInputWithButton from '../../TextInputWithButton/TextInputWithButton';
 
-const MyPosts = (props) => {
+type myPostsPropsType = {
+    profilePage: any
+    addMessage: (message: string) => void
+
+}
+const MyPosts = (props: myPostsPropsType) => {
     return (
         <div className={cl.postBlock}>
-            {props.profilePage.postData.map((el) => {
+            {props.profilePage.postData.map((el: any) => {
                 return (
                     <div key={el.id}>
                         <Post
@@ -22,11 +27,11 @@ const MyPosts = (props) => {
 
             <h3>myPosts</h3>
             <TextInputWithButton
-                profile
-                profilePage={props.profilePage}
+
+                // profilePage={props.profilePage}
                 addMessage={props.addMessage}
             />
-            <div className={cl.posts}>{props.posts}</div>
+
         </div>
     );
 };

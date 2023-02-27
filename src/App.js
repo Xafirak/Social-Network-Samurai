@@ -33,8 +33,7 @@ import { Navigate } from 'react-router-dom';
 import ErrorCatch from './ErrorCatch';
 
 class App extends Component {
-    // ДЗ - показать глобальную ошибку (например нету ответа от сервера)
-    // урок 99 45:00
+
 
     // поставил встроенный механизм, на роуты - предохранитель(Error Boundaries) 
     // ErrorCatch, но не знаю как получить ошибку, чтобы проверить работоспособность
@@ -83,7 +82,7 @@ class App extends Component {
                             <Route path="/news" element={<News />} />
                             <Route path="/music" element={<Music />} />
                             <Route path="/settings" element={<Settings />} />
-                            <Route path="/users" element={<UsersContainer />} />
+                            <Route path="/users" element={<UsersContainer pageTitle={'Самураи'} />} />
                             <Route path="/login" element={<Login />} />
                             <Route
                                 path="*"

@@ -1,13 +1,16 @@
-// @ts-nocheck
-import React from "react";
-import { Form, Field } from "react-final-form";
-import { required } from "./../../utils/validators/validators";
-import { maxLengthCreator } from "./../../utils/validators/validators";
-import { Textarea } from "./../common/FormsControl/FormsControl";
+// @ts-nocheck пока что
+import React from 'react';
+import { Form, Field } from 'react-final-form';
+import { required } from '../../utils/validators/validators';
+import { maxLengthCreator } from '../../utils/validators/validators';
+import { Textarea } from '../common/FormsControl/FormsControl';
+
+// type TextInputWithButtonPropsType = {
+
+//     addMessage: (message:string) => void
+// }
 
 const TextInputWithButton = (props) => {
-    // костыли исчезли! ура!
-
     let addNewMessage = (data) => {
         props.addMessage(data.messageBody);
     };
@@ -30,6 +33,7 @@ const TextInputWithButton = (props) => {
                 (error, validator) => error || validator(value),
                 undefined
             );
+
     return (
         <Form
             onSubmit={addNewMessage}
@@ -38,7 +42,7 @@ const TextInputWithButton = (props) => {
                     <div>
                         <Field
                             validate={composeValidators(required, maxLength10)}
-                            name={"messageBody"}
+                            name={'messageBody'}
                             component={Textarea}
                             placeholder="Твой ответ..."
                         />

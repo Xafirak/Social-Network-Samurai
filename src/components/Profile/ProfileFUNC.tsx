@@ -1,4 +1,4 @@
-// @ts-nocheck
+
 import React from 'react';
 import Profile from './Profile';
 import { connect } from 'react-redux';
@@ -13,13 +13,33 @@ import { compose } from 'redux';
 import { updateStatus } from '../../redux/profileReducer';
 import { addActionCreator } from '../../redux/profileReducer';
 import { useEffect } from 'react';
+import { AppStateType } from '../../redux/reduxStore';
 
-const ProfileFUNC = (props) => {
+type propsType = {
+    savePhoto: () => void
+    saveProfile: () => void
+    error: boolean | string
+    profilePage: any;
+    router: {
+        params: { userId: number; }
+        navigate: any
+        location: any
+    }
+    authorizedUserId: number
+    showProfile: (a: number) => void
+    getStatus: (a: number) => void
+    updateStatus: (status: string) => void
+    addActionCreator: () => void
+}
+
+const ProfileFUNC = (props: propsType) => {
+
+
     const navigate = useNavigate();
     let anotherUserId = props.router.params.userId;
     let userId = props.authorizedUserId;
 
-    function refreshingProfile(a, b) {
+    function refreshingProfile(a: number, b: number) {
         if (!a) {
             a = b;
             if (!b) {
@@ -38,7 +58,8 @@ const ProfileFUNC = (props) => {
     return (
         <div>
             {/* {props.profilePage.status && props.profilePage.profile ? ( */}
-            <Profile
+            {/* @ts-ignore */}
+            <Profile 
                 isOwner={!props.router.params.userId}
                 profilePage={props.profilePage}
                 updateStatus={props.updateStatus}
@@ -54,7 +75,7 @@ const ProfileFUNC = (props) => {
     );
 };
 
-let mapStateToProps = (state) => ({
+let mapStateToProps = (state: AppStateType) => ({
     profilePage: state.profilePage,
     authorizedUserId: state.auth.userId,
     isAuth: state.auth.isAuth,
@@ -62,11 +83,13 @@ let mapStateToProps = (state) => ({
 });
 
 // wrapper идентичный натуральному, без пальмового масла
+//@ts-ignore
 let withRouter = (Comp) => {
-    function ComponentWithRouterProp(props) {
+    function ComponentWithRouterProp(props: propsType) {
         let location = useLocation();
         let navigate = useNavigate();
         let params = useParams();
+        //@ts-ignore
         return <Comp {...props} router={{ location, navigate, params }} />;
     }
     return ComponentWithRouterProp;

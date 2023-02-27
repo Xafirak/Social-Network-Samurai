@@ -1,4 +1,4 @@
-// @ts-nocheck
+
 import React from 'react';
 import Preloader from '../../common/Preloader/preloader';
 import classes from './ProfileInfo.module.css';
@@ -6,6 +6,22 @@ import userPhoto from '../../../assets/images/user.jpg';
 import ProfileStatusWithHooks from './ProfileStatusWithHooks';
 import { useState } from 'react';
 import ProfileDataForm from './ProfileDataForm';
+import { ChangeEvent } from 'react';
+
+type propsType = {
+    profile: any
+    status: string
+    isOwner: boolean
+    savePhoto: () => void
+    saveProfile: (formData: formDataType) => void
+    error: any;
+    profilePage?: any;
+    updateStatus: (status: string) => void
+}
+
+type formDataType = {
+
+}
 
 const ProfileInfo = ({
     profile,
@@ -15,20 +31,22 @@ const ProfileInfo = ({
     savePhoto,
     saveProfile,
     error,
-}) => {
-    
+}: propsType) => {
+
     const [editMode, setEditMode] = useState(false);
 
     if (!profile) {
         return <Preloader />;
     }
 
-    const onMainPhotoSelected = (e) => {
+    const onMainPhotoSelected = (e: ChangeEvent<HTMLInputElement>) => {
+        //@ts-ignore
         if (e.target.files.length) {
+            //@ts-ignore
             savePhoto(e.target.files[0]);
         }
     };
-    const onSubmit = (formData) => {
+    const onSubmit = (formData: formDataType) => {
         // console.log(formData);
         saveProfile(formData);
         // setEditMode(false);
@@ -62,7 +80,6 @@ const ProfileInfo = ({
                         <ProfileStatusWithHooks
                             status={status}
                             updateStatus={updateStatus}
-                            isOwner={isOwner}
                         />
                     </span>
                 </div>
@@ -86,7 +103,13 @@ const ProfileInfo = ({
     );
 };
 
-const ProfileData = ({ profile, isOwner, activateEditMode }) => {
+type profileDataPropType = {
+    profile: any
+    isOwner: boolean
+    activateEditMode: () => void
+}
+
+const ProfileData = ({ profile, isOwner, activateEditMode }: profileDataPropType) => {
     return (
         <div>
             {isOwner ? (
@@ -134,7 +157,11 @@ const ProfileData = ({ profile, isOwner, activateEditMode }) => {
     );
 };
 
-const Contact = ({ contactName, contactURL }) => {
+type contactPropsType = {
+    contactName: string
+    contactURL: string
+}
+const Contact = ({ contactName, contactURL }: contactPropsType) => {
     return (
         <div>
             <div className={classes.contact}>

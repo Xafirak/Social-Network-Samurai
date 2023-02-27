@@ -1,4 +1,4 @@
-// @ts-nocheck
+
 import {
     applyMiddleware,
     combineReducers,
@@ -13,7 +13,7 @@ import thunkMiddleware from 'redux-thunk';
 import appReducer from './app-reducer';
 import { compose } from 'redux';
 
-let reducers = combineReducers({
+let rootReducer = combineReducers({
     profilePage: profileReducer,
     dialogPage: dialogsReducer,
     sidebar: sidebarReducer,
@@ -22,13 +22,18 @@ let reducers = combineReducers({
     app: appReducer,
 });
 
+type rootReducerType = typeof rootReducer
+export type AppStateType = ReturnType<rootReducerType>
+
+
+// @ts-ignore
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = legacy_createStore(
-    reducers,
+    rootReducer,
     composeEnhancers(applyMiddleware(thunkMiddleware))
 );
-// let store = legacy_createStore(reducers, applyMiddleware(thunkMiddleware));
 
+// @ts-ignore
 window.store = store;
 export default store;
 

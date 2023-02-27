@@ -1,13 +1,20 @@
-// @ts-nocheck
-import React from "react";
+
+import React, { ChangeEvent } from "react";
 
 
+type PropsType = {
+    status: string
+    updateStatus: (status: string) => void
+}
 
-
+type stateType = {
+    editMode: boolean
+    status: string
+}
 // НЕ ИСПОЛЬЗУЕТСЯ, юзается profileStatusWithHooks
 
 
-class ProfileStatus extends React.Component {
+class ProfileStatus extends React.Component<PropsType, stateType> {
     state = {
         editMode: false,
         status: this.props.status,
@@ -32,13 +39,13 @@ class ProfileStatus extends React.Component {
             });
         }
     };
-    onStatusChange = (e) => {
+    onStatusChange = (e:ChangeEvent<HTMLInputElement>) => {
         this.setState({
             status: e.currentTarget.value,
         });
     };
 
-    componentDidUpdate(prevProps, prevState) {
+    componentDidUpdate(prevProps:PropsType, prevState:stateType) {
         if (prevProps.status !== this.props.status)
             this.setState({
                 status: this.props.status,
