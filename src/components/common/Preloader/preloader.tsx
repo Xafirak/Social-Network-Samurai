@@ -1,7 +1,8 @@
 import React from "react";
 import preloader from "../../../assets/images/Spin-1s-200px.svg";
 
-let Preloader = (props) => {
+
+let Preloader = () => {
     return (
         <div>
             <img src={preloader} alt=''/>

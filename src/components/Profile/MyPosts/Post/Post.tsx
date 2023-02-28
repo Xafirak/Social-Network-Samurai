@@ -1,9 +1,14 @@
-// @ts-nocheck
+
 import React from "react";
 import LikeBtn from "../../../Buttons/LikeBtn";
 import cl from './Post.module.css'
 
-const Post = (props) => {
+
+type postPropstype ={
+    message: string
+    likes: number
+}
+const Post = (props: postPropstype) => {
     return (
         <div>
             <div className={cl.otherPosts}>

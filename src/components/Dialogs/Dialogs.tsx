@@ -1,11 +1,35 @@
-// @ts-nocheck
+
 import React from "react";
 import cl from "./Dialogs.module.css";
 import DialogItem from "./DialogItem/DialogItem";
 import Message from "./Message/Message";
 import TextInputWithButton from "../TextInputWithButton/TextInputWithButton";
 
-const Dialogs = (props) => {
+type usersDataType = {
+    id: number
+    name: string
+    avatar: string
+}
+
+type messagesDataType = {
+    id: number
+    message: string
+}
+
+type propsType = {
+    dialogPage: {
+        usersData: Array<usersDataType>
+        messagesData: Array<messagesDataType>
+    }
+    dispatch: () => void
+    addDialogCreator: () => void
+}
+
+
+
+const Dialogs = (props: propsType) => {
+
+
     const users = props.dialogPage.usersData.map((el) => {
         return (
             <DialogItem
@@ -13,6 +37,7 @@ const Dialogs = (props) => {
                 id={el.id}
                 key={el.id}
                 avatar={el.avatar}
+
             />
         );
     });

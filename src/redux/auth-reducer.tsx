@@ -1,5 +1,5 @@
 
-import { AuthAPI, SecurityAPI } from './../API/api';
+import { AuthAPI, resultCodeForCaptcha, resultCodesEnum, SecurityAPI } from './../API/api';
 const SET_USER_DATA = 'auth/SET_USER_DATA';
 const SET_ERROR = 'auth/SET_ERROR';
 const GET_CAPTCHA_URL_SUCCES = 'auth/GET_CAPTCHA_URL_SUCCES';
@@ -51,7 +51,12 @@ export const getCaptchaUrlSuccess = (captchaUrl: string): getCaptchaUrlSuccessAc
     payload: { captchaUrl },
 });
 
-export const setAuthError = (error = true) => ({
+type setAuthErrorActionType = {
+    type: typeof SET_ERROR,
+    error: boolean | string
+}
+
+export const setAuthError = (error: boolean | string = true): setAuthErrorActionType => ({
     type: SET_ERROR,
     error,
 });
@@ -77,32 +82,33 @@ export const setAuthUserData = (userId: number | null, email: string | null, log
 
 
 export const getAuthData = () => async (dispatch: any) => {
-    let response = await AuthAPI.AuthMe();
+    let meData = await AuthAPI.AuthMe();
 
-    if (response.data.resultCode === 0) {
-        let { id, email, login } = response.data.data;
+
+    if (meData.resultCode === resultCodesEnum.success) {
+        let { id, email, login } = meData.data;
         dispatch(setAuthUserData(id, email, login, true, '', false));
     }
 };
 
 export const LoginUser =
     (email: string, password: string, rememberMe: boolean, captcha: string) => async (dispatch: any) => {
-        let response = await AuthAPI.LoginMe(
+        let loginData = await AuthAPI.LoginMe(
             email,
             password,
             rememberMe,
             captcha
         );
 
-        if (response.data.resultCode === 0) {
+        if (loginData.resultCode === resultCodesEnum.success) {
             dispatch(getAuthData());
-        } else if (response.data.resultCode === 1) {
+        } else if (loginData.resultCode === resultCodesEnum.error) {
             dispatch(setAuthError());
         } else {
-            if (response.data.resultCode === 10) {
+            if (loginData.resultCode === resultCodeForCaptcha.captcha) {
                 dispatch(getCaptchaUrl());
             }
-            let message = response.data.messages[0];
+            let message = loginData.messages[0];
             dispatch(setAuthError(message));
         }
     };
@@ -118,7 +124,7 @@ export const getCaptchaUrl = () => async (dispatch: any) => {
 export const Logout = () => async (dispatch: any) => {
     let response = await AuthAPI.Logout();
 
-    if (response.data.resultCode === 0) {
+    if (response.data.resultCode === resultCodesEnum.success) {
         dispatch(setAuthUserData(null, null, null, false, '', false));
     }
 };

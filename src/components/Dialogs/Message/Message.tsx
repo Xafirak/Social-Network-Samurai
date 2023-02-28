@@ -1,7 +1,11 @@
 import React from "react";
 import cl from './Message.module.css'
 
-const Message = (props) => {
+type messagePropsType = {
+    id: number
+    message: string
+}
+const Message = (props:messagePropsType) => {
     return (
         <div className={cl.message}>
             {props.message}            

@@ -17,7 +17,7 @@ type propsType = {
 }
 
 const Profile = (props: propsType) => {
-    console.log(props);
+    
 
     // console.log('render', props);
     // установка условия для рендеринга страницы для избежания ненужных ререндеров

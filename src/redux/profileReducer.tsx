@@ -64,12 +64,12 @@ export const setProfileError = (error: any): setProfileErrorActionType => ({
     error,
 });
 
-export const showProfile = (userId: Number) => async (dispatch: any) => {
+export const showProfile = (userId: number) => async (dispatch: any) => {
     let response = await profileAPI.getProfile(userId);
     dispatch(setUserProfile(response.data));
 };
 
-export const getStatus = (userId: Number) => async (dispatch: any) => {
+export const getStatus = (userId: number) => async (dispatch: any) => {
     let response = await profileAPI.getStatus(userId);
     dispatch(setStatus(response.data));
 };

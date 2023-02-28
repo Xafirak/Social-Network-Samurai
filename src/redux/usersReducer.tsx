@@ -1,6 +1,8 @@
 
-import { usersAPI } from '../API/api';
+import { ThunkAction } from '@reduxjs/toolkit';
+import { resultCodesEnum, usersAPI } from '../API/api';
 import { userType } from '../types/types';
+import { AppStateType } from './reduxStore';
 
 
 const SET_USERS = 'SET_USERS';
@@ -20,6 +22,7 @@ let initialState = {
     onProgress: [] as Array<number>,  // array of users ids
 };
 type initialStateType = typeof initialState
+
 // Создать toggle чтобы переключать isFollowed одной функцией ||| Надо ли?
 
 // Jobs done, 'toggle' implemented! Вопрос такой же как и ниже - надо ли
@@ -29,7 +32,7 @@ type initialStateType = typeof initialState
 //  Рефакторинг : идет уменьшение кода вместо переписания \ создания
 // существующих, как правильно - пересоздавать или переписывать
 
-const usersReducer = (state = initialState, action: any): initialStateType => {
+const usersReducer = (state = initialState, action: ActionTypes): initialStateType => {
     switch (action.type) {
         case TOGGLE_FOLLOW: {
             return {
@@ -113,6 +116,11 @@ const usersReducer = (state = initialState, action: any): initialStateType => {
     }
 };
 
+type ActionTypes = toggleFollowActionType | setUsersActionType |
+    setPageActionType | setTotalUsersActionType | toggleIsFetchingActionType |
+    toggleProgressActionType
+
+
 const toggleFollow = (userId: number): toggleFollowActionType => ({ type: TOGGLE_FOLLOW, userId });
 type toggleFollowActionType = {
     type: typeof TOGGLE_FOLLOW
@@ -174,25 +182,27 @@ type toggleProgressActionType = {
 
 
 
-export const getUsers = (pageSize: number, page: number) => async (dispatch: any) => {
+type thunkType = ThunkAction<Promise<void>, AppStateType, unknown, ActionTypes>
+
+export const getUsers = (pageSize: number, page: number): thunkType => async (dispatch, getState) => {
     dispatch(toggleIsFetching(true));
     dispatch(setPage(page));
-    let response = await usersAPI.getUsers(pageSize, page);
+    let data = await usersAPI.getUsers(pageSize, page);
 
-    dispatch(setTotalUsers(response.data.totalCount));
-    dispatch(setUsers(response.data.items));
+    dispatch(setTotalUsers(data.totalCount));
+    dispatch(setUsers(data.items));
     dispatch(toggleIsFetching(false));
 };
 
-export const toggleFollowUnfollow = (userId: number, type: string) => async (dispatch: any) => {
+export const toggleFollowUnfollow = (userId: number, type: string): thunkType => async (dispatch) => {
     dispatch(toggleProgress(true, userId));
 
-    let response = await usersAPI.toggleFollowUser(userId, type);
+    let data = await usersAPI.toggleFollowUser(userId, type);
 
-    if (response?.data.resultCode === 0 && type === 'unfollow') {
+    if (data?.resultCode === resultCodesEnum.error && type === 'unfollow') {
         dispatch(toggleFollow(userId));
     }
-    if (response?.data.resultCode === 0 && type === 'follow') {
+    if (data?.resultCode === resultCodesEnum.error && type === 'follow') {
         dispatch(toggleFollow(userId));
     }
     dispatch(toggleProgress(false, userId));

@@ -18,7 +18,7 @@ const MyPosts = (props: myPostsPropsType) => {
                         <Post
                             message={el.message}
                             likes={el.likes}
-                            id={el.id}
+                            // id={el.id}
                             key={el.id}
                         />
                     </div>

@@ -1,11 +1,13 @@
-// @ts-nocheck
+
 import React, { useState } from "react";
 
 
+type likeBtnPropstype ={
+    likeCount: number
+}
 
 
-
-const LikeBtn = (props) => {
+const LikeBtn = (props:likeBtnPropstype) => {
     const [counter, setCounter] = useState(props.likeCount)
     
     function increaseCount () {
