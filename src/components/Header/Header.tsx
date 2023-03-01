@@ -3,7 +3,16 @@ import classes from "./Header.module.css";
 import { NavLink } from "react-router-dom";
 
 // запросить показ аву, в контейнере
-const Header = (props) => {
+
+type headerPropsType = {
+    isAuth: boolean
+    login: string | null
+    Logout: () => void
+}
+
+const Header = (props: headerPropsType) => {
+
+
     return (
         <header className={classes.header}>
             <img
@@ -11,7 +20,7 @@ const Header = (props) => {
                 alt="Dp"
             />
 
-            <div className={classes.loginBlock}> 
+            <div className={classes.loginBlock}>
                 {props.isAuth ? (
                     <div>
                         {props.login} <br />

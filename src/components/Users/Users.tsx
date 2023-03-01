@@ -12,7 +12,7 @@ type PropsType = {
     onPageChanged: (pageNumber: number) => void    
     users: Array<userType>
     onProgress: Array<number>
-    toggleFollowUnfollow: () => void
+    toggleFollowUnfollow: (a:number, b:string) => void
 }
 
 let Users: React.FC<PropsType> = ({

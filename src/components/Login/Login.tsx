@@ -1,25 +1,34 @@
-// @ts-nocheck
 import React from 'react';
 import { Form } from 'react-final-form';
 import { connect } from 'react-redux';
 import { Navigate } from 'react-router-dom';
-import { Input } from '../common/FormsControl/FormsControl';
-import { LoginUser } from './../../redux/auth-reducer';
+import { Input} from '../common/FormsControl/FormsControl';
+import { LoginUser } from '../../redux/auth-reducer';
 import {
     maxLengthCreator,
     required,
-} from './../../utils/validators/validators';
+    validatorType,
+} from '../../utils/validators/validators';
 import s from './../common/FormsControl/FormsControl.module.css';
-import { createField } from './../common/FormsControl/FormsControl';
+import { createField } from '../common/FormsControl/FormsControl';
+import { AppStateType } from '../../redux/reduxStore';
+import { FieldValidator } from 'final-form';
 
-const LoginForm = ({ onSubmit, error, captchaUrl }) => {
+
+
+type loginFormPropsType = {
+    onSubmit: (a: loginFromValuesType) => void
+    error: string | boolean
+    captchaUrl: string | null
+}
+
+const LoginForm: React.FC<loginFormPropsType> = ({ onSubmit, error, captchaUrl }) => {
     const maxLength = maxLengthCreator(30);
 
-    const composeValidators =
-        (...validators) =>
-        (value) =>
+    const composeValidators: FieldValidator<validatorType> = (...validators: Array<any>) =>
+        (value: string) =>
             validators.reduce(
-                (error, validator) => error || validator(value),
+                (error: string | boolean, validator: (value: string) => string | undefined) => error || validator(value),
                 undefined
             );
 
@@ -28,35 +37,39 @@ const LoginForm = ({ onSubmit, error, captchaUrl }) => {
             onSubmit={onSubmit}
             render={({ handleSubmit }) => (
                 <form onSubmit={handleSubmit}>
-                    {createField(
+                    {createField<loginFormValueKeys>(
                         composeValidators(required, maxLength),
                         'email',
                         Input,
                         'Email'
                     )}
-                    {createField(
+                    {createField<loginFormValueKeys>(
                         composeValidators(required, maxLength),
                         'password',
                         Input,
                         'Password',
                         { type: 'password' }
                     )}
-                    {createField(
-                        null,
+                    {createField<loginFormValueKeys>(
+                        undefined,
                         'rememberMe',
                         Input,
-                        null,
+                        undefined,
                         { type: 'checkbox' },
                         'remember me!'
                     )}
                     {captchaUrl && <img src={captchaUrl} alt="" />}
-                    <div>если видно поле без капчи - вся инфа в Login.jsx <br />для входа - тыкни любой символ</div>
+                    {/* <div>если видно поле без капчи - вся инфа в Login.jsx <br />для входа - тыкни любой символ</div> */}
+
+
                     {/* ПОЧЕМУ ОНО ИГНОРИТ УСЛОВИЕ??????????????? ВТФ */}
                     {/* только после добавления 2ого условия '&&' поле ввода исчезло,
                     но снова косяк - поле не появляется при запрашивании капчи, убрал */}
+
+                    {/* оно пропало, слава яйцам (не TS точно) */}
                     {captchaUrl &&
-                        createField(
-                            composeValidators(required),
+                        createField<loginFormValueKeys>(
+                            undefined,
                             'captcha',
                             Input,
                             'enter symbols pls',
@@ -78,9 +91,30 @@ const LoginForm = ({ onSubmit, error, captchaUrl }) => {
     );
 };
 
-const Login = (props) => {
-    // console.log(props.error);
-    const onSubmit = ({ email, password, rememberMe, captcha }) => {
+type mapDispatchPropsType = {
+    LoginUser: (email: string, password: string, rememberMe: boolean, captcha: string) => void
+}
+
+type mapStateToPropsType = {
+    captchaUrl: string | null
+    error: string | boolean
+    isAuth: boolean
+}
+
+
+export type loginFromValuesType = {
+    email: string
+    password: string
+    rememberMe: boolean
+    captcha: string
+}
+
+
+type loginFormValueKeys = keyof loginFromValuesType
+
+
+const Login: React.FC<mapStateToPropsType & mapDispatchPropsType> = (props) => {
+    const onSubmit = ({ email, password, rememberMe, captcha }: loginFromValuesType) => {
         props.LoginUser(email, password, rememberMe, captcha);
     };
     if (props.isAuth) {
@@ -97,13 +131,14 @@ const Login = (props) => {
             <LoginForm
                 onSubmit={onSubmit}
                 error={props.error}
-                captchaUrl={[props.captchaUrl]}
+                captchaUrl={props.captchaUrl}
             />
         </div>
     );
 };
 
-let mapStateToProps = (state) => ({
+
+let mapStateToProps = (state: AppStateType): mapStateToPropsType => ({
     captchaUrl: state.auth.captchaUrl,
     error: state.auth.error,
     isAuth: state.auth.isAuth,

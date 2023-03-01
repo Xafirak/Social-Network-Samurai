@@ -1,7 +1,11 @@
 import React from "react";
 import cl from './News.module.css'
 
-const News = () => {
+type newsPropsType ={ 
+    
+}
+
+const News = (props:newsPropsType) => {
     return (
         <div className={cl.newsBody}>
             NEEEEEEEEEEWS!

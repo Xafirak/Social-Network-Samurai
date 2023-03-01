@@ -1,7 +1,11 @@
 import React from "react";
 import cl from './Settings.module.css'
 
-const Settings = () => {
+type settingsPropsType = {
+
+}
+
+const Settings = (props:settingsPropsType) => {
     return (      
         <div className={cl.setBody}>
             tweaking_shit_here    

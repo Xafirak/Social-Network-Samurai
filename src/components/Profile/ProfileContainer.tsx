@@ -1,17 +1,38 @@
-// @ts-nocheck
+
 import React from 'react';
 import Profile from './Profile';
 import { connect } from 'react-redux';
 import { getStatus, showProfile, savePhoto } from '../../redux/profileReducer';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { compose } from 'redux';
-import { updateStatus } from './../../redux/profileReducer';
-import { addActionCreator } from './../../redux/profileReducer';
+import { updateStatus, addActionCreator, saveProfile } from './../../redux/profileReducer';
 import { Navigate } from 'react-router-dom';
 import Preloader from '../common/Preloader/preloader';
+import { AppStateType } from '../../redux/reduxStore';
+import { profileType } from '../../types/types';
 
-class ProfileContainer extends React.Component {
-    
+
+
+
+
+
+
+// Не используется! Переписал это классовую компоненту 
+// в функциональную ProfileFUNC
+
+
+
+
+
+
+
+
+
+
+
+
+class ProfileContainer extends React.Component<ProfileContainerPropsType> {
+
     refreshProfile() {
         let userId = this.props.router.params.userId;
         if (!userId) {
@@ -28,7 +49,7 @@ class ProfileContainer extends React.Component {
         this.refreshProfile();
     }
     // старый метод для классовых компонент, сейчас юзают useEffect
-    componentDidUpdate(prevProps, prevState, shot) {
+    componentDidUpdate(prevProps: ProfileContainerPropsType, prevState: AppStateType, shot: any) {
         if (this.props.router.params.userId !== prevProps.router.params.userId)
             this.refreshProfile();
     }
@@ -52,6 +73,8 @@ class ProfileContainer extends React.Component {
                     updateStatus={this.props.updateStatus}
                     addMessage={this.props.addActionCreator}
                     savePhoto={this.props.savePhoto}
+                    saveProfile={this.props.saveProfile}
+                    error={this.props.error}
                 />
             </div>
         );
@@ -60,17 +83,50 @@ class ProfileContainer extends React.Component {
 
 //==================
 
-let mapStateToProps = (state) => ({
+type ProfileContainerPropsType = mapStateToPropsType & 
+mapDispatchToPropsType & routerPropsType
+
+type mapStateToPropsType = {
+    profilePage: {}
+    profile: profileType | boolean
+    status: string | boolean
+    authorizedUserId: number | null
+    isAuth: boolean
+    error: boolean | string,
+}
+type mapDispatchToPropsType = {
+    showProfile: (a: number) => void
+    getStatus: (a: number) => void
+    updateStatus: (status: string | boolean) => void
+    addActionCreator: () => void
+    savePhoto: () => void
+    saveProfile: () => void
+}
+
+
+let mapStateToProps = (state: AppStateType): mapStateToPropsType => ({
     profilePage: state.profilePage,
     profile: state.profilePage.profile,
     status: state.profilePage.status,
     authorizedUserId: state.auth.userId,
     isAuth: state.auth.isAuth,
+    error: state.profilePage.error,
+
 });
 
+type routerPropsType = {
+    props: any
+    router: {
+        location: () => void
+        navigate: () => void
+        params: {
+            userId: number | null
+        }
+    }
+}
 // wrapper идентичный натуральному, без пальмового масла
-let withRouter = (Comp) => {
-    function ComponentWithRouterProp(props) {
+let withRouter = (Comp: any) => {
+    function ComponentWithRouterProp(props: routerPropsType) {
         let location = useLocation();
         let navigate = useNavigate();
         let params = useParams();
@@ -79,6 +135,8 @@ let withRouter = (Comp) => {
     return ComponentWithRouterProp;
 };
 
+
+
 export default compose(
     connect(mapStateToProps, {
         showProfile,
@@ -86,6 +144,7 @@ export default compose(
         updateStatus,
         addActionCreator,
         savePhoto,
+        saveProfile,
     }),
     withRouter
     // WithAuthRedirect

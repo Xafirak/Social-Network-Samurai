@@ -1,9 +1,19 @@
-// @ts-nocheck
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import classes from './Navbar.module.css';
 
-const Navbar = (props) => {
+type friendsType = {
+    id: number
+    name: string
+    avatar: string
+}
+
+
+type navbarPropsType = {
+    friends: Array<friendsType>
+}
+
+const Navbar = (props: navbarPropsType) => {
     const friend = props.friends.map((e) => {
         return (
             <NavLink to="s" className={classes.friend} key={e.id}>
@@ -13,8 +23,12 @@ const Navbar = (props) => {
         );
     });
 
-    
-    const NavbarMenu = ({ link, name }) => {
+    type navbarMenuPropsType = {
+        link: string
+        name: string
+    }
+
+    const NavbarMenu = ({ link, name }: navbarMenuPropsType) => {
         return (
             <div className={classes.item}>
                 <NavLink

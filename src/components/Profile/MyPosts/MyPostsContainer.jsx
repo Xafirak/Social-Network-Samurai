@@ -6,7 +6,7 @@ import TextInputWithButton from '../../TextInputWithButton/TextInputWithButton';
 import { connect } from 'react-redux';
 import MyPosts from './MyPosts';
 
-//Читай ниже, файл не нужен=================
+//Читай ниже, компонента  не нужна  =================
 
 const MyPostsContainer = (props) => {
     const posts = props.state.profilePage.postData.map((el) => {

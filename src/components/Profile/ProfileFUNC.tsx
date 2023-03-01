@@ -15,17 +15,21 @@ import { addActionCreator } from '../../redux/profileReducer';
 import { useEffect } from 'react';
 import { AppStateType } from '../../redux/reduxStore';
 
+// надо ли в функциональной компоненте разделять пропсы примитивные и  
+// пропсы-методы (как в классовой) 
 type propsType = {
-    savePhoto: () => void
-    saveProfile: () => void
-    error: boolean | string
-    profilePage: any;
     router: {
         params: { userId: number; }
         navigate: any
         location: any
     }
+
+    error: boolean | string
+    profilePage: any;
     authorizedUserId: number
+    
+    savePhoto: () => void
+    saveProfile: () => void
     showProfile: (a: number) => void
     getStatus: (a: number) => void
     updateStatus: (status: string) => void
@@ -85,7 +89,7 @@ let mapStateToProps = (state: AppStateType) => ({
 // wrapper идентичный натуральному, без пальмового масла
 //@ts-ignore
 let withRouter = (Comp) => {
-    function ComponentWithRouterProp(props: propsType) {
+    function ComponentWithRouterProp(props: any) {
         let location = useLocation();
         let navigate = useNavigate();
         let params = useParams();

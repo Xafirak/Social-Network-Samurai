@@ -1,10 +1,19 @@
-// @ts-nocheck
+
 import React from 'react';
 import cl from './Users.module.css';
 import userPhoto from '../../assets/images/user.jpg';
 import { NavLink } from 'react-router-dom';
+import { userType } from '../../types/types';
 
-let User = ({ user, onProgress, toggleFollowUnfollow }) => {
+
+type userPropsType = {
+    user: userType
+    onProgress: Array<number>
+    toggleFollowUnfollow: (a: number, b: string) => void
+}
+let User = ({ user, onProgress, toggleFollowUnfollow }: userPropsType) => {
+
+
     return (
         <div>
             <span>
@@ -46,11 +55,10 @@ let User = ({ user, onProgress, toggleFollowUnfollow }) => {
             <span>
                 <span>
                     <div>{user.name}</div>
-                    <div>{user.email}</div>
                 </span>
                 <span>
-                    <div>{'u.address.country'}</div>
-                    <div>{'u.address.city'}</div>
+                    <div>{'Типа страна челика'}</div>
+                    <div>{'Как бы его город'}</div>
                 </span>
             </span>
         </div>

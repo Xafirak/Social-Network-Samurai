@@ -9,7 +9,7 @@ const GET_CAPTCHA_URL_SUCCES = 'auth/GET_CAPTCHA_URL_SUCCES';
 let initialState = {
     userId: null as number | null,
     email: null as number | null,
-    login: null as number | null,
+    login: null as string | null,
     isAuth: false,
     error: false as boolean | string,
     captchaUrl: null as string | null, // if null, the captcha is not required

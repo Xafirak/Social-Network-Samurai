@@ -4,7 +4,7 @@ import ProfileInfo from './ProfileInfo/ProfileInfo';
 import MyPosts from './MyPosts/MyPosts';
 
 type propsType = {
-    status: string
+    status: string | boolean
     profile: any
     addMessage: () => void
     isOwner: boolean

@@ -1,7 +1,11 @@
 import React from "react";
 import cl from './Music.module.css'
 
-const Music = () => {
+type musicPropsType = {
+
+}
+
+const Music = (props:musicPropsType) => {
     return (
         <div className={cl.musicBody}>
             zzzzzzzz
