@@ -11,7 +11,7 @@ import {
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { compose } from 'redux';
 import { updateStatus } from '../../redux/profileReducer';
-import { addActionCreator } from '../../redux/profileReducer';
+import addActionCreator from "../../redux/profileReducer"
 import { useEffect } from 'react';
 import { AppStateType } from '../../redux/reduxStore';
 
@@ -27,7 +27,7 @@ type propsType = {
     error: boolean | string
     profilePage: any;
     authorizedUserId: number
-    
+
     savePhoto: () => void
     saveProfile: () => void
     showProfile: (a: number) => void
@@ -63,7 +63,7 @@ const ProfileFUNC = (props: propsType) => {
         <div>
             {/* {props.profilePage.status && props.profilePage.profile ? ( */}
             {/* @ts-ignore */}
-            <Profile 
+            <Profile
                 isOwner={!props.router.params.userId}
                 profilePage={props.profilePage}
                 updateStatus={props.updateStatus}

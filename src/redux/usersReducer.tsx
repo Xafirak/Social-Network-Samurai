@@ -2,15 +2,7 @@
 import { ThunkAction } from '@reduxjs/toolkit';
 import { resultCodesEnum, usersAPI } from '../API/api';
 import { userType } from '../types/types';
-import { AppStateType } from './reduxStore';
-
-
-const SET_USERS = 'SET_USERS';
-const SET_CURRENT_PAGE = 'SET_CURRENT_PAGE';
-const SET_TOTAL_USERS = 'SET_TOTAL_USERS';
-const TOGGLE_IS_FETCHING = 'TOGGLE_IS_FETCHING';
-const TOGGLE_IS_PROGRESS = 'TOGGLE_IS_PROGRESS';
-const TOGGLE_FOLLOW = 'TOGGLE_FOLLOW';
+import { AppStateType, InferActionsTypes } from './reduxStore';
 
 
 let initialState = {
@@ -23,7 +15,7 @@ let initialState = {
 };
 type initialStateType = typeof initialState
 
-// Создать toggle чтобы переключать isFollowed одной функцией ||| Надо ли?
+// Создать toggle чтобы переключать isFollowed одной функцией | Надо ли?
 
 // Jobs done, 'toggle' implemented! Вопрос такой же как и ниже - надо ли
 // делать один 'case' для похожих случаев, где меняется один параметр
@@ -34,7 +26,7 @@ type initialStateType = typeof initialState
 
 const usersReducer = (state = initialState, action: ActionTypes): initialStateType => {
     switch (action.type) {
-        case TOGGLE_FOLLOW: {
+        case 'TOGGLE_FOLLOW': {
             return {
                 ...state,
                 users: state.users.map((u) => {
@@ -84,21 +76,21 @@ const usersReducer = (state = initialState, action: ActionTypes): initialStateTy
         //     // };
         // }
 
-        case SET_USERS: {
+        case 'SET_USERS': {
             return { ...state, users: action.users };
         }
 
-        case SET_CURRENT_PAGE: {
+        case 'SET_CURRENT_PAGE': {
             return { ...state, currentPage: action.currentPage };
         }
 
-        case SET_TOTAL_USERS: {
+        case 'SET_TOTAL_USERS': {
             return { ...state, totalUsers: action.count };
         }
-        case TOGGLE_IS_FETCHING: {
+        case 'TOGGLE_IS_FETCHING': {
             return { ...state, isFetching: action.isFetching };
         }
-        case TOGGLE_IS_PROGRESS: {
+        case 'TOGGLE_IS_PROGRESS': {
             return {
                 ...state,
                 onProgress: action.onProgress
@@ -116,68 +108,35 @@ const usersReducer = (state = initialState, action: ActionTypes): initialStateTy
     }
 };
 
-type ActionTypes = toggleFollowActionType | setUsersActionType |
-    setPageActionType | setTotalUsersActionType | toggleIsFetchingActionType |
-    toggleProgressActionType
+type ActionTypes = InferActionsTypes<typeof actions>
 
 
-const toggleFollow = (userId: number): toggleFollowActionType => ({ type: TOGGLE_FOLLOW, userId });
-type toggleFollowActionType = {
-    type: typeof TOGGLE_FOLLOW
-    userId: number
-}
+export const actions = {
+    toggleFollow: (userId: number) => ({ type: 'TOGGLE_FOLLOW', userId } as const),
 
-// const follow = (userId) => ({ type: FOLLOW, userId });
-// const unfollow = (userId) => ({ type: UNFOLLOW, userId });
+    setUsers: (users: Array<userType>) => ({ type: 'SET_USERS', users } as const),
 
+    setPage: (currentPage: number) => ({
+        type: 'SET_CURRENT_PAGE',
+        currentPage,
+    } as const),
 
-const setUsers = (users: Array<userType>): setUsersActionType => ({ type: SET_USERS, users });
-type setUsersActionType = {
-    type: typeof SET_USERS
-    users: Array<userType>
-}
+    setTotalUsers: (totalUsers: number) => ({
+        type: 'SET_TOTAL_USERS',
+        count: totalUsers,
+    } as const),
 
-const setPage = (currentPage: number): setPageActionType => ({
-    type: SET_CURRENT_PAGE,
-    currentPage,
-});
-type setPageActionType = {
-    type: typeof SET_CURRENT_PAGE
-    currentPage: number
-}
+    toggleIsFetching: (isFetching: boolean) => ({
+        type: 'TOGGLE_IS_FETCHING',
+        isFetching,
+    } as const),
 
+    toggleProgress: (onProgress: boolean, userId: number) => ({
+        type: 'TOGGLE_IS_PROGRESS',
+        onProgress,
+        userId,
+    } as const),
 
-const setTotalUsers = (totalUsers: number): setTotalUsersActionType => ({
-    type: SET_TOTAL_USERS,
-    count: totalUsers,
-});
-type setTotalUsersActionType = {
-    type: typeof SET_TOTAL_USERS
-    count: number
-}
-
-
-
-const toggleIsFetching = (isFetching: boolean): toggleIsFetchingActionType => ({
-    type: TOGGLE_IS_FETCHING,
-    isFetching,
-});
-type toggleIsFetchingActionType = {
-    type: typeof TOGGLE_IS_FETCHING
-    isFetching: boolean
-}
-
-
-
-const toggleProgress = (onProgress: boolean, userId: number): toggleProgressActionType => ({
-    type: TOGGLE_IS_PROGRESS,
-    onProgress,
-    userId,
-});
-type toggleProgressActionType = {
-    type: typeof TOGGLE_IS_PROGRESS
-    onProgress: boolean
-    userId: number
 }
 
 
@@ -185,27 +144,27 @@ type toggleProgressActionType = {
 type thunkType = ThunkAction<Promise<void>, AppStateType, unknown, ActionTypes>
 
 export const getUsers = (pageSize: number, page: number): thunkType => async (dispatch, getState) => {
-    dispatch(toggleIsFetching(true));
-    dispatch(setPage(page));
+    dispatch(actions.toggleIsFetching(true));
+    dispatch(actions.setPage(page));
     let data = await usersAPI.getUsers(pageSize, page);
 
-    dispatch(setTotalUsers(data.totalCount));
-    dispatch(setUsers(data.items));
-    dispatch(toggleIsFetching(false));
+    dispatch(actions.setTotalUsers(data.totalCount));
+    dispatch(actions.setUsers(data.items));
+    dispatch(actions.toggleIsFetching(false));
 };
 
 export const toggleFollowUnfollow = (userId: number, type: string): thunkType => async (dispatch) => {
-    dispatch(toggleProgress(true, userId));
+    dispatch(actions.toggleProgress(true, userId));
 
     let data = await usersAPI.toggleFollowUser(userId, type);
 
     if (data?.resultCode === resultCodesEnum.error && type === 'unfollow') {
-        dispatch(toggleFollow(userId));
+        dispatch(actions.toggleFollow(userId));
     }
     if (data?.resultCode === resultCodesEnum.error && type === 'follow') {
-        dispatch(toggleFollow(userId));
+        dispatch(actions.toggleFollow(userId));
     }
-    dispatch(toggleProgress(false, userId));
+    dispatch(actions.toggleProgress(false, userId));
 };
 
 export default usersReducer;

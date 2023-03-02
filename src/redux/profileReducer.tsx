@@ -1,87 +1,58 @@
 
 import { profileType, photosType, postDataType } from '../types/types';
 import { profileAPI } from './../API/api';
+import { InferActionsTypes } from './reduxStore';
 
-const ADD_POST = 'ADD-POST';
-const SET_USER_PROFILE = 'SET_USER_PROFILE';
-const SET_STATUS = 'SET_STATUS';
-const DELETE_POST = 'DELETE_POST';
-const SAVE_PHOTO_SUCCES = 'SAVE_PHOTO_SUCCES';
-const SET_PROFILE_ERROR = 'profile/SET_ERROR';
 
-type addActionCreatorType = {
-    type: typeof ADD_POST
-    messageBody: string
+type profileActionsType = InferActionsTypes<typeof profileActions>
+
+
+const profileActions = {
+    addActionCreator: (messageBody: string) => ({
+        type: 'ADD_POST',
+        messageBody,
+    } as const),
+    setUserProfile: (profile: profileType) => ({
+        type: 'SET_USER_PROFILE',
+        profile,
+    } as const),
+    setStatus: (status: string) => ({
+        type: 'SET_STATUS',
+        status,
+    } as const),
+    deletePost: (postId: number) => ({
+        type: 'DELETE_POST',
+        postId,
+    } as const),
+    savePhotoSuccess: (photos: photosType) => ({
+        type: 'SAVE_PHOTO_SUCCES',
+        photos,
+    } as const),
+    setProfileError: (error: any) => ({
+        type: 'SET_PROFILE_ERROR',
+        error,
+    }as const),
 }
-export const addActionCreator = (messageBody: string): addActionCreatorType => ({
-    type: ADD_POST,
-    messageBody,
-});
 
-type setUserProfileActionType = {
-    type: typeof SET_USER_PROFILE,
-    profile: profileType
-}
-
-export const setUserProfile = (profile: profileType): setUserProfileActionType => ({
-    type: SET_USER_PROFILE,
-    profile,
-});
-
-type setStatusActionType = {
-    type: typeof SET_STATUS,
-    status: string
-}
-export const setStatus = (status: string): setStatusActionType => ({
-    type: SET_STATUS,
-    status,
-});
-
-type deletePostActionType = {
-    type: typeof DELETE_POST,
-    postId: number
-}
-export const deletePost = (postId: number): deletePostActionType => ({
-    type: DELETE_POST,
-    postId,
-});
-
-type savePhotoSuccessActionType = {
-    type: typeof SAVE_PHOTO_SUCCES,
-    photos: photosType
-}
-export const savePhotoSuccess = (photos: photosType): savePhotoSuccessActionType => ({
-    type: SAVE_PHOTO_SUCCES,
-    photos,
-});
-
-type setProfileErrorActionType = {
-    type: typeof SET_PROFILE_ERROR,
-    error: any
-}
-export const setProfileError = (error: any): setProfileErrorActionType => ({
-    type: SET_PROFILE_ERROR,
-    error,
-});
 
 export const showProfile = (userId: number) => async (dispatch: any) => {
     let response = await profileAPI.getProfile(userId);
-    dispatch(setUserProfile(response.data));
+    dispatch(profileActions.setUserProfile(response.data));
 };
 
 export const getStatus = (userId: number) => async (dispatch: any) => {
     let response = await profileAPI.getStatus(userId);
-    dispatch(setStatus(response.data));
+    dispatch(profileActions.setStatus(response.data));
 };
 
 export const updateStatus = (status: string) => async (dispatch: any) => {
     // try {
     let response = await profileAPI.updateStatus(status);
 
-    if (response.data.resultCode === 0) dispatch(setStatus(status));
+    if (response.data.resultCode === 0) dispatch(profileActions.setStatus(status));
     if (response.data.resultCode === 1) {
         let message = response.data.messages;
-        dispatch(setProfileError(message));
+        dispatch(profileActions.setProfileError(message));
 
         // } catch (error)
         //сделать логику если сюда приходит resultCode === 1, вывести ошибку
@@ -94,7 +65,7 @@ export const savePhoto = (photos: photosType) => async (dispatch: any) => {
     let response = await profileAPI.savePhoto(photos);
 
     if (response.data.resultCode === 0)
-        dispatch(savePhotoSuccess(response.data.data.photos));
+        dispatch(profileActions.savePhotoSuccess(response.data.data.photos));
 };
 
 export const saveProfile = (profile: profileType) => async (dispatch: any, getState: any) => {
@@ -133,7 +104,7 @@ export const saveProfile = (profile: profileType) => async (dispatch: any, getSt
     } else if (response.data.resultCode === 1) {
         let message = response.data.messages;
         // dispatch(setProfileError(getErrors(message)))
-        dispatch(setProfileError(getErrors(message)));
+        dispatch(profileActions.setProfileError(getErrors(message)));
     }
 };
 
@@ -153,9 +124,9 @@ let initialState = {
 
 export type initialStateType = typeof initialState;
 
-const profileReducer = (state = initialState, action: any): initialStateType => {
+const profileReducer = (state = initialState, action: profileActionsType): initialStateType => {
     switch (action.type) {
-        case ADD_POST: {
+        case 'ADD_POST': {
             let newPost = {
                 id: state.postData.length + 1,
                 message: action.messageBody,
@@ -169,25 +140,25 @@ const profileReducer = (state = initialState, action: any): initialStateType => 
             return stateCopy;
         }
 
-        case SET_USER_PROFILE: {
+        case 'SET_USER_PROFILE': {
             return { ...state, profile: action.profile };
         }
-        case SET_STATUS: {
+        case 'SET_STATUS': {
             return { ...state, status: action.status };
         }
-        case DELETE_POST: {
+        case 'DELETE_POST': {
             return {
                 ...state,
                 postData: state.postData.filter((p) => p.id !== action.postId),
             };
         }
-        case SAVE_PHOTO_SUCCES: {
+        case 'SAVE_PHOTO_SUCCES': {
             return {
                 ...state,
                 profile: { ...(state.profile as profileType), photos: action.photos },
             };
         }
-        case SET_PROFILE_ERROR: {
+        case 'SET_PROFILE_ERROR': {
             return {
                 ...state,
                 error: action.error,

@@ -5,8 +5,9 @@ import { connect } from 'react-redux';
 import { getStatus, showProfile, savePhoto } from '../../redux/profileReducer';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { compose } from 'redux';
-import { updateStatus, addActionCreator, saveProfile } from './../../redux/profileReducer';
+import { updateStatus, saveProfile } from './../../redux/profileReducer';
 import { Navigate } from 'react-router-dom';
+import addActionCreator from "../../redux/profileReducer"
 import Preloader from '../common/Preloader/preloader';
 import { AppStateType } from '../../redux/reduxStore';
 import { profileType } from '../../types/types';
@@ -83,8 +84,8 @@ class ProfileContainer extends React.Component<ProfileContainerPropsType> {
 
 //==================
 
-type ProfileContainerPropsType = mapStateToPropsType & 
-mapDispatchToPropsType & routerPropsType
+type ProfileContainerPropsType = mapStateToPropsType &
+    mapDispatchToPropsType & routerPropsType
 
 type mapStateToPropsType = {
     profilePage: {}
