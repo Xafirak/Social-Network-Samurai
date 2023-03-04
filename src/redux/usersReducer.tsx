@@ -1,8 +1,8 @@
 
-import { ThunkAction } from '@reduxjs/toolkit';
-import { resultCodesEnum, usersAPI } from '../API/api';
 import { userType } from '../types/types';
-import { AppStateType, InferActionsTypes } from './reduxStore';
+import { baseThunkType, InferActionsTypes } from './reduxStore';
+import { usersAPI } from './../API/users-api';
+import { resultCodesEnum } from '../API/api';
 
 
 let initialState = {
@@ -13,7 +13,7 @@ let initialState = {
     isFetching: false,
     onProgress: [] as Array<number>,  // array of users ids
 };
-type initialStateType = typeof initialState
+
 
 // Создать toggle чтобы переключать isFollowed одной функцией | Надо ли?
 
@@ -107,7 +107,7 @@ const usersReducer = (state = initialState, action: ActionTypes): initialStateTy
             return state;
     }
 };
-
+type initialStateType = typeof initialState
 type ActionTypes = InferActionsTypes<typeof actions>
 
 
@@ -140,10 +140,7 @@ export const actions = {
 }
 
 
-
-type thunkType = ThunkAction<Promise<void>, AppStateType, unknown, ActionTypes>
-
-export const getUsers = (pageSize: number, page: number): thunkType => async (dispatch, getState) => {
+export const getUsers = (pageSize: number, page: number): baseThunkType<ActionTypes> => async (dispatch, getState) => {
     dispatch(actions.toggleIsFetching(true));
     dispatch(actions.setPage(page));
     let data = await usersAPI.getUsers(pageSize, page);
@@ -153,7 +150,7 @@ export const getUsers = (pageSize: number, page: number): thunkType => async (di
     dispatch(actions.toggleIsFetching(false));
 };
 
-export const toggleFollowUnfollow = (userId: number, type: string): thunkType => async (dispatch) => {
+export const toggleFollowUnfollow = (userId: number, type: string): baseThunkType<ActionTypes> => async (dispatch) => {
     dispatch(actions.toggleProgress(true, userId));
 
     let data = await usersAPI.toggleFollowUser(userId, type);

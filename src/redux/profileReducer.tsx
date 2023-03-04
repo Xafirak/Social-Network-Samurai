@@ -1,11 +1,13 @@
-
+// import { resultCodesEnum } from "./../API/";
 import { profileType, photosType, postDataType } from '../types/types';
-import { profileAPI } from './../API/api';
-import { InferActionsTypes } from './reduxStore';
+import { baseThunkType, InferActionsTypes } from './reduxStore';
+import { profileAPI } from './../API/priofile-api';
+import { resultCodesEnum } from '../API/api';
 
 
 type profileActionsType = InferActionsTypes<typeof profileActions>
-
+export type initialStateType = typeof initialState;
+type ThunkType = baseThunkType<profileActionsType>
 
 const profileActions = {
     addActionCreator: (messageBody: string) => ({
@@ -31,27 +33,27 @@ const profileActions = {
     setProfileError: (error: any) => ({
         type: 'SET_PROFILE_ERROR',
         error,
-    }as const),
+    } as const),
 }
 
 
-export const showProfile = (userId: number) => async (dispatch: any) => {
+export const showProfile = (userId: number): ThunkType => async (dispatch) => {
     let response = await profileAPI.getProfile(userId);
-    dispatch(profileActions.setUserProfile(response.data));
+    dispatch(profileActions.setUserProfile(response));
 };
 
-export const getStatus = (userId: number) => async (dispatch: any) => {
+export const getStatus = (userId: number): ThunkType => async (dispatch) => {
     let response = await profileAPI.getStatus(userId);
-    dispatch(profileActions.setStatus(response.data));
+    dispatch(profileActions.setStatus(response));
 };
 
-export const updateStatus = (status: string) => async (dispatch: any) => {
+export const updateStatus = (status: string): ThunkType => async (dispatch) => {
     // try {
     let response = await profileAPI.updateStatus(status);
 
-    if (response.data.resultCode === 0) dispatch(profileActions.setStatus(status));
-    if (response.data.resultCode === 1) {
-        let message = response.data.messages;
+    if (response.resultCode === resultCodesEnum.success) dispatch(profileActions.setStatus(status));
+    if (response.resultCode === resultCodesEnum.error) {
+        let message = response.messages;
         dispatch(profileActions.setProfileError(message));
 
         // } catch (error)
@@ -61,14 +63,14 @@ export const updateStatus = (status: string) => async (dispatch: any) => {
     }
 };
 
-export const savePhoto = (photos: photosType) => async (dispatch: any) => {
+export const savePhoto = (photos: File): ThunkType => async (dispatch) => {
     let response = await profileAPI.savePhoto(photos);
 
-    if (response.data.resultCode === 0)
-        dispatch(profileActions.savePhotoSuccess(response.data.data.photos));
+    if (response.resultCode === resultCodesEnum.success)
+        dispatch(profileActions.savePhotoSuccess(response.data.photos));
 };
 
-export const saveProfile = (profile: profileType) => async (dispatch: any, getState: any) => {
+export const saveProfile = (profile: profileType): ThunkType => async (dispatch, getState) => {
     const userId = getState().auth.userId;
     const response = await profileAPI.saveProfile(profile);
 
@@ -99,10 +101,14 @@ export const saveProfile = (profile: profileType) => async (dispatch: any, getSt
         return errors;
     };
 
-    if (response.data.resultCode === 0) {
-        dispatch(showProfile(userId));
-    } else if (response.data.resultCode === 1) {
-        let message = response.data.messages;
+    if (response.resultCode === resultCodesEnum.success) {
+        if (userId !== null) {
+            dispatch(showProfile(userId))
+        } else {
+            throw new Error ('userId cant be null')
+        }
+    } else if (response.resultCode === resultCodesEnum.error) {
+        let message = response.messages;
         // dispatch(setProfileError(getErrors(message)))
         dispatch(profileActions.setProfileError(getErrors(message)));
     }
@@ -122,7 +128,7 @@ let initialState = {
     error: false as string | boolean,
 };
 
-export type initialStateType = typeof initialState;
+
 
 const profileReducer = (state = initialState, action: profileActionsType): initialStateType => {
     switch (action.type) {

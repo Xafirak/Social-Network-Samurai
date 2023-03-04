@@ -49,7 +49,7 @@ const ProfileInfo = ({
     const onSubmit = (formData: formDataType) => {
         // console.log(formData);
         saveProfile(formData);
-        // setEditMode(false);
+        setEditMode(false);
     };
     // ДЗ - добавить эррор к определенному полю, урок 97 1:07:54
     return (

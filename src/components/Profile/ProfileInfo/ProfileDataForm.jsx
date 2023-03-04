@@ -13,11 +13,6 @@ import classes from './ProfileInfo.module.css';
 /////////////
 
 const ProfileDataForm = ({ onSubmit, profile, error }) => {
-    window.err = error;
-    window.pr = profile;
-    console.log(error);
-
-    
     // очередная попытка сделать валидацию ошибки, по обьекту contacts не работают
     // ни 'map' ни 'forEach', невозможно проитерироватся
     // let contacts = profile.contacts;

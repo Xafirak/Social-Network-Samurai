@@ -4,6 +4,7 @@ export type postDataType = {
     likes: number
 }
 export type profileType = {
+    data(data: any): any
     userId: number
     lookingForAJob: string
     lookingForAJobDescription: string

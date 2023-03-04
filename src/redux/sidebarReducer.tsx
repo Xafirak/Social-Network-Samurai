@@ -1,11 +1,14 @@
+import { baseThunkType, InferActionsTypes } from "./reduxStore"
 
 type friendsType = {
     id: Number
     name: string
     avatar: string
 }
-
 type initialStateType = typeof initialState
+type sidebarActionsType = InferActionsTypes<typeof sidebarActions>
+type ThunkAction = baseThunkType<sidebarActionsType>
+
 
 let initialState = {
     friends: [
@@ -27,7 +30,11 @@ let initialState = {
     ] as Array<friendsType>,
 }
 
-const sidebarReducer = (state = initialState, action: any): initialStateType => {
+const sidebarActions = {
+    action: () => ({type:'NOTHING HERE'})
+}
+
+const sidebarReducer = (state = initialState, action: sidebarActionsType): initialStateType => {
 
     return state;
 }

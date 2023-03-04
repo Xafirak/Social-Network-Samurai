@@ -3,6 +3,7 @@ import {
     applyMiddleware,
     combineReducers,
     legacy_createStore,
+    ThunkAction,
 } from '@reduxjs/toolkit';
 import profileReducer from './profileReducer';
 import dialogsReducer from './dialogsReducer';
@@ -11,7 +12,7 @@ import usersReducer from './usersReducer';
 import authReducer from './auth-reducer';
 import thunkMiddleware from 'redux-thunk';
 import appReducer from './app-reducer';
-import { compose } from 'redux';
+import { Action, compose } from 'redux';
 
 let rootReducer = combineReducers({
     profilePage: profileReducer,
@@ -28,6 +29,8 @@ export type AppStateType = ReturnType<rootReducerType>
 
 type PropsTypes<T> = T extends { [key: string]: infer U } ? U : never
 export type InferActionsTypes<T extends { [key: string]: (...args: any[]) => any }> = ReturnType<PropsTypes<T>>
+
+export type baseThunkType<A extends Action, R=Promise<void>> = ThunkAction<R, AppStateType, unknown, A>
 
 
 // @ts-ignore
