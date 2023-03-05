@@ -1,4 +1,3 @@
-// @ts-nocheck
 import React, { Component } from 'react';
 import { HashRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
@@ -27,17 +26,22 @@ import { initializeApp } from './redux/app-reducer';
 import Preloader from './components/common/Preloader/preloader';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import store from './redux/reduxStore';
+import store, { AppStateType } from './redux/reduxStore';
 import { Suspense } from 'react';
 import { Navigate } from 'react-router-dom';
 import ErrorCatch from './ErrorCatch';
 
-class App extends Component {
+type mapAppPropsType = ReturnType<typeof MapStateToProps>
+type dispatchAppPropsType = {
+    initializeApp: () => void
+}
 
+class App extends Component<mapAppPropsType & dispatchAppPropsType> {
 
     // поставил встроенный механизм, на роуты - предохранитель(Error Boundaries) 
     // ErrorCatch, но не знаю как получить ошибку, чтобы проверить работоспособность
-    catchAllUnhandledErrors = (promiseRejectionEvent) => {
+    // promiseRejectionEvent - хз какой тип ставить
+    catchAllUnhandledErrors = (promiseRejectionEvent: any) => {
         alert('Error happens');
         console.error(promiseRejectionEvent);
     };
@@ -108,8 +112,10 @@ const ProfileFUNC = React.lazy(() =>
     import('./components/Profile/ProfileFUNC')
 );
 
-let withRouter = (Comp) => {
-    function ComponentWithRouterProp(props) {
+
+
+let withRouter = (Comp: React.FC) => {
+    function ComponentWithRouterProp(props:any) {
         let location = useLocation();
         let navigate = useNavigate();
         let params = useParams();
@@ -118,16 +124,20 @@ let withRouter = (Comp) => {
     return ComponentWithRouterProp;
 };
 
-const MapStateToProps = (state) => ({
+
+
+const MapStateToProps = (state:AppStateType) => ({
     initialized: state.app.initialized,
 });
 
-let AppContainer = compose(
+let AppContainer = compose<React.ComponentType>(
     withRouter,
     connect(MapStateToProps, { initializeApp })
 )(App);
 
-const SamuraiAppJS = (props) => {
+
+
+const SamuraiAppJS: React.FC = () => {
     return (
         <BrowserRouter basename="/">
             <Provider store={store}>

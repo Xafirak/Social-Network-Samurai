@@ -4,6 +4,7 @@ import cl from "./Dialogs.module.css";
 import DialogItem from "./DialogItem/DialogItem";
 import Message from "./Message/Message";
 import TextInputWithButton from "../TextInputWithButton/TextInputWithButton";
+import { iniialStateType } from "../../redux/dialogsReducer";
 
 type usersDataType = {
     id: number
@@ -16,18 +17,19 @@ type messagesDataType = {
     message: string
 }
 
+
+
 type propsType = {
-    dialogPage: {
-        usersData: Array<usersDataType>
-        messagesData: Array<messagesDataType>
-    }
+    dialogPage: iniialStateType
     dispatch: () => void
-    addDialogCreator: () => void
+    addDialogCreator: (message: string) => void
+
 }
 
 
 
 const Dialogs = (props: propsType) => {
+    console.log(props);
 
 
     const users = props.dialogPage.usersData.map((el) => {
@@ -53,8 +55,7 @@ const Dialogs = (props: propsType) => {
                 {messages}
                 <TextInputWithButton
                     dialog
-                    dialogPage={props.dialogPage}
-                    dispatch={props.dispatch}
+                    dialogPage={props.dialogPage}                    
                     addMessage={props.addDialogCreator}
                 />
             </div>

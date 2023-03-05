@@ -18,6 +18,7 @@ import cl from './Users.module.css'
 
 type ownPropsPtype = {
     pageTitle: string
+
 }
 type mapDispatchPropsType = {
 
@@ -84,7 +85,7 @@ let mapStateToProps = (state: AppStateType): mapStatePropsType => {
     };
 };
 
-export default compose<PropsType>(
+export default compose<React.ComponentType>(
     connect(mapStateToProps, {
         getUsers,
         toggleFollowUnfollow,

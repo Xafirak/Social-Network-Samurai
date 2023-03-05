@@ -27,8 +27,6 @@ const MyPosts = (props: myPostsPropsType) => {
 
             <h3>myPosts</h3>
             <TextInputWithButton
-
-                // profilePage={props.profilePage}
                 addMessage={props.addMessage}
             />
 

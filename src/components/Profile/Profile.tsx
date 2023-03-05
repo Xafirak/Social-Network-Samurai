@@ -6,7 +6,7 @@ import MyPosts from './MyPosts/MyPosts';
 type propsType = {
     status: string | boolean
     profile: any
-    addMessage: () => void
+    addMessage: (messageBody:string) => void
     isOwner: boolean
     savePhoto: () => void
     saveProfile: () => void

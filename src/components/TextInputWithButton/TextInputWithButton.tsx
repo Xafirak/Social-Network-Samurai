@@ -3,14 +3,14 @@ import React from 'react';
 import { Form, Field } from 'react-final-form';
 import { required } from '../../utils/validators/validators';
 import { maxLengthCreator } from '../../utils/validators/validators';
-import { Textarea } from '../common/FormsControl/FormsControl';
+import { createField, Textarea } from '../common/FormsControl/FormsControl';
 
-// type TextInputWithButtonPropsType = {
+type TextInputWithButtonPropsType = {
+    addMessage: (message: string) => void
+}
 
-//     addMessage: (message:string) => void
-// }
-
-const TextInputWithButton = (props) => {
+const TextInputWithButton: React.FC<TextInputWithButtonFormType, TextInputWithButtonPropsType> = (props) => {
+    // console.log(props);
     let addNewMessage = (data) => {
         props.addMessage(data.messageBody);
     };
@@ -28,11 +28,11 @@ const TextInputWithButton = (props) => {
     // функцию которая соберет все валидаторы в себя
     const composeValidators =
         (...validators) =>
-        (value) =>
-            validators.reduce(
-                (error, validator) => error || validator(value),
-                undefined
-            );
+            (value) =>
+                validators.reduce(
+                    (error, validator) => error || validator(value),
+                    undefined
+                );
 
     return (
         <Form
@@ -40,12 +40,18 @@ const TextInputWithButton = (props) => {
             render={({ handleSubmit }) => (
                 <form onSubmit={handleSubmit}>
                     <div>
-                        <Field
+                        {createField<TextInputWithButtonValueKeys>(
+                            composeValidators(required, maxLength10),
+                            'messageBody',
+                            Textarea,
+                            'Твой ответ...'
+                        )}
+                        {/* <Field
                             validate={composeValidators(required, maxLength10)}
                             name={'messageBody'}
                             component={Textarea}
                             placeholder="Твой ответ..."
-                        />
+                        /> */}
                     </div>
                     <div className="">
                         <button>CLICK !</button>
@@ -56,18 +62,11 @@ const TextInputWithButton = (props) => {
     );
 };
 
-/* <>
-        <div className="">
-            <textarea
-                onChange={onPostChange}
-                ref={input}
-                value={path} //
-                placeholder="Твой ответ..." //
-            />
-        </div>
-        <div className="">
-            <button onClick={addPosts}>CLICK !</button>
-        </div>
-</> */
+export type TextInputWithButtonFormType = {
+    messageBody: string
+}
+
+
+type TextInputWithButtonValueKeys = keyof TextInputWithButtonFormType
 
 export default TextInputWithButton;

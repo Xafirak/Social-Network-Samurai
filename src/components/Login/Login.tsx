@@ -2,7 +2,7 @@ import React from 'react';
 import { Form } from 'react-final-form';
 import { connect } from 'react-redux';
 import { Navigate } from 'react-router-dom';
-import { Input} from '../common/FormsControl/FormsControl';
+import { Input } from '../common/FormsControl/FormsControl';
 import { LoginUser } from '../../redux/auth-reducer';
 import {
     maxLengthCreator,

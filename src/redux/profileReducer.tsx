@@ -6,10 +6,10 @@ import { resultCodesEnum } from '../API/api';
 
 
 type profileActionsType = InferActionsTypes<typeof profileActions>
-export type initialStateType = typeof initialState;
+export type profileInitialStateType = typeof initialState;
 type ThunkType = baseThunkType<profileActionsType>
 
-const profileActions = {
+export const profileActions = {
     addActionCreator: (messageBody: string) => ({
         type: 'ADD_POST',
         messageBody,
@@ -105,7 +105,7 @@ export const saveProfile = (profile: profileType): ThunkType => async (dispatch,
         if (userId !== null) {
             dispatch(showProfile(userId))
         } else {
-            throw new Error ('userId cant be null')
+            throw new Error('userId cant be null')
         }
     } else if (response.resultCode === resultCodesEnum.error) {
         let message = response.messages;
@@ -130,9 +130,9 @@ let initialState = {
 
 
 
-const profileReducer = (state = initialState, action: profileActionsType): initialStateType => {
+const profileReducer = (state = initialState, action: profileActionsType): profileInitialStateType => {
     switch (action.type) {
-        case 'ADD_POST': {
+        case "ADD_POST": {
             let newPost = {
                 id: state.postData.length + 1,
                 message: action.messageBody,

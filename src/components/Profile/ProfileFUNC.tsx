@@ -2,18 +2,12 @@
 import React from 'react';
 import Profile from './Profile';
 import { connect } from 'react-redux';
-import {
-    getStatus,
-    showProfile,
-    savePhoto,
-    saveProfile,
-} from '../../redux/profileReducer';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { compose } from 'redux';
-import { updateStatus } from '../../redux/profileReducer';
-import addActionCreator from "../../redux/profileReducer"
+import { getStatus, profileActions, savePhoto, saveProfile, showProfile, updateStatus } from '../../redux/profileReducer';
 import { useEffect } from 'react';
 import { AppStateType } from '../../redux/reduxStore';
+import { profileInitialStateType } from '../../redux/profileReducer';
 
 // надо ли в функциональной компоненте разделять пропсы примитивные и  
 // пропсы-методы (как в классовой) 
@@ -33,10 +27,11 @@ type propsType = {
     showProfile: (a: number) => void
     getStatus: (a: number) => void
     updateStatus: (status: string) => void
-    addActionCreator: () => void
+    addActionCreator: (messageBody:string) => void
 }
 
 const ProfileFUNC = (props: propsType) => {
+    console.log(props);
 
 
     const navigate = useNavigate();
@@ -79,7 +74,14 @@ const ProfileFUNC = (props: propsType) => {
     );
 };
 
-let mapStateToProps = (state: AppStateType) => ({
+type mapStateToProps = {
+    profilePage: profileInitialStateType
+    authorizedUserId: number | null
+    isAuth: boolean
+    error: boolean | string
+}
+
+let mapStateToProps = (state: AppStateType):mapStateToProps => ({
     profilePage: state.profilePage,
     authorizedUserId: state.auth.userId,
     isAuth: state.auth.isAuth,
@@ -99,14 +101,14 @@ let withRouter = (Comp) => {
     return ComponentWithRouterProp;
 };
 
-export default compose(
+export default compose<React.ComponentType>(
     connect(mapStateToProps, {
         showProfile,
         getStatus,
         updateStatus,
-        addActionCreator,
         savePhoto,
         saveProfile,
+        ...profileActions
     }),
     withRouter
 )(ProfileFUNC);

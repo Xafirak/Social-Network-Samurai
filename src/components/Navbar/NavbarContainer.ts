@@ -2,6 +2,7 @@ import React from "react";
 import Navbar from "./Navbar";
 import { connect } from "react-redux";
 import { AppStateType } from "../../redux/reduxStore";
+import { friendsType } from "../../redux/sidebarReducer";
 
 // я КАК БЫ знаю что находится в friends, надо ли все типы для мелких 
 // пропсов экспортировать или писать что-то общее, 
@@ -9,7 +10,7 @@ import { AppStateType } from "../../redux/reduxStore";
 
 
 type mapStateToPropsPropsType = {
-    friends: Array<any>
+    friends: Array<friendsType>
 }
 let mapStateToProps = (state:AppStateType):mapStateToPropsPropsType => {
     return {

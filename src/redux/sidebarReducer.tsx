@@ -1,7 +1,8 @@
+import { Key } from "react"
 import { baseThunkType, InferActionsTypes } from "./reduxStore"
 
-type friendsType = {
-    id: Number
+export type friendsType = {
+    id: number
     name: string
     avatar: string
 }

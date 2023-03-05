@@ -7,7 +7,7 @@ import { AppStateType } from "../../redux/reduxStore";
 
 class HeaderContainer extends React.Component<propsType> {
     render() {
-        return <Header {...this.props} />;
+        return <Header {...this.props} />
     }
 }
 
@@ -29,4 +29,4 @@ const mapStateToProps = (state: AppStateType): mapStateToPropsType => ({
     login: state.auth.login,
 });
 
-export default compose<propsType>(connect(mapStateToProps, { Logout }))(HeaderContainer);
+export default compose<React.ComponentType>(connect(mapStateToProps, { Logout }))(HeaderContainer);
