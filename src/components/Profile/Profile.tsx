@@ -2,22 +2,24 @@
 import React from 'react';
 import ProfileInfo from './ProfileInfo/ProfileInfo';
 import MyPosts from './MyPosts/MyPosts';
+import { profileType } from '../../types/types';
+import { profileInitialStateType } from '../../redux/profileReducer';
 
 type propsType = {
-    status: string | boolean
-    profile: any
-    addMessage: (messageBody:string) => void
+    status: string | undefined
+    profile: profileType | undefined
+    addMessage: (messageBody: string) => void
     isOwner: boolean
-    savePhoto: () => void
-    saveProfile: () => void
-    error: boolean | string
-    profilePage: any;
-    updateStatus: (status: string) => void
-
+    savePhoto: (photos: File) => void
+    saveProfile: (profile: profileType) => void
+    error: Array<string> | boolean
+    profilePage: profileInitialStateType
+    updateStatus: (status: string | undefined) => void
+    isEditProfileWasSuccesfull: boolean
 }
 
-const Profile = (props: propsType) => {
-    
+const Profile: React.FC<propsType> = (props) => {
+
 
     // console.log('render', props);
     // установка условия для рендеринга страницы для избежания ненужных ререндеров
@@ -36,6 +38,7 @@ const Profile = (props: propsType) => {
                 updateStatus={props.updateStatus}
                 saveProfile={props.saveProfile}
                 error={props.error}
+                isEditProfileWasSuccesfull={props.isEditProfileWasSuccesfull}
             />
             <MyPosts
                 profilePage={props.profilePage}

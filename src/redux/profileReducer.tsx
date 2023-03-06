@@ -30,10 +30,13 @@ export const profileActions = {
         type: 'SAVE_PHOTO_SUCCES',
         photos,
     } as const),
-    setProfileError: (error: any) => ({
+    setProfileError: (error: Array<string> | boolean) => ({
         type: 'SET_PROFILE_ERROR',
         error,
     } as const),
+    setEditProfile: () => ({
+        type: 'SET_EDIT_PROFILE_MODE',        
+    }as const)
 }
 
 
@@ -86,31 +89,32 @@ export const saveProfile = (profile: profileType): ThunkType => async (dispatch,
 
     // Слизано, работает, но при передаче в компоненту реакт ругается, что пропс
     //является обьектом, что недопустимо о_О
-    const getErrors = (messages: any): object => {
-        let errors = Object.keys(messages).reduce((acc, key) => {
-            let errorMessage = messages[key]
-                .split('>')[1]
-                .toLowerCase()
-                .slice(0, -1);
-            // console.log([errorMessage], messages[key]);
-            return { ...acc, [errorMessage]: messages[key] };
-        }, {});
-        // console.log(errors);
-        // let newErr = Object.keys(errors).map(e => e[e.errors[e]])
-        // console.log(newErr);
-        return errors;
-    };
+
+    // const getErrors = (messages: any): object => {
+    //     let errors = Object.keys(messages).reduce((acc, key) => {
+    //         let errorMessage = messages[key]
+    //             .split('>')[1]
+    //             .toLowerCase()
+    //             .slice(0, -1);
+    //         return { ...acc, [errorMessage]: messages[key] };
+    //     }, {});
+    //     console.log(errors);
+    //     return errors;
+    // };
 
     if (response.resultCode === resultCodesEnum.success) {
         if (userId !== null) {
-            dispatch(showProfile(userId))
+            dispatch(showProfile(userId))           
+            dispatch(profileActions.setEditProfile())
+            dispatch(profileActions.setProfileError(false))
         } else {
             throw new Error('userId cant be null')
         }
+        
     } else if (response.resultCode === resultCodesEnum.error) {
         let message = response.messages;
-        // dispatch(setProfileError(getErrors(message)))
-        dispatch(profileActions.setProfileError(getErrors(message)));
+        // dispatch(profileActions.setProfileError(getErrors(message)));
+        dispatch(profileActions.setProfileError(message));
     }
 };
 
@@ -122,10 +126,10 @@ let initialState = {
         { id: 3, message: 'Hahahhaha', likes: 1 },
         { id: 4, message: 'l2p nub', likes: 420 },
     ] as Array<postDataType>,
-
-    profile: false as profileType | boolean,
-    status: false as string | boolean,
-    error: false as string | boolean,
+    isEditProfileWasSuccesfull: false as boolean,
+    profile: undefined as profileType | undefined,
+    status: undefined as string | undefined,
+    error: false as Array<string> | boolean,
 };
 
 
@@ -169,6 +173,12 @@ const profileReducer = (state = initialState, action: profileActionsType): profi
                 ...state,
                 error: action.error,
             };
+        }
+        case 'SET_EDIT_PROFILE_MODE':{
+            return {
+                ...state,
+                isEditProfileWasSuccesfull: true
+            }
         }
         default:
             return state;

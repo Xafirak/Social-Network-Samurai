@@ -11,8 +11,7 @@ type userPropsType = {
     onProgress: Array<number>
     toggleFollowUnfollow: (a: number, b: string) => void
 }
-let User = ({ user, onProgress, toggleFollowUnfollow }: userPropsType) => {
-
+let User: React.FC<userPropsType> = ({ user, onProgress, toggleFollowUnfollow }) => {
 
     return (
         <div>

@@ -35,11 +35,11 @@ type mapAppPropsType = ReturnType<typeof MapStateToProps>
 type dispatchAppPropsType = {
     initializeApp: () => void
 }
+/// Косяки
+// ProfileDataForm
 
 class App extends Component<mapAppPropsType & dispatchAppPropsType> {
 
-    // поставил встроенный механизм, на роуты - предохранитель(Error Boundaries) 
-    // ErrorCatch, но не знаю как получить ошибку, чтобы проверить работоспособность
     // promiseRejectionEvent - хз какой тип ставить
     catchAllUnhandledErrors = (promiseRejectionEvent: any) => {
         alert('Error happens');
@@ -86,7 +86,7 @@ class App extends Component<mapAppPropsType & dispatchAppPropsType> {
                             <Route path="/news" element={<News />} />
                             <Route path="/music" element={<Music />} />
                             <Route path="/settings" element={<Settings />} />
-                            <Route path="/users" element={<UsersContainer pageTitle={'Самураи'} />} />
+                            <Route path="/users" element={<UsersContainer pageTitle={'Самураи!'} />} />
                             <Route path="/login" element={<Login />} />
                             <Route
                                 path="*"
@@ -148,3 +148,7 @@ const SamuraiAppJS: React.FC = () => {
 };
 
 export default SamuraiAppJS;
+
+
+/// Косяки
+// ProfileDataForm

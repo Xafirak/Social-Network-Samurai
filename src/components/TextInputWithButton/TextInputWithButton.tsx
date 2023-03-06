@@ -10,7 +10,7 @@ type TextInputWithButtonPropsType = {
 }
 
 const TextInputWithButton: React.FC<TextInputWithButtonFormType, TextInputWithButtonPropsType> = (props) => {
-    // console.log(props);
+
     let addNewMessage = (data) => {
         props.addMessage(data.messageBody);
     };
@@ -46,12 +46,6 @@ const TextInputWithButton: React.FC<TextInputWithButtonFormType, TextInputWithBu
                             Textarea,
                             'Твой ответ...'
                         )}
-                        {/* <Field
-                            validate={composeValidators(required, maxLength10)}
-                            name={'messageBody'}
-                            component={Textarea}
-                            placeholder="Твой ответ..."
-                        /> */}
                     </div>
                     <div className="">
                         <button>CLICK !</button>

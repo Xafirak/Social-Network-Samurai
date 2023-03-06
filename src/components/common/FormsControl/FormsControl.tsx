@@ -47,7 +47,7 @@ const FormControl: React.FC<formControlPropsType> = ({ meta, ...props }) => {
     );
 };
 
-
+export type getStringKeys<T> = Extract<keyof T, string>
 
 export function createField<formKeysType extends string>(
     validators: FieldValidator<validatorType> | undefined,

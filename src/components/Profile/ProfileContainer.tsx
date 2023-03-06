@@ -1,4 +1,4 @@
-
+//@ts-nocheck
 import React from 'react';
 import Profile from './Profile';
 import { connect } from 'react-redux';
@@ -18,7 +18,7 @@ import { profileType } from '../../types/types';
 
 
 
-// Не используется! Переписал это классовую компоненту 
+// Не используется! Переписал эту классовую компоненту 
 // в функциональную ProfileFUNC
 
 
@@ -87,18 +87,23 @@ class ProfileContainer extends React.Component<ProfileContainerPropsType> {
 type ProfileContainerPropsType = mapStateToPropsType &
     mapDispatchToPropsType & routerPropsType
 
-type mapStateToPropsType = {
-    profilePage: {}
-    profile: profileType | boolean
+type mapStateToPropsType = {    
+    profile: profileType 
     status: string | boolean
     authorizedUserId: number | null
     isAuth: boolean
     error: boolean | string,
 }
+type mapStateToProps = {
+    profilePage: profileInitialStateType
+    authorizedUserId: number | null
+    isAuth: boolean
+    error: boolean | string
+}
 type mapDispatchToPropsType = {
     showProfile: (a: number) => void
     getStatus: (a: number) => void
-    updateStatus: (status: string | boolean) => void
+    updateStatus: (status: string | undefined) => void
     addActionCreator: () => void
     savePhoto: () => void
     saveProfile: () => void

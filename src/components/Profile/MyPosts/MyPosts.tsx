@@ -3,13 +3,14 @@ import React from 'react';
 import Post from './Post/Post';
 import cl from './MyPosts.module.css';
 import TextInputWithButton from '../../TextInputWithButton/TextInputWithButton';
+import { profileInitialStateType } from '../../../redux/profileReducer';
 
 type myPostsPropsType = {
-    profilePage: any
+    profilePage: profileInitialStateType
     addMessage: (message: string) => void
 
 }
-const MyPosts = (props: myPostsPropsType) => {
+const MyPosts: React.FC<myPostsPropsType> = (props) => {
     return (
         <div className={cl.postBlock}>
             {props.profilePage.postData.map((el: any) => {
@@ -18,7 +19,6 @@ const MyPosts = (props: myPostsPropsType) => {
                         <Post
                             message={el.message}
                             likes={el.likes}
-                            // id={el.id}
                             key={el.id}
                         />
                     </div>

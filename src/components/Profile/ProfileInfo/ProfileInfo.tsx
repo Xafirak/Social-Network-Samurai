@@ -7,23 +7,24 @@ import ProfileStatusWithHooks from './ProfileStatusWithHooks';
 import { useState } from 'react';
 import ProfileDataForm from './ProfileDataForm';
 import { ChangeEvent } from 'react';
+import { contactsType, profileType } from '../../../types/types';
+import { profileInitialStateType } from '../../../redux/profileReducer';
+
 
 type propsType = {
-    profile: any
-    status: string
+    profile: profileType | undefined
+    status: string | undefined
     isOwner: boolean
-    savePhoto: () => void
-    saveProfile: (formData: formDataType) => void
-    error: any;
-    profilePage?: any;
-    updateStatus: (status: string) => void
+    savePhoto: (photos: File) => void
+    saveProfile: (profile: profileType) => void
+    error: Array<string> | boolean
+    profilePage?: profileInitialStateType;
+    updateStatus: (status: string | undefined) => void
+    isEditProfileWasSuccesfull: boolean
 }
 
-type formDataType = {
 
-}
-
-const ProfileInfo = ({
+const ProfileInfo: React.FC<propsType> = ({
     profile,
     status,
     updateStatus,
@@ -31,27 +32,32 @@ const ProfileInfo = ({
     savePhoto,
     saveProfile,
     error,
-}: propsType) => {
+    isEditProfileWasSuccesfull,
+}) => {
 
     const [editMode, setEditMode] = useState(false);
+
 
     if (!profile) {
         return <Preloader />;
     }
 
     const onMainPhotoSelected = (e: ChangeEvent<HTMLInputElement>) => {
-        //@ts-ignore
-        if (e.target.files.length) {
-            //@ts-ignore
+        if (e.target.files?.length) {
             savePhoto(e.target.files[0]);
         }
     };
-    const onSubmit = (formData: formDataType) => {
-        // console.log(formData);
+
+    const onSubmit = (formData: profileType) => {
         saveProfile(formData);
-        setEditMode(false);
-    };
-    // ДЗ - добавить эррор к определенному полю, урок 97 1:07:54
+        console.log(isEditProfileWasSuccesfull);
+
+        if (isEditProfileWasSuccesfull === true) {
+            setEditMode(false)
+        }
+    }
+
+
     return (
         <div className="profileInfo">
             <div>
@@ -104,12 +110,14 @@ const ProfileInfo = ({
 };
 
 type profileDataPropType = {
-    profile: any
+    profile: profileType
     isOwner: boolean
     activateEditMode: () => void
 }
 
-const ProfileData = ({ profile, isOwner, activateEditMode }: profileDataPropType) => {
+const ProfileData: React.FC<profileDataPropType> = ({ profile, isOwner, activateEditMode }) => {
+   
+
     return (
         <div>
             {isOwner ? (
@@ -133,7 +141,7 @@ const ProfileData = ({ profile, isOwner, activateEditMode }: profileDataPropType
                             <Contact
                                 key={key}
                                 contactName={key}
-                                contactURL={profile.contacts[key]}
+                                contactURL={profile.contacts[key as keyof contactsType]}
                             />
                         );
                     })}
@@ -161,7 +169,7 @@ type contactPropsType = {
     contactName: string
     contactURL: string
 }
-const Contact = ({ contactName, contactURL }: contactPropsType) => {
+const Contact: React.FC<contactPropsType> = ({ contactName, contactURL }) => {
     return (
         <div>
             <div className={classes.contact}>

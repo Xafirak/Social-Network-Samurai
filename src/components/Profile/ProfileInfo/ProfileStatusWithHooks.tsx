@@ -5,8 +5,8 @@ import cl from './ProfileInfo.module.css';
 import { ChangeEvent } from 'react';
 
 type propsType = {
-    status: string
-    updateStatus: (status: string) => void
+    status: string | undefined
+    updateStatus: (status: string | undefined) => void
 }
 
 const ProfileStatusWithHooks = (props: propsType) => {

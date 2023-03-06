@@ -1,4 +1,4 @@
-// @ts-nocheck
+
 import React from 'react';
 import {
     createField,
@@ -7,12 +7,18 @@ import {
 } from './../../common/FormsControl/FormsControl';
 import { Form } from 'react-final-form';
 import classes from './ProfileInfo.module.css';
+import { profileType } from '../../../types/types';
 
-///////
 
-/////////////
+type profileDataFormType = {
+    onSubmit: (formData: profileType) => void
+    profile: profileType
+    error: Array<string> | boolean
+}
+type ProfileTypeKeys = keyof profileType
 
-const ProfileDataForm = ({ onSubmit, profile, error }) => {
+const ProfileDataForm: React.FC<profileDataFormType> = ({ onSubmit, profile, error }) => {
+
     // очередная попытка сделать валидацию ошибки, по обьекту contacts не работают
     // ни 'map' ни 'forEach', невозможно проитерироватся
     // let contacts = profile.contacts;
@@ -52,7 +58,7 @@ const ProfileDataForm = ({ onSubmit, profile, error }) => {
     //         }, {});
     //         console.log(errors);
     //         return errors;
-    //     }
+    // }
     // };
     return (
         <Form
@@ -63,15 +69,16 @@ const ProfileDataForm = ({ onSubmit, profile, error }) => {
                     <div>
                         <button>Save changes</button>
                     </div>
-                    {/* {error && <div className={classes.formError}>{error || error.map(e=>{return })}</div>} */}
+                    {/* @ts-ignore незнаю как решить эту проблему */}
+                    {error && <div className={classes.formError}>{error || error.map(e => e)}</div>}
                     <div>
                         <b>Full Name</b>
-                        {createField(null, 'fullName', Input, 'Full name')}
+                        {createField(undefined, 'fullName', Input, 'Full name')}
                     </div>
                     <div>
                         <b>Looking for a job</b>
-                        {createField(
-                            null,
+                        {createField<ProfileTypeKeys>(
+                            undefined,
                             'lookingForAJob',
                             Input,
                             'Do you need a job?',
@@ -80,8 +87,8 @@ const ProfileDataForm = ({ onSubmit, profile, error }) => {
                     </div>
                     <div>
                         <b>Job Description</b>
-                        {createField(
-                            null,
+                        {createField<ProfileTypeKeys>(
+                            undefined,
                             'lookingForAJobDescription',
                             Textarea,
                             'describe your dream job'
@@ -89,8 +96,8 @@ const ProfileDataForm = ({ onSubmit, profile, error }) => {
                     </div>
                     <div>
                         <b>About me</b>
-                        {createField(
-                            null,
+                        {createField<ProfileTypeKeys>(
+                            undefined,
                             'aboutMe',
                             Textarea,
                             'Some details about you'
@@ -107,8 +114,9 @@ const ProfileDataForm = ({ onSubmit, profile, error }) => {
                                         )}
                                     </b>
                                     :
+                                    {/* хз как типизировать этот createField */}
                                     {createField(
-                                        null,
+                                        undefined,
                                         'contacts.' + key,
                                         Textarea,
                                         key

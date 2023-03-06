@@ -7,7 +7,7 @@ type likeBtnPropstype ={
 }
 
 
-const LikeBtn = (props:likeBtnPropstype) => {
+const LikeBtn:React.FC<likeBtnPropstype> = (props) => {
     const [counter, setCounter] = useState(props.likeCount)
     
     function increaseCount () {

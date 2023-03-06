@@ -18,16 +18,14 @@ import cl from './Users.module.css'
 
 type ownPropsPtype = {
     pageTitle: string
-
 }
+
 type mapDispatchPropsType = {
-
     getUsers: (pageSize: number, currentPage: number) => void
-    toggleFollowUnfollow: () => void
-
+    toggleFollowUnfollow: (userId: number, type: string) => void
 }
-type mapStatePropsType = {
 
+type mapStatePropsType = {
     pageSize: number
     currentPage: number
     totalUsers: number
@@ -38,7 +36,7 @@ type mapStatePropsType = {
 
 type PropsType = mapStatePropsType & mapDispatchPropsType & ownPropsPtype
 
-class UsersContainer extends React.Component<PropsType> {
+class UsersContainer extends React.Component<PropsType>{
     componentDidMount() {
         const { pageSize, currentPage } = this.props;
         this.props.getUsers(pageSize, currentPage);
@@ -84,8 +82,8 @@ let mapStateToProps = (state: AppStateType): mapStatePropsType => {
         onProgress: getOnProgress(state),
     };
 };
-
-export default compose<React.ComponentType>(
+//Не могу поставить React.ComponentType иначе ругается на входящий пропс
+export default compose<React.ElementType>(
     connect(mapStateToProps, {
         getUsers,
         toggleFollowUnfollow,

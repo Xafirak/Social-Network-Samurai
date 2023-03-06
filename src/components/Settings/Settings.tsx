@@ -5,11 +5,11 @@ type settingsPropsType = {
 
 }
 
-const Settings = (props:settingsPropsType) => {
-    return (      
+const Settings: React.FC<settingsPropsType> = (props) => {
+    return (
         <div className={cl.setBody}>
-            tweaking_shit_here    
-        </div>  
+            tweaking_shit_here
+        </div>
     )
 }
 

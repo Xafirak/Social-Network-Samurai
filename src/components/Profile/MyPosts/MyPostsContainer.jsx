@@ -6,7 +6,27 @@ import TextInputWithButton from '../../TextInputWithButton/TextInputWithButton';
 import { connect } from 'react-redux';
 import MyPosts from './MyPosts';
 
+
+
+
 //Читай ниже, компонента  не нужна  =================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 const MyPostsContainer = (props) => {
     const posts = props.state.profilePage.postData.map((el) => {
@@ -51,6 +71,7 @@ const MyPostsContainer = (props) => {
 
 // const MyPostsContainer = connect(mapStateToProps, mapDispatchToProps)(MyPosts)
 // export default MyPostsContainer;
+
 
 //==================================================
 // не нужен ибо в ProfileContainer приходит вся необходимая дата

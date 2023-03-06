@@ -4,11 +4,11 @@ import LikeBtn from "../../../Buttons/LikeBtn";
 import cl from './Post.module.css'
 
 
-type postPropstype ={
+type postPropstype = {
     message: string
     likes: number
 }
-const Post = (props: postPropstype) => {
+const Post: React.FC<postPropstype> = (props) => {
     return (
         <div>
             <div className={cl.otherPosts}>
