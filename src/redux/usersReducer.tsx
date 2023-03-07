@@ -155,11 +155,11 @@ export const toggleFollowUnfollow = (userId: number, type: string): baseThunkTyp
 
     let data = await usersAPI.toggleFollowUser(userId, type);
 
-    if (data?.resultCode === resultCodesEnum.error && type === 'unfollow') {
+    if (data?.resultCode === resultCodesEnum.success) {
         dispatch(actions.toggleFollow(userId));
     }
-    if (data?.resultCode === resultCodesEnum.error && type === 'follow') {
-        dispatch(actions.toggleFollow(userId));
+    if (data?.resultCode === resultCodesEnum.error) {
+        console.log(data.messages);                
     }
     dispatch(actions.toggleProgress(false, userId));
 };
