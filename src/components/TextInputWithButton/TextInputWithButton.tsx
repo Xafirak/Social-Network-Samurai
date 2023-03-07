@@ -1,17 +1,20 @@
-// @ts-nocheck пока что
+
+import { FieldValidator } from 'final-form';
 import React from 'react';
 import { Form, Field } from 'react-final-form';
-import { required } from '../../utils/validators/validators';
+import { iniialStateType } from '../../redux/dialogsReducer';
+import { required, validatorType } from '../../utils/validators/validators';
 import { maxLengthCreator } from '../../utils/validators/validators';
 import { createField, Textarea } from '../common/FormsControl/FormsControl';
 
 type TextInputWithButtonPropsType = {
     addMessage: (message: string) => void
+    dialogPage?: iniialStateType
 }
 
-const TextInputWithButton: React.FC<TextInputWithButtonFormType, TextInputWithButtonPropsType> = (props) => {
+const TextInputWithButton: React.FC<TextInputWithButtonPropsType> = (props) => {
 
-    let addNewMessage = (data) => {
+    let addNewMessage = (data: dataType) => {
         props.addMessage(data.messageBody);
     };
     //Возможно ли "нарисовать" строки value и placeholder в свойствах textarea
@@ -26,11 +29,11 @@ const TextInputWithButton: React.FC<TextInputWithButtonFormType, TextInputWithBu
 
     // Эта хрень(validate) не принимает валидаторы по одному,поэтому НАДО создать
     // функцию которая соберет все валидаторы в себя
-    const composeValidators =
-        (...validators) =>
-            (value) =>
+    const composeValidators: FieldValidator<validatorType> =
+        (...validators: Array<any>) =>
+            (value: string) =>
                 validators.reduce(
-                    (error, validator) => error || validator(value),
+                    (error: string | boolean, validator) => error || validator(value),
                     undefined
                 );
 
@@ -41,7 +44,8 @@ const TextInputWithButton: React.FC<TextInputWithButtonFormType, TextInputWithBu
                 <form onSubmit={handleSubmit}>
                     <div>
                         {createField<TextInputWithButtonValueKeys>(
-                            composeValidators(required, maxLength10),
+                            // @ts-ignore незнаю как решить TS ошибку
+                            composeValidators(maxLength10),
                             'messageBody',
                             Textarea,
                             'Твой ответ...'
@@ -56,11 +60,12 @@ const TextInputWithButton: React.FC<TextInputWithButtonFormType, TextInputWithBu
     );
 };
 
-export type TextInputWithButtonFormType = {
+
+export type dataType = {
     messageBody: string
 }
 
 
-type TextInputWithButtonValueKeys = keyof TextInputWithButtonFormType
+type TextInputWithButtonValueKeys = keyof dataType
 
 export default TextInputWithButton;

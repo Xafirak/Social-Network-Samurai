@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { compose } from "redux";
 import { WithAuthRedirect } from "../../HOC/AuthRedirect";
 import Dialogs from "./Dialogs";
-import { dialogActions, iniialStateType } from "./../../redux/dialogsReducer"
+import { dialogActions } from "./../../redux/dialogsReducer"
 import { AppStateType } from "../../redux/reduxStore";
 
 let mapStateToProps = (state: AppStateType) => {

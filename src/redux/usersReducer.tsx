@@ -24,7 +24,7 @@ let initialState = {
 //  Рефакторинг : идет уменьшение кода вместо переписания \ создания
 // существующих, как правильно - пересоздавать или переписывать
 
-const usersReducer = (state = initialState, action: ActionTypes): initialStateType => {
+export const usersReducer = (state = initialState, action: ActionTypes): initialStateType => {
     switch (action.type) {
         case 'TOGGLE_FOLLOW': {
             return {
@@ -107,7 +107,7 @@ const usersReducer = (state = initialState, action: ActionTypes): initialStateTy
             return state;
     }
 };
-type initialStateType = typeof initialState
+export type initialStateType = typeof initialState
 type ActionTypes = InferActionsTypes<typeof actions>
 
 

@@ -9,6 +9,7 @@ import { useEffect } from 'react';
 import { AppStateType } from '../../redux/reduxStore';
 import { profileInitialStateType } from '../../redux/profileReducer';
 import { profileType } from '../../types/types';
+import { routerPropsType } from '../../App';
 
 // надо ли в функциональной компоненте разделять пропсы примитивные и  
 // пропсы-методы (как в классовой) 
@@ -20,7 +21,7 @@ const ProfileFUNC: React.FC<profilePropsType> = (props) => {
     let anotherUserId = props.router.params.userId;
     let userId = props.authorizedUserId;
 
-    function refreshingProfile(a: number | null, b: number | null) {
+    function refreshingProfile(a: number, b: number) {
         if (!a) {
             a = b;
             if (!b) {
@@ -33,7 +34,7 @@ const ProfileFUNC: React.FC<profilePropsType> = (props) => {
     }
 
     useEffect(() => {
-        refreshingProfile(anotherUserId, userId);
+        refreshingProfile(anotherUserId as number, userId as number);
     }, [anotherUserId, userId]);
     // ниже - попытка убрать ненужные ререндеры (ненужные ли?)
     return (
@@ -57,13 +58,7 @@ const ProfileFUNC: React.FC<profilePropsType> = (props) => {
     );
 };
 
-type mapStateToPropsType = {
-    profilePage: profileInitialStateType
-    authorizedUserId: number | null
-    isAuth: boolean
-    error: Array<string> | boolean
-    isEditProfileWasSuccesfull: boolean
-}
+
 
 let mapStateToProps = (state: AppStateType): mapStateToPropsType => ({
     profilePage: state.profilePage,
@@ -73,34 +68,35 @@ let mapStateToProps = (state: AppStateType): mapStateToPropsType => ({
     isEditProfileWasSuccesfull: state.profilePage.isEditProfileWasSuccesfull
 });
 
-type profilePropsType = withRouterPropsType & mapStateToPropsType & mapDispatchToPropsType
-type withRouterPropsType = {
-    router: {
-        params: { userId: number; }
-        navigate: any
-        location: any
-    }
+type profilePropsType = routerPropsType & mapStateToPropsType & mapDispatchToPropsType
+
+type mapStateToPropsType = {
+    profilePage: profileInitialStateType
+    authorizedUserId: number | null
+    isAuth: boolean
+    error: Array<string> | boolean
+    isEditProfileWasSuccesfull: boolean
 }
-// error: boolean | string
-// profilePage: profileInitialStateType;
-// authorizedUserId: number
+
+
 type mapDispatchToPropsType = {
     savePhoto: (photos: File) => void
-    saveProfile: (profile: profileType) => void
+    saveProfile: (profile: profileType) => Promise<any>
     showProfile: (a: number | null) => void
     getStatus: (a: number | null) => void
     updateStatus: (status: string | undefined) => void
     addActionCreator: (messageBody: string) => void
 }
+
 // wrapper идентичный натуральному, без пальмового масла
-//@ts-ignore
-let withRouter = (Comp) => {
-    function ComponentWithRouterProp(props: any) {
+
+let withRouter = (Comp: React.FC) => {
+    function ComponentWithRouterProp(props: routerPropsType) {
         let location = useLocation();
         let navigate = useNavigate();
         let params = useParams();
         //@ts-ignore
-        return <Comp {...props} router={{ location, navigate, params }} />;
+        return <Comp {...props} router={{location,navigate,params}} />;
     }
     return ComponentWithRouterProp;
 };

@@ -7,9 +7,10 @@ export const required: validatorType = (value) => {
 };
 
 export const maxLengthCreator = (maxLength: number): validatorType => (value) => {
-    return value.length > maxLength
+    return value ? value.length > maxLength
         ? `Максимальное кол-во символов - ${maxLength}`
-        : undefined;
+        : undefined : undefined
+
 };
 
 

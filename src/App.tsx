@@ -5,16 +5,12 @@ import News from './components/News/News';
 import Music from './components/Music/Music';
 import Settings from './components/Settings/Settings';
 import NavbarContainer from './components/Navbar/NavbarContainer';
-
-// import DialogsContainter from './components/Dialogs/DialogsContainter';
-// import ProfileContainer from './components/Profile/ProfileContainer';
-
 import UsersContainer from './components/Users/UsersContainer';
-import Hooks from './hooks/Hooks';
-import Hover from './hooks/Hover';
-import List from './hooks/List';
-import Shit from './hooks/Shit';
-import AnothaSht from './hooks/anothaSht';
+import Hooks from './hooks(not part of project)/Hooks';
+import Hover from './hooks(not part of project)/Hover';
+import List from './hooks(not part of project)/List';
+import Shit from './hooks(not part of project)/Shit';
+import AnothaSht from './hooks(not part of project)/anothaSht';
 import HeaderContainer from './components/Header/HeaderContainer';
 import Login from './components/Login/Login';
 import { connect } from 'react-redux';
@@ -32,11 +28,13 @@ import { Navigate } from 'react-router-dom';
 import ErrorCatch from './ErrorCatch';
 
 type mapAppPropsType = ReturnType<typeof MapStateToProps>
+
 type dispatchAppPropsType = {
     initializeApp: () => void
 }
 /// Косяки
 // ProfileDataForm
+// TextInputWithButton
 
 class App extends Component<mapAppPropsType & dispatchAppPropsType> {
 
@@ -112,13 +110,24 @@ const ProfileFUNC = React.lazy(() =>
     import('./components/Profile/ProfileFUNC')
 );
 
-
+export type routerPropsType = {
+    props: any
+    router: {
+        location: () => void
+        navigate: () => void
+        params: {
+            userId: number | null
+        }
+    }
+    
+}
 
 let withRouter = (Comp: React.FC) => {
-    function ComponentWithRouterProp(props:any) {
+    function ComponentWithRouterProp(props: routerPropsType) {
         let location = useLocation();
         let navigate = useNavigate();
         let params = useParams();
+        //@ts-ignore
         return <Comp {...props} router={{ location, navigate, params }} />;
     }
     return ComponentWithRouterProp;
@@ -126,7 +135,7 @@ let withRouter = (Comp: React.FC) => {
 
 
 
-const MapStateToProps = (state:AppStateType) => ({
+const MapStateToProps = (state: AppStateType) => ({
     initialized: state.app.initialized,
 });
 
@@ -148,7 +157,3 @@ const SamuraiAppJS: React.FC = () => {
 };
 
 export default SamuraiAppJS;
-
-
-/// Косяки
-// ProfileDataForm

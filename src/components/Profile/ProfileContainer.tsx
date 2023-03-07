@@ -11,6 +11,7 @@ import addActionCreator from "../../redux/profileReducer"
 import Preloader from '../common/Preloader/preloader';
 import { AppStateType } from '../../redux/reduxStore';
 import { profileType } from '../../types/types';
+import { routerPropsType } from '../../App';
 
 
 
@@ -120,18 +121,10 @@ let mapStateToProps = (state: AppStateType): mapStateToPropsType => ({
 
 });
 
-type routerPropsType = {
-    props: any
-    router: {
-        location: () => void
-        navigate: () => void
-        params: {
-            userId: number | null
-        }
-    }
-}
+
+
 // wrapper идентичный натуральному, без пальмового масла
-let withRouter = (Comp: any) => {
+let withRouter = (Comp: React.FC) => {
     function ComponentWithRouterProp(props: routerPropsType) {
         let location = useLocation();
         let navigate = useNavigate();
@@ -153,5 +146,4 @@ export default compose(
         saveProfile,
     }),
     withRouter
-    // WithAuthRedirect
 )(ProfileContainer);

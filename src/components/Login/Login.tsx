@@ -28,7 +28,7 @@ const LoginForm: React.FC<loginFormPropsType> = ({ onSubmit, error, captchaUrl }
     const composeValidators: FieldValidator<validatorType> = (...validators: Array<any>) =>
         (value: string) =>
             validators.reduce(
-                (error: string | boolean, validator: (value: string) => string | undefined) => error || validator(value),
+                (error: string | boolean, validator: validatorType) => error || validator(value),
                 undefined
             );
 

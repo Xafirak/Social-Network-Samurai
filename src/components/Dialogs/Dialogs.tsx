@@ -14,7 +14,7 @@ type propsType = {
 
 }
 
-const Dialogs = (props: propsType) => {
+const Dialogs:React.FC<propsType> = (props) => {
 
     const users = props.dialogPage.usersData.map((el) => {
         return (
@@ -38,7 +38,7 @@ const Dialogs = (props: propsType) => {
             <div className={cl.messageColumn}>
                 {messages}
                 <TextInputWithButton
-                    dialog
+                    
                     dialogPage={props.dialogPage}
                     addMessage={props.addDialogCreator}
                 />

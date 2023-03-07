@@ -10,7 +10,7 @@ type headerPropsType = {
     Logout: () => void
 }
 
-const Header = (props: headerPropsType) => {
+const Header:React.FC<headerPropsType> = (props) => {
 
 
     return (
