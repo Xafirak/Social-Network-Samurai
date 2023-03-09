@@ -4,8 +4,9 @@ import { getItemsType, instance, APIResponseType } from "./api";
 
 
 export const usersAPI = {
-    getUsers(pageSize = 10, currentPage = 1) {
-        return instance.get<getItemsType>(`users?count=${pageSize}&page=${currentPage}`)
+    getUsers(pageSize = 10, currentPage = 1, term: string = '', friend: null | boolean = null) {
+
+        return instance.get<getItemsType>(`users?count=${pageSize}&page=${currentPage}&term=${term}` + (friend == null ? '' : `&friend=${friend}`))
             .then(res => res.data);
     },
     toggleFollowUser(id: number, type: string) {

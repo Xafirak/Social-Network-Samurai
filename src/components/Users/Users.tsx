@@ -4,6 +4,8 @@ import cl from './Users.module.css';
 import Paginator from '../common/Paginator/Paginator';
 import User from './User';
 import { userType } from '../../types/types';
+import UsersSearchForm from './UsersSearchForm';
+import { filterType } from '../../redux/usersReducer';
 
 type PropsType = {
     totalUsers: number
@@ -13,6 +15,7 @@ type PropsType = {
     users: Array<userType>
     onProgress: Array<number>
     toggleFollowUnfollow: (a: number, b: string) => void
+    onFilterChanged: (filter: filterType) => void
 }
 
 let Users: React.FC<PropsType> = ({
@@ -23,26 +26,37 @@ let Users: React.FC<PropsType> = ({
     users,
     onProgress,
     toggleFollowUnfollow,
+    onFilterChanged,
     ...props
 }) => {
     return (
         <div className={cl.body}>
-            <Paginator
-                currentPage={currentPage}
-                totalItems={totalUsers}
-                onPageChanged={onPageChanged}
-                pageSize={pageSize}
-            />
-            {users.map((u) => (
-                <User
-                    user={u}
-                    key={u.id}
-                    onProgress={onProgress}
-                    toggleFollowUnfollow={toggleFollowUnfollow}
+
+            <div className={cl.paginator}>
+                <div>
+                    <UsersSearchForm onFilterChanged={onFilterChanged} />
+                </div>
+                <Paginator
+                    currentPage={currentPage}
+                    totalItems={totalUsers}
+                    onPageChanged={onPageChanged}
+                    pageSize={pageSize}
                 />
-            ))}
+            </div>
+            <div className={cl.listOfUsers}>
+                {users.map((u) => (
+                    <User
+                        user={u}
+                        key={u.id}
+                        onProgress={onProgress}
+                        toggleFollowUnfollow={toggleFollowUnfollow}
+                    />
+                ))}
+            </div>
         </div>
     );
 };
+
+
 
 export default Users;

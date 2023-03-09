@@ -12,6 +12,10 @@ let initialState = {
     currentPage: 1,
     isFetching: false,
     onProgress: [] as Array<number>,  // array of users ids
+    filter: {
+        term: '',
+        friend: null as null | boolean  
+    }
 };
 
 
@@ -90,6 +94,9 @@ export const usersReducer = (state = initialState, action: ActionTypes): initial
         case 'TOGGLE_IS_FETCHING': {
             return { ...state, isFetching: action.isFetching };
         }
+        case 'users/SET_FILTER': {
+            return { ...state, filter: action.payload };
+        }
         case 'TOGGLE_IS_PROGRESS': {
             return {
                 ...state,
@@ -108,6 +115,7 @@ export const usersReducer = (state = initialState, action: ActionTypes): initial
     }
 };
 export type initialStateType = typeof initialState
+export type filterType = typeof initialState.filter;
 type ActionTypes = InferActionsTypes<typeof actions>
 
 
@@ -115,6 +123,8 @@ export const actions = {
     toggleFollow: (userId: number) => ({ type: 'TOGGLE_FOLLOW', userId } as const),
 
     setUsers: (users: Array<userType>) => ({ type: 'SET_USERS', users } as const),
+    
+    setFilter: (filter: filterType) => ({ type: 'users/SET_FILTER', payload: filter } as const),
 
     setPage: (currentPage: number) => ({
         type: 'SET_CURRENT_PAGE',
@@ -140,11 +150,13 @@ export const actions = {
 }
 
 
-export const getUsers = (pageSize: number, page: number): baseThunkType<ActionTypes> => async (dispatch, getState) => {
+export const getUsers = (pageSize: number, page: number, filter:filterType): baseThunkType<ActionTypes> => async (dispatch, getState) => {
     dispatch(actions.toggleIsFetching(true));
     dispatch(actions.setPage(page));
-    let data = await usersAPI.getUsers(pageSize, page);
+    dispatch(actions.setFilter(filter))
 
+
+    let data = await usersAPI.getUsers(pageSize, page, filter.term, filter.friend);
     dispatch(actions.setTotalUsers(data.totalCount));
     dispatch(actions.setUsers(data.items));
     dispatch(actions.toggleIsFetching(false));
@@ -159,7 +171,7 @@ export const toggleFollowUnfollow = (userId: number, type: string): baseThunkTyp
         dispatch(actions.toggleFollow(userId));
     }
     if (data?.resultCode === resultCodesEnum.error) {
-        console.log(data.messages);                
+        console.log(data.messages);
     }
     dispatch(actions.toggleProgress(false, userId));
 };

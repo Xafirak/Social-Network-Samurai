@@ -19,3 +19,6 @@ export const getIsFetching = (state: AppStateType) => {
 export const getOnProgress = (state: AppStateType) => {
     return state.usersPage.onProgress
 }
+export const getUsersFilter = (state: AppStateType) => {
+    return state.usersPage.filter
+}

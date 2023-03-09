@@ -1,9 +1,9 @@
 import usersReducer, { actions, initialStateType } from "./usersReducer"
-let state:initialStateType
+let state: initialStateType
 
 
 beforeEach(() => {
-    state  = {
+    state = {
         users: [
             {
                 id: 0, name: 'Dimych0', followed: false, photos: {
@@ -41,18 +41,20 @@ beforeEach(() => {
         currentPage: 1,
         isFetching: false,
         onProgress: [],
-    } 
+        filter: { term: '', friend: null }
+    }
+
 })
 
 test('follow success', () => {
- 
+
     const newState = usersReducer(state, actions.toggleFollow(1))
     expect(newState.users[1].followed).toBeTruthy()
 
 })
 test('unfollow success', () => {
- 
-    const newState = usersReducer(state, actions.toggleFollow(3))    
+
+    const newState = usersReducer(state, actions.toggleFollow(3))
     expect(newState.users[3].followed).toBeFalsy()
 
 })

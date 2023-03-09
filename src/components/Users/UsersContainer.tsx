@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { getUsers, toggleFollowUnfollow } from '../../redux/usersReducer';
+import { filterType, getUsers, toggleFollowUnfollow } from '../../redux/usersReducer';
 import Users from './Users';
 import Preloader from '../common/Preloader/preloader';
 import { compose } from 'redux';
@@ -11,6 +11,7 @@ import {
     getPageSize,
     getTotalUsers,
     getIsFetching,
+    getUsersFilter,
 } from '../../redux/users-selectors';
 import { userType } from '../../types/types';
 import { AppStateType } from '../../redux/reduxStore';
@@ -21,7 +22,7 @@ type ownPropsPtype = {
 }
 
 type mapDispatchPropsType = {
-    getUsers: (pageSize: number, currentPage: number) => void
+    getUsers: (pageSize: number, currentPage: number, filter: filterType) => void
     toggleFollowUnfollow: (userId: number, type: string) => void
 }
 
@@ -32,25 +33,31 @@ type mapStatePropsType = {
     isFetching: boolean
     users: Array<userType>
     onProgress: Array<number>
+    filter: filterType
 }
 
 type PropsType = mapStatePropsType & mapDispatchPropsType & ownPropsPtype
 
 class UsersContainer extends React.Component<PropsType>{
     componentDidMount() {
-        const { pageSize, currentPage } = this.props;
-        this.props.getUsers(pageSize, currentPage);
+        const { pageSize, currentPage, filter } = this.props;
+        this.props.getUsers(pageSize, currentPage, filter);
     }
 
     onPageChanged(page: number) {
-        const { pageSize } = this.props;
-        this.props.getUsers(pageSize, page);
+        const { pageSize, filter } = this.props;
+        this.props.getUsers(pageSize, page, filter);
+    }
+
+    onFilterChanged = (filter: filterType) => {
+        const { pageSize } = this.props
+        this.props.getUsers(pageSize, 1, filter)
     }
 
     render() {
         return (
             <>
-                <h2 className={cl.h2}>{this.props.pageTitle}</h2>
+                <h2 className={cl.h2}>{this.props.pageTitle} (Всего: {this.props.totalUsers} самурайчиков)</h2>
                 {this.props.isFetching ? (
                     <Preloader />
                 ) : (
@@ -61,6 +68,7 @@ class UsersContainer extends React.Component<PropsType>{
                         //
                         onPageChanged={this.onPageChanged.bind(this)}
                         //
+                        onFilterChanged={this.onFilterChanged.bind(this)}
                         currentPage={this.props.currentPage}
                         users={this.props.users}
                         onProgress={this.props.onProgress}
@@ -80,6 +88,7 @@ let mapStateToProps = (state: AppStateType): mapStatePropsType => {
         currentPage: getCurrentPage(state),
         isFetching: getIsFetching(state),
         onProgress: getOnProgress(state),
+        filter: getUsersFilter(state)
     };
 };
 //Не могу поставить React.ComponentType иначе ругается на входящий пропс

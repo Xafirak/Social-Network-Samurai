@@ -41,7 +41,7 @@ let Paginator: React.FC<PropsType> = ({
     let showingRangeOfPages = Math.ceil(pagesCount / portionSize);
     return (
         <div>
-            <h3>You are on {currentPage} page !</h3>
+            <h3>You are on page - {currentPage}  !</h3>
             {pageNumber > 1 ? (
                 <button
                     onClick={() => {
