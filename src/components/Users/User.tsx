@@ -11,7 +11,7 @@ type userPropsType = {
     onProgress: Array<number>
     toggleFollowUnfollow: (a: number, b: string) => void
 }
-let User: React.FC<userPropsType> = ({ user, onProgress, toggleFollowUnfollow }) => {
+export const User: React.FC<userPropsType> = ({ user, onProgress, toggleFollowUnfollow }) => {
 
     return (
         <div>
@@ -63,5 +63,3 @@ let User: React.FC<userPropsType> = ({ user, onProgress, toggleFollowUnfollow })
         </div>
     );
 };
-
-export default User;

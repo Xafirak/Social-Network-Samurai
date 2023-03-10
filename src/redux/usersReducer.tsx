@@ -14,7 +14,7 @@ let initialState = {
     onProgress: [] as Array<number>,  // array of users ids
     filter: {
         term: '',
-        friend: null as null | boolean  
+        friend: null as null | boolean
     }
 };
 
@@ -123,7 +123,7 @@ export const actions = {
     toggleFollow: (userId: number) => ({ type: 'TOGGLE_FOLLOW', userId } as const),
 
     setUsers: (users: Array<userType>) => ({ type: 'SET_USERS', users } as const),
-    
+
     setFilter: (filter: filterType) => ({ type: 'users/SET_FILTER', payload: filter } as const),
 
     setPage: (currentPage: number) => ({
@@ -150,7 +150,7 @@ export const actions = {
 }
 
 
-export const getUsers = (pageSize: number, page: number, filter:filterType): baseThunkType<ActionTypes> => async (dispatch, getState) => {
+export const getUsers = (pageSize: number, page: number, filter: filterType): baseThunkType<ActionTypes> => async (dispatch) => {
     dispatch(actions.toggleIsFetching(true));
     dispatch(actions.setPage(page));
     dispatch(actions.setFilter(filter))

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Form } from 'react-final-form';
-import { connect } from 'react-redux';
+import {  useSelector, useDispatch } from 'react-redux';
 import { Navigate } from 'react-router-dom';
 import { Input } from '../common/FormsControl/FormsControl';
 import { LoginUser } from '../../redux/auth-reducer';
@@ -11,16 +11,23 @@ import {
 } from '../../utils/validators/validators';
 import s from './../common/FormsControl/FormsControl.module.css';
 import { createField } from '../common/FormsControl/FormsControl';
-import { AppStateType } from '../../redux/reduxStore';
+import { AppStateType, DispatchType } from '../../redux/reduxStore';
 import { FieldValidator } from 'final-form';
 
-
+export type loginFromValuesType = {
+    email: string
+    password: string
+    rememberMe: boolean
+    captcha: string
+}
 
 type loginFormPropsType = {
     onSubmit: (a: loginFromValuesType) => void
     error: string | boolean
     captchaUrl: string | null
 }
+
+type loginFormValueKeys = keyof loginFromValuesType
 
 const LoginForm: React.FC<loginFormPropsType> = ({ onSubmit, error, captchaUrl }) => {
     const maxLength = maxLengthCreator(30);
@@ -59,14 +66,6 @@ const LoginForm: React.FC<loginFormPropsType> = ({ onSubmit, error, captchaUrl }
                         'remember me!'
                     )}
                     {captchaUrl && <img src={captchaUrl} alt="" />}
-                    {/* <div>если видно поле без капчи - вся инфа в Login.jsx <br />для входа - тыкни любой символ</div> */}
-
-
-                    {/* ПОЧЕМУ ОНО ИГНОРИТ УСЛОВИЕ??????????????? ВТФ */}
-                    {/* только после добавления 2ого условия '&&' поле ввода исчезло,
-                    но снова косяк - поле не появляется при запрашивании капчи, убрал */}
-
-                    {/* оно пропало, слава яйцам (не TS точно) */}
                     {captchaUrl &&
                         createField<loginFormValueKeys>(
                             undefined,
@@ -91,33 +90,22 @@ const LoginForm: React.FC<loginFormPropsType> = ({ onSubmit, error, captchaUrl }
     );
 };
 
-type mapDispatchPropsType = {
-    LoginUser: (email: string, password: string, rememberMe: boolean, captcha: string) => void
-}
 
-type mapStateToPropsType = {
-    captchaUrl: string | null
-    error: string | boolean
-    isAuth: boolean
-}
+//============================
 
 
-export type loginFromValuesType = {
-    email: string
-    password: string
-    rememberMe: boolean
-    captcha: string
-}
+export const LoginPage: React.FC = (props) => {
 
+    const captchaUrl = useSelector((state: AppStateType) => state.auth.captchaUrl)
+    const isAuth = useSelector((state: AppStateType) => state.auth.isAuth)
+    const error = useSelector((state: AppStateType) => state.auth.error)
+    
+    const dispatch: DispatchType = useDispatch()
 
-type loginFormValueKeys = keyof loginFromValuesType
-
-
-const Login: React.FC<mapStateToPropsType & mapDispatchPropsType> = (props) => {
     const onSubmit = ({ email, password, rememberMe, captcha }: loginFromValuesType) => {
-        props.LoginUser(email, password, rememberMe, captcha);
+        dispatch(LoginUser(email, password, rememberMe, captcha))
     };
-    if (props.isAuth) {
+    if (isAuth) {
         return <Navigate to={'/profile'} />;
     }
 
@@ -130,21 +118,15 @@ const Login: React.FC<mapStateToPropsType & mapDispatchPropsType> = (props) => {
             </div>
             <LoginForm
                 onSubmit={onSubmit}
-                error={props.error}
-                captchaUrl={props.captchaUrl}
+                error={error}
+                captchaUrl={captchaUrl}
             />
         </div>
     );
 };
 
 
-let mapStateToProps = (state: AppStateType): mapStateToPropsType => ({
-    captchaUrl: state.auth.captchaUrl,
-    error: state.auth.error,
-    isAuth: state.auth.isAuth,
-});
 
-export default connect(mapStateToProps, { LoginUser })(Login);
 
 // ДЗ
 // законектить к стору + сделать thunk + сделать API логина для этой страницы

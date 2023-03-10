@@ -1,16 +1,24 @@
 import React from "react";
 import classes from "./Header.module.css";
 import { NavLink } from "react-router-dom";
+import { AppStateType, DispatchType } from "../../redux/reduxStore";
+import { useSelector, useDispatch } from 'react-redux';
+import { Logout } from "../../redux/auth-reducer";
 
-// запросить показ аву, в контейнере
 
-type headerPropsType = {
-    isAuth: boolean
-    login: string | null
-    Logout: () => void
-}
 
-const Header:React.FC<headerPropsType> = (props) => {
+
+export const Header: React.FC = () => {
+
+
+    const isAuth = useSelector((state: AppStateType) => state.auth.isAuth)
+    const login = useSelector((state: AppStateType) => state.auth.login)
+
+    const dispatch: DispatchType = useDispatch()
+
+    const logout = () => {
+        dispatch(Logout())
+    }
 
 
     return (
@@ -21,10 +29,10 @@ const Header:React.FC<headerPropsType> = (props) => {
             />
 
             <div className={classes.loginBlock}>
-                {props.isAuth ? (
+                {isAuth ? (
                     <div>
-                        {props.login} <br />
-                        <button onClick={props.Logout}>Logout</button>
+                        {login} <br />
+                        <button onClick={logout}>Logout</button>
                     </div>
                 ) : (
                     <NavLink to={"login"}>Login</NavLink>
@@ -34,4 +42,3 @@ const Header:React.FC<headerPropsType> = (props) => {
     );
 };
 
-export default Header;

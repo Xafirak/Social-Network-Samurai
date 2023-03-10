@@ -1,18 +1,17 @@
 import React, { Component } from 'react';
-import { HashRouter, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import './App.css';
 import News from './components/News/News';
 import Music from './components/Music/Music';
 import Settings from './components/Settings/Settings';
 import NavbarContainer from './components/Navbar/NavbarContainer';
-import UsersContainer from './components/Users/UsersContainer';
 import Hooks from './hooks(not part of project)/Hooks';
 import Hover from './hooks(not part of project)/Hover';
 import List from './hooks(not part of project)/List';
 import Shit from './hooks(not part of project)/Shit';
 import AnothaSht from './hooks(not part of project)/anothaSht';
-import HeaderContainer from './components/Header/HeaderContainer';
-import Login from './components/Login/Login';
+import { HeaderContainerFunctional } from './components/Header/HeaderContainer';
+import { LoginPage } from './components/Login/Login';
 import { connect } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
@@ -26,6 +25,7 @@ import store, { AppStateType } from './redux/reduxStore';
 import { Suspense } from 'react';
 import { Navigate } from 'react-router-dom';
 import ErrorCatch from './ErrorCatch';
+import { UsersPage } from './components/Users/UsersContainer';
 
 type mapAppPropsType = ReturnType<typeof MapStateToProps>
 
@@ -56,7 +56,7 @@ class App extends Component<mapAppPropsType & dispatchAppPropsType> {
 
         return (
             <div className="app-wrapper">
-                <HeaderContainer />
+                <HeaderContainerFunctional />
                 <NavbarContainer />
                 <div className="app-wrapper-content">
                     <ErrorCatch>
@@ -84,8 +84,8 @@ class App extends Component<mapAppPropsType & dispatchAppPropsType> {
                             <Route path="/news" element={<News />} />
                             <Route path="/music" element={<Music />} />
                             <Route path="/settings" element={<Settings />} />
-                            <Route path="/users" element={<UsersContainer pageTitle={'Самураи!'} />} />
-                            <Route path="/login" element={<Login />} />
+                            <Route path="/users" element={<UsersPage pageTitle={'Самураи!'} />} />
+                            <Route path="/login" element={<LoginPage />} />
                             <Route
                                 path="*"
                                 element={<div>404 NOT FOUND xD</div>}
@@ -110,6 +110,7 @@ const ProfileFUNC = React.lazy(() =>
     import('./components/Profile/ProfileFUNC')
 );
 
+
 export type routerPropsType = {
     props: any
     router: {
@@ -119,7 +120,7 @@ export type routerPropsType = {
             userId: number | null
         }
     }
-    
+
 }
 
 let withRouter = (Comp: React.FC) => {

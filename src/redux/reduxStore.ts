@@ -4,6 +4,7 @@ import {
     combineReducers,
     legacy_createStore,
     ThunkAction,
+    ThunkDispatch,
 } from '@reduxjs/toolkit';
 import profileReducer from './profileReducer';
 import dialogsReducer from './dialogsReducer';
@@ -34,6 +35,10 @@ export type InferActionsTypes<T> = T extends { [key: string]: (...args: any[]) =
 
 
 export type baseThunkType<A extends Action, R=Promise<void>> = ThunkAction<R, AppStateType, unknown, A>
+export type DispatchType = ThunkDispatch<AppStateType, any, Action>
+
+
+
 
 
 // @ts-ignore

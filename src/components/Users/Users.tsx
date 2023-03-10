@@ -2,33 +2,50 @@
 import React from 'react';
 import cl from './Users.module.css';
 import Paginator from '../common/Paginator/Paginator';
-import User from './User';
-import { userType } from '../../types/types';
+import { User } from './User';
 import UsersSearchForm from './UsersSearchForm';
 import { filterType } from '../../redux/usersReducer';
+import { useDispatch, useSelector } from 'react-redux';
+import { getCurrentPage, getPageSize, getTotalUsers, getAllUsers, getOnProgress, getUsersFilter } from './../../redux/users-selectors';
+import { getUsers, toggleFollowUnfollow } from './../../redux/usersReducer';
+import { AppStateType } from '../../redux/reduxStore';
+import { Action, ThunkDispatch } from '@reduxjs/toolkit';
+import { useEffect } from 'react';
 
 type PropsType = {
-    totalUsers: number
-    pageSize: number
-    currentPage: number
-    onPageChanged: (pageNumber: number) => void
-    users: Array<userType>
-    onProgress: Array<number>
-    toggleFollowUnfollow: (a: number, b: string) => void
-    onFilterChanged: (filter: filterType) => void
 }
 
-let Users: React.FC<PropsType> = ({
-    currentPage,
-    totalUsers,
-    pageSize,
-    onPageChanged,
-    users,
-    onProgress,
-    toggleFollowUnfollow,
-    onFilterChanged,
-    ...props
-}) => {
+
+
+export const Users: React.FC<PropsType> = (props) => {
+
+
+    const totalUsers = useSelector(getTotalUsers)
+    const users = useSelector(getAllUsers)
+    const onProgress = useSelector(getOnProgress)
+    const currentPage = useSelector(getCurrentPage)
+    const pageSize = useSelector(getPageSize)
+    const filter = useSelector(getUsersFilter)
+
+    const dispatch: TypedDispatch = useDispatch()
+    type TypedDispatch = ThunkDispatch<AppStateType, any, Action>
+
+
+
+    const onPageChanged = (page: number) => {
+        dispatch(getUsers(pageSize, page, filter));
+    }
+
+    const onFilterChanged = (filter: filterType) => {
+        dispatch(getUsers(pageSize, 1, filter))
+    }
+
+    const toggleUnfollowFollow = (userId: number, type: string) => {
+        dispatch(toggleFollowUnfollow(userId, type))
+    }
+
+
+
     return (
         <div className={cl.body}>
 
@@ -49,7 +66,7 @@ let Users: React.FC<PropsType> = ({
                         user={u}
                         key={u.id}
                         onProgress={onProgress}
-                        toggleFollowUnfollow={toggleFollowUnfollow}
+                        toggleFollowUnfollow={toggleUnfollowFollow}
                     />
                 ))}
             </div>
@@ -57,6 +74,3 @@ let Users: React.FC<PropsType> = ({
     );
 };
 
-
-
-export default Users;
