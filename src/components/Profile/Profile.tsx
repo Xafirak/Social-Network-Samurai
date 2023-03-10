@@ -14,11 +14,12 @@ type propsType = {
     saveProfile: (profile: profileType) => void
     error: Array<string> | boolean
     profilePage: profileInitialStateType
-    updateStatus: (status: string | undefined) => void
+    updateStatus: (status: string) => void
     isEditProfileWasSuccesfull: boolean
 }
 
 const Profile: React.FC<propsType> = (props) => {
+
 
 
     // console.log('render', props);

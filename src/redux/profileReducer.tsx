@@ -128,7 +128,7 @@ let initialState = {
     ] as Array<postDataType>,
     isEditProfileWasSuccesfull: false as boolean,
     profile: undefined as profileType | undefined,
-    status: undefined as string | undefined,
+    status: '' as string | undefined,
     error: false as Array<string> | boolean,
 };
 

@@ -1,25 +1,59 @@
 
 import React from 'react';
 import Profile from './Profile';
-import { connect } from 'react-redux';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { compose } from 'redux';
+import {  useDispatch } from 'react-redux';
+import {  useNavigate, useParams } from 'react-router-dom';
 import { getStatus, profileActions, savePhoto, saveProfile, showProfile, updateStatus } from '../../redux/profileReducer';
 import { useEffect } from 'react';
-import { AppStateType } from '../../redux/reduxStore';
+import { AppStateType, DispatchType } from '../../redux/reduxStore';
 import { profileInitialStateType } from '../../redux/profileReducer';
 import { profileType } from '../../types/types';
 import { routerPropsType } from '../../App';
+import { useSelector } from 'react-redux';
 
 // надо ли в функциональной компоненте разделять пропсы примитивные и  
 // пропсы-методы (как в классовой) 
 
 
-const ProfileFUNC: React.FC<profilePropsType> = (props) => {
+// ДЗ  избавить компоненту от коннекта и withRouter
+//  ITS ALIVE !!!   ALIVE !!!!
+
+export const ProfileFUNC: React.FC = (props) => {
+
+
+    const profilePage = useSelector((state: AppStateType) => state.profilePage)
+    const authorizedUserId = useSelector((state: AppStateType) => state.auth.userId)
+    const error = profilePage.error
+    const isEditProfileWasSuccesfull = profilePage.isEditProfileWasSuccesfull
+    const  params = useParams()
+    const dispatch: DispatchType = useDispatch()
+
+    const showProfile1 = (userId: number) => {
+        dispatch(showProfile(userId))
+    }
+
+    const getStatus1 = (userId: number) => {
+        dispatch(getStatus(userId))
+    }
+
+    const updateStatus1 = (status: string) =>{
+        dispatch(updateStatus(status))
+    }
+    const savePhoto1 = (photos: File) =>{
+        dispatch(savePhoto(photos))
+    }
+    const saveProfile1 = (profile: profileType) =>{
+        dispatch(saveProfile(profile))
+    }
+    const addActionCreator = (messageBody: string) => {
+        dispatch(profileActions.addActionCreator(messageBody))
+    }
+   
 
     const navigate = useNavigate();
-    let anotherUserId = props.router.params.userId;
-    let userId = props.authorizedUserId;
+    //как тупому ТСу сказать, что мне насрать, что возможен undefined ????
+    let anotherUserId:number = +params.userId! ;
+    let userId = authorizedUserId;
 
     function refreshingProfile(a: number, b: number) {
         if (!a) {
@@ -29,8 +63,8 @@ const ProfileFUNC: React.FC<profilePropsType> = (props) => {
             }
         }
 
-        props.showProfile(a);
-        props.getStatus(a);
+        showProfile1(a);
+        getStatus1(a);
     }
 
     useEffect(() => {
@@ -42,73 +76,18 @@ const ProfileFUNC: React.FC<profilePropsType> = (props) => {
             {/* {props.profilePage.status && props.profilePage.profile ? ( */}
             {/* @ts-ignore */}
             <Profile
-                isOwner={!props.router.params.userId}
-                profilePage={props.profilePage}
-                updateStatus={props.updateStatus}
-                addMessage={props.addActionCreator}
-                savePhoto={props.savePhoto}
-                saveProfile={props.saveProfile}
-                error={props.error}
-                isEditProfileWasSuccesfull={props.isEditProfileWasSuccesfull}
+                isOwner={!params.userId}
+                profilePage={profilePage}
+                updateStatus={updateStatus1}
+                addMessage={addActionCreator}
+                savePhoto={savePhoto1}
+                saveProfile={saveProfile1}
+                error={error}
+                isEditProfileWasSuccesfull={isEditProfileWasSuccesfull}
             />
-            {/* ) : (
-                <Preloader />
-            )} */}
         </div>
     );
 };
 
 
 
-let mapStateToProps = (state: AppStateType): mapStateToPropsType => ({
-    profilePage: state.profilePage,
-    authorizedUserId: state.auth.userId,
-    isAuth: state.auth.isAuth,
-    error: state.profilePage.error,
-    isEditProfileWasSuccesfull: state.profilePage.isEditProfileWasSuccesfull
-});
-
-type profilePropsType = routerPropsType & mapStateToPropsType & mapDispatchToPropsType
-
-type mapStateToPropsType = {
-    profilePage: profileInitialStateType
-    authorizedUserId: number | null
-    isAuth: boolean
-    error: Array<string> | boolean
-    isEditProfileWasSuccesfull: boolean
-}
-
-
-type mapDispatchToPropsType = {
-    savePhoto: (photos: File) => void
-    saveProfile: (profile: profileType) => Promise<any>
-    showProfile: (a: number | null) => void
-    getStatus: (a: number | null) => void
-    updateStatus: (status: string | undefined) => void
-    addActionCreator: (messageBody: string) => void
-}
-
-// wrapper идентичный натуральному, без пальмового масла
-
-let withRouter = (Comp: React.FC) => {
-    function ComponentWithRouterProp(props: routerPropsType) {
-        let location = useLocation();
-        let navigate = useNavigate();
-        let params = useParams();
-        //@ts-ignore
-        return <Comp {...props} router={{location,navigate,params}} />;
-    }
-    return ComponentWithRouterProp;
-};
-
-export default compose<React.ComponentType>(
-    connect(mapStateToProps, {
-        showProfile,
-        getStatus,
-        updateStatus,
-        savePhoto,
-        saveProfile,
-        ...profileActions
-    }),
-    withRouter
-)(ProfileFUNC);

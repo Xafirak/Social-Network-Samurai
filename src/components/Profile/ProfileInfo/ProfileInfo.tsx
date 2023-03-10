@@ -19,7 +19,7 @@ type propsType = {
     saveProfile: (profile: profileType) => void
     error: Array<string> | boolean
     profilePage?: profileInitialStateType;
-    updateStatus: (status: string | undefined) => void
+    updateStatus: (status: string ) => void
     isEditProfileWasSuccesfull: boolean
 }
 
@@ -86,6 +86,7 @@ const ProfileInfo: React.FC<propsType> = ({
                         <ProfileStatusWithHooks
                             status={status}
                             updateStatus={updateStatus}
+                            isOwner={isOwner}
                         />
                     </span>
                 </div>

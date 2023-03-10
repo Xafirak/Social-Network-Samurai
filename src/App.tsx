@@ -106,8 +106,11 @@ class App extends Component<mapAppPropsType & dispatchAppPropsType> {
 const DialogsContainter = React.lazy(() =>
     import('./components/Dialogs/DialogsContainter')
 );
+
+
 const ProfileFUNC = React.lazy(() =>
     import('./components/Profile/ProfileFUNC')
+        .then(({ ProfileFUNC }) => ({ default: ProfileFUNC })),
 );
 
 

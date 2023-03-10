@@ -6,31 +6,35 @@ import { ChangeEvent } from 'react';
 
 type propsType = {
     status: string | undefined
-    updateStatus: (status: string | undefined) => void
+    updateStatus: (status: string) => void
+    isOwner: boolean
 }
 
 const ProfileStatusWithHooks = (props: propsType) => {
     const [editMode, setEditMode] = useState(false);
     const [status, setStatus] = useState(props.status);
 
+
     useEffect(() => {
-        setStatus(props.status);
-    }, [props.status]);
+        setStatus(props.status) 
+    },[]);
 
     const toggleActivateEditMode = () => {
         return !editMode
             ? (setEditMode(true), console.log('editmode true'))
             : (setEditMode(false),
                 console.log('editmode false'),
-                props.updateStatus(status));
+                //cтатус есть всегда, если мы обновляем его
+                props.updateStatus(status!));
     };
     const onStatusChange = (e: ChangeEvent<HTMLInputElement>) => {
         setStatus(e.currentTarget.value);
     };
 
+
     return (
         <div>
-            {!editMode ? (
+            {(!editMode && props.isOwner )? (
                 <div>
                     <span
                         className={cl.statusText}
