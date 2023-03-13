@@ -26,6 +26,7 @@ import { Suspense } from 'react';
 import { Navigate } from 'react-router-dom';
 import ErrorCatch from './ErrorCatch';
 import { UsersPage } from './components/Users/UsersContainer';
+import { Button } from '@mui/material';
 
 type mapAppPropsType = ReturnType<typeof MapStateToProps>
 
@@ -88,7 +89,10 @@ class App extends Component<mapAppPropsType & dispatchAppPropsType> {
                             <Route path="/login" element={<LoginPage />} />
                             <Route
                                 path="*"
-                                element={<div>404 NOT FOUND xD</div>}
+                                element={<div>
+                                    404 NOT FOUND xD
+                                    <Button variant="contained" color='error'> OK</Button>
+                                </div>}
                             />
                             {/* <Route path="hooks" element={ <Hooks /> } /> */}
                             {/* <Route path="hover" element={ <Hover /> } /> */}

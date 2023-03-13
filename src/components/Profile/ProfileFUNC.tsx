@@ -1,14 +1,12 @@
 
 import React from 'react';
 import Profile from './Profile';
-import {  useDispatch } from 'react-redux';
-import {  useNavigate, useParams } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { useNavigate, useParams } from 'react-router-dom';
 import { getStatus, profileActions, savePhoto, saveProfile, showProfile, updateStatus } from '../../redux/profileReducer';
 import { useEffect } from 'react';
 import { AppStateType, DispatchType } from '../../redux/reduxStore';
-import { profileInitialStateType } from '../../redux/profileReducer';
 import { profileType } from '../../types/types';
-import { routerPropsType } from '../../App';
 import { useSelector } from 'react-redux';
 
 // надо ли в функциональной компоненте разделять пропсы примитивные и  
@@ -25,7 +23,7 @@ export const ProfileFUNC: React.FC = (props) => {
     const authorizedUserId = useSelector((state: AppStateType) => state.auth.userId)
     const error = profilePage.error
     const isEditProfileWasSuccesfull = profilePage.isEditProfileWasSuccesfull
-    const  params = useParams()
+    const params = useParams()
     const dispatch: DispatchType = useDispatch()
 
     const showProfile1 = (userId: number) => {
@@ -36,26 +34,27 @@ export const ProfileFUNC: React.FC = (props) => {
         dispatch(getStatus(userId))
     }
 
-    const updateStatus1 = (status: string) =>{
+    const updateStatus1 = (status: string) => {
         dispatch(updateStatus(status))
     }
-    const savePhoto1 = (photos: File) =>{
+    const savePhoto1 = (photos: File) => {
         dispatch(savePhoto(photos))
     }
-    const saveProfile1 = (profile: profileType) =>{
+    const saveProfile1 = (profile: profileType) => {
         dispatch(saveProfile(profile))
     }
     const addActionCreator = (messageBody: string) => {
         dispatch(profileActions.addActionCreator(messageBody))
     }
-   
+
 
     const navigate = useNavigate();
+    
     //как тупому ТСу сказать, что мне насрать, что возможен undefined ????
-    let anotherUserId:number = +params.userId! ;
+    let anotherUserId: number | undefined = +params.userId!;
     let userId = authorizedUserId;
 
-    function refreshingProfile(a: number, b: number) {
+    function refreshingProfile(a: number | undefined, b: number) {
         if (!a) {
             a = b;
             if (!b) {
@@ -68,7 +67,7 @@ export const ProfileFUNC: React.FC = (props) => {
     }
 
     useEffect(() => {
-        refreshingProfile(anotherUserId as number, userId as number);
+        refreshingProfile(anotherUserId as number | undefined, userId as number);
     }, [anotherUserId, userId]);
     // ниже - попытка убрать ненужные ререндеры (ненужные ли?)
     return (

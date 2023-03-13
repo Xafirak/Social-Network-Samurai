@@ -10,12 +10,10 @@ import { getCurrentPage, getPageSize, getTotalUsers, getAllUsers, getOnProgress,
 import { getUsers, toggleFollowUnfollow } from './../../redux/usersReducer';
 import { AppStateType } from '../../redux/reduxStore';
 import { Action, ThunkDispatch } from '@reduxjs/toolkit';
-import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 type PropsType = {
 }
-
-
 
 export const Users: React.FC<PropsType> = (props) => {
 
@@ -29,6 +27,8 @@ export const Users: React.FC<PropsType> = (props) => {
 
     const dispatch: TypedDispatch = useDispatch()
     type TypedDispatch = ThunkDispatch<AppStateType, any, Action>
+
+
 
 
 
