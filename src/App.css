@@ -1,29 +1,25 @@
 .app-wrapper {
-  font-family: 'Prosto One', cursive;
   margin: 15px;
-  border-radius: 15px;  
-  display: grid; 
+  border-radius: 15px;
+  display: grid;
   width: 1250px;
-  grid-template-areas: 
-  'h h'
-  'n c';
-
+  grid-template-areas:
+    'h h'
+    'n c'
+    'f f';
   grid-template-rows: 60px 1fr;
   grid-template-columns: 2fr 10fr;
-  /* grid-gap: 10px;  */
+  grid-gap: 10px;
 }
+
+
 .app-wrapper-content {
   overflow: hidden;
   margin-top: 10px;
   margin-left: 10px;
   grid-area: c;
   background-color: cornflowerblue;
-  border-radius: 15px; 
-  box-shadow:  0px 5px 9px 3px rgba(85, 133, 236, 0.6);
-  
+  border-radius: 15px;
+  box-shadow: 0px 5px 9px 3px rgba(85, 133, 236, 0.6);
+
 }
-
-
-
-
-

@@ -14,7 +14,7 @@ type userPropsType = {
 export const User: React.FC<userPropsType> = ({ user, onProgress, toggleFollowUnfollow }) => {
 
     return (
-        <div>
+        <div className={cl.user}>
             <span>
                 <div>
                     <NavLink to={'/profile/' + user.id}>

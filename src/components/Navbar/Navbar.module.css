@@ -1,4 +1,4 @@
-.nav {
+.nav {    
     padding: 5px;
     margin-top: 10px;    
     grid-area: n;
@@ -7,7 +7,7 @@
     box-shadow:  0px 5px 9px 3px rgba(218, 141, 42, 0.5); 
 }
 
-.item  {
+.item  {    
     color: white;
     transition: 0.7s;
     text-decoration: none;

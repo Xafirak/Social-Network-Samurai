@@ -1,15 +1,27 @@
+import { List, ListItem, ListItemText } from '@mui/material';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { friendsType } from '../../redux/sidebarReducer';
 import classes from './Navbar.module.css';
+import { useSelector } from 'react-redux';
+import { AppStateType } from '../../redux/reduxStore';
+
 
 
 type navbarPropsType = {
     friends: Array<friendsType>
 }
+type navbarMenuPropsType = {
+    link: string
+    name: string
+}
 
-const Navbar = (props: navbarPropsType) => {
-    const friend = props.friends.map((e) => {
+
+// сломался transition в css файле, хз почему и как починить, виню Mui
+
+const Navbar: React.FC<navbarPropsType> = (props) => {
+    const friends = useSelector((state: AppStateType) => state.sidebar.friends)
+    const friend = friends.map((e) => {
         return (
             <NavLink to="s" className={classes.friend} key={e.id}>
                 <img src={e.avatar} alt={e.name} />
@@ -18,46 +30,66 @@ const Navbar = (props: navbarPropsType) => {
         );
     });
 
-    type navbarMenuPropsType = {
-        link: string
-        name: string
-    }
 
-    const NavbarMenu = ({ link, name }: navbarMenuPropsType) => {
+
+
+
+    const CustomTab: React.FC<navbarMenuPropsType> = ({ link, name }) => {
+        // const ActiveButton = (n: any): string => {
+        //     return n.isActive ? classes.active : classes.item
+        // }
         return (
             <div className={classes.item}>
-                <NavLink
+                <List >
+                    <ListItem key={name}  >
+                        <NavLink
+                            to={link}
+                            className={(n) =>
+                                n.isActive ? classes.active : classes.item}
+                        >
+                            <ListItemText primary={name} />
+                        </NavLink>
+                    </ListItem>
+
+                </List>
+
+                {/* old */}
+                {/* <NavLink
                     to={link}
                     className={(n) =>
                         n.isActive ? classes.active : classes.item
                     }
                 >
                     {name}
-                </NavLink>
+                </NavLink> */}
             </div>
         );
     };
     // ЗАРЕФАКТОРИТЬ дублирование, готово, надо ли выделять в отдельную
     // компоненту такое малое кол-во кода?
     return (
-        <nav className={classes.nav}>
-            <NavbarMenu link={'profile'} name={'Profile'} />
-            <NavbarMenu link={'dialogs'} name={'Messages'} />
-            <NavbarMenu link={'news'} name={'News'} />
-            <NavbarMenu link={'users'} name={'Users'} />
-            <NavbarMenu link={'music'} name={'Muzic'} />
-            <NavbarMenu link={'settings'} name={'Settings'} />
+        <div className={classes.nav}>
+
+            <CustomTab link={'/profile'} name={'Profile'} />
+            <CustomTab link={'/dialogs'} name={'Messages'} />
+            <CustomTab link={'/news'} name={'News'} />
+            <CustomTab link={'/users'} name={'Users'} />
+            <CustomTab link={'/music'} name={'Muzic'} />
+            <CustomTab link={'/settings'} name={'Settings'} />
+
             <div className={classes.friendsArea}>
                 <h1>Friends</h1>
                 <div>
                     {/* обьединение кружочка авы\имени пользователя в один компонент 
-                     тут и в диалогах??
-                    имя компоненты --- <Friend /> */}
+                      тут и в диалогах??
+                     имя компоненты --- <Friend /> */}
                     {friend}
                 </div>
             </div>
-        </nav>
+        </div>
+
     );
 };
+
 
 export default Navbar;

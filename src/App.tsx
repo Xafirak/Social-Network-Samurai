@@ -4,7 +4,7 @@ import './App.css';
 import News from './components/News/News';
 import Music from './components/Music/Music';
 import Settings from './components/Settings/Settings';
-import NavbarContainer from './components/Navbar/NavbarContainer';
+import { NavbarContainer } from './components/Navbar/NavbarContainer';
 import Hooks from './hooks(not part of project)/Hooks';
 import Hover from './hooks(not part of project)/Hover';
 import List from './hooks(not part of project)/List';
@@ -26,7 +26,13 @@ import { Suspense } from 'react';
 import { Navigate } from 'react-router-dom';
 import ErrorCatch from './ErrorCatch';
 import { UsersPage } from './components/Users/UsersContainer';
-import { Button } from '@mui/material';
+import { Button, Grid, StyledEngineProvider } from '@mui/material';
+import { Footer } from './components/Footer/Footer';
+
+
+
+
+
 
 type mapAppPropsType = ReturnType<typeof MapStateToProps>
 
@@ -56,7 +62,8 @@ class App extends Component<mapAppPropsType & dispatchAppPropsType> {
         if (!this.props.initialized) return <Preloader />;
 
         return (
-            <div className="app-wrapper">
+            <Grid className="app-wrapper">
+
                 <HeaderContainerFunctional />
                 <NavbarContainer />
                 <div className="app-wrapper-content">
@@ -102,7 +109,8 @@ class App extends Component<mapAppPropsType & dispatchAppPropsType> {
                         </Routes>
                     </ErrorCatch>
                 </div>
-            </div>
+                <Footer />                   
+            </Grid>
         );
     }
 }
@@ -157,9 +165,11 @@ let AppContainer = compose<React.ComponentType>(
 const SamuraiAppJS: React.FC = () => {
     return (
         <BrowserRouter basename="/">
-            <Provider store={store}>
-                <AppContainer />
-            </Provider>
+            <StyledEngineProvider injectFirst>
+                <Provider store={store}>
+                    <AppContainer />
+                </Provider>
+            </StyledEngineProvider>
         </BrowserRouter>
     );
 };

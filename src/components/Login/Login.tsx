@@ -1,6 +1,6 @@
 import React from 'react';
 import { Form } from 'react-final-form';
-import {  useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Navigate } from 'react-router-dom';
 import { Input } from '../common/FormsControl/FormsControl';
 import { LoginUser } from '../../redux/auth-reducer';
@@ -13,6 +13,8 @@ import s from './../common/FormsControl/FormsControl.module.css';
 import { createField } from '../common/FormsControl/FormsControl';
 import { AppStateType, DispatchType } from '../../redux/reduxStore';
 import { FieldValidator } from 'final-form';
+import classes from './Login.module.css'
+import { Button, TextField } from '@mui/material';
 
 export type loginFromValuesType = {
     email: string
@@ -99,7 +101,7 @@ export const LoginPage: React.FC = (props) => {
     const captchaUrl = useSelector((state: AppStateType) => state.auth.captchaUrl)
     const isAuth = useSelector((state: AppStateType) => state.auth.isAuth)
     const error = useSelector((state: AppStateType) => state.auth.error)
-    
+
     const dispatch: DispatchType = useDispatch()
 
     const onSubmit = ({ email, password, rememberMe, captcha }: loginFromValuesType) => {
@@ -110,17 +112,43 @@ export const LoginPage: React.FC = (props) => {
     }
 
     return (
-        <div>
+        <div className={classes.body}>
             <h1>LOGIN</h1>
-            <h3>Псст! Нужен тестовый акк? </h3>
+
             <div>
+                <h3>Псст! Нужен тестовый акк? </h3>
                 Email: free@samuraijs.com <br /> Password: free
             </div>
+            {/* <TextField
+                error={incError ? true : false}
+                id="standard-error-helper-text"
+                label="Email"
+                helperText={incError}
+                sx={{
+                    mt: 1
+                }}
+            />
+            <TextField
+                error={incError ? true : false}
+                id="standard-error-helper-text"
+                label="Password"
+                helperText={incError}
+                sx={{
+                    mt: 1
+                }}
+            />
+            <Button
+                onClick={() => onSubmit}
+            >
+                Login
+
+            </Button> */}
             <LoginForm
                 onSubmit={onSubmit}
                 error={error}
                 captchaUrl={captchaUrl}
             />
+
         </div>
     );
 };

@@ -49,7 +49,7 @@ export const ProfileFUNC: React.FC = (props) => {
 
 
     const navigate = useNavigate();
-    
+
     //как тупому ТСу сказать, что мне насрать, что возможен undefined ????
     let anotherUserId: number | undefined = +params.userId!;
     let userId = authorizedUserId;

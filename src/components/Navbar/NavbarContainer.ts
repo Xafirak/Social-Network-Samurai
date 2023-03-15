@@ -12,11 +12,11 @@ import { friendsType } from "../../redux/sidebarReducer";
 type mapStateToPropsPropsType = {
     friends: Array<friendsType>
 }
-let mapStateToProps = (state:AppStateType):mapStateToPropsPropsType => {
+let mapStateToProps = (state: AppStateType): mapStateToPropsPropsType => {
     return {
         friends: state.sidebar.friends,
     };
 };
 
-const NavbarContainer = connect(mapStateToProps)(Navbar);
-export default NavbarContainer;
+export const NavbarContainer = connect(mapStateToProps)(Navbar);
+
