@@ -15,7 +15,7 @@ import { useNavigate } from 'react-router-dom';
 type PropsType = {
 }
 
-export const Users: React.FC<PropsType> = (props) => {
+export const Users: React.FC<PropsType> = () => {
 
 
     const totalUsers = useSelector(getTotalUsers)

@@ -7,7 +7,7 @@ export const Footer = () => {
         <div className={classes.footer}>
             <Box alignContent='center' sx={{  p: 3 }} component="footer">
                 <Typography variant="h6" align="center" gutterBottom>
-                    Created by IT-KAMA
+                    Created by yours truly 
                 </Typography>
                 <Typography
                     variant="subtitle1"

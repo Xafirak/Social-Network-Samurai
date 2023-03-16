@@ -28,6 +28,7 @@ import ErrorCatch from './ErrorCatch';
 import { UsersPage } from './components/Users/UsersContainer';
 import { Button, Grid, StyledEngineProvider } from '@mui/material';
 import { Footer } from './components/Footer/Footer';
+import ChatPage from './pages/chat/ChatPage';
 
 
 
@@ -94,6 +95,11 @@ class App extends Component<mapAppPropsType & dispatchAppPropsType> {
                             <Route path="/settings" element={<Settings />} />
                             <Route path="/users" element={<UsersPage pageTitle={'Самураи!'} />} />
                             <Route path="/login" element={<LoginPage />} />
+                            <Route path="/chat" element={
+                                <Suspense fallback={<Preloader />}>
+                                    <ChatPage />
+                                </Suspense>
+                            } />
                             <Route
                                 path="*"
                                 element={<div>
@@ -109,7 +115,7 @@ class App extends Component<mapAppPropsType & dispatchAppPropsType> {
                         </Routes>
                     </ErrorCatch>
                 </div>
-                <Footer />                   
+                <Footer />
             </Grid>
         );
     }
@@ -118,12 +124,11 @@ class App extends Component<mapAppPropsType & dispatchAppPropsType> {
 const DialogsContainter = React.lazy(() =>
     import('./components/Dialogs/DialogsContainter')
 );
-
-
 const ProfileFUNC = React.lazy(() =>
     import('./components/Profile/ProfileFUNC')
         .then(({ ProfileFUNC }) => ({ default: ProfileFUNC })),
 );
+
 
 
 export type routerPropsType = {

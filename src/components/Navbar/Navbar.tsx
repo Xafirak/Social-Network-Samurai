@@ -72,6 +72,7 @@ const Navbar: React.FC<navbarPropsType> = (props) => {
 
             <CustomTab link={'/profile'} name={'Profile'} />
             <CustomTab link={'/dialogs'} name={'Messages'} />
+            <CustomTab link={'/chat'} name={'Chat'} />
             <CustomTab link={'/news'} name={'News'} />
             <CustomTab link={'/users'} name={'Users'} />
             <CustomTab link={'/music'} name={'Muzic'} />
