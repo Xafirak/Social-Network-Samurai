@@ -1,20 +1,27 @@
-
-.item {
-    color: grey;
+.myPosts {
+    display: inline-block;
+    margin: 10px;
+    max-width: 95%;
 }
 
-.otherPosts {
-    color: lightgreen;
-    padding-left: 15px;
-    
-}
-
-.otherPosts img {
+.myPosts img {
+    float: left;
     border-radius: 50px;
     width: 50px !important;
     height: 50px !important;
 }
 
-.likes {
-    color: red;
+.myPosts_message {
+    margin-left: 65px;
+    margin-right: 55px;    
+    overflow-wrap: break-word;
+    min-width: 150px;
+    max-width: 900px;
+    color: lightgreen;
+
+}
+.likeBtn {
+    margin-top: 10px;
+    min-width: 70px;
+    float: right;
 }

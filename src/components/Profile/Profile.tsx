@@ -2,27 +2,24 @@
 import React from 'react';
 import ProfileInfo from './ProfileInfo/ProfileInfo';
 import MyPosts from './MyPosts/MyPosts';
-import { profileType } from '../../types/types';
-import { profileInitialStateType } from '../../redux/profileReducer';
+import { postDataType, profileType } from '../../types/types';
+
 
 type propsType = {
     status: string | undefined
     profile: profileType | undefined
-    addMessage: (messageBody: string) => void
     isOwner: boolean
-    savePhoto: (photos: File) => void
-    saveProfile: (profile: profileType) => void
-    error: Array<string> | boolean
-    profilePage: profileInitialStateType
-    updateStatus: (status: string) => void
     isEditProfileWasSuccesfull: boolean
+    error: Array<string> | boolean
+    postData: Array<postDataType>
+    savePhoto: (photos: File) => void
+    addMessage: (messageBody: string) => void
+    saveProfile: (profile: profileType) => void
+    updateStatus: (status: string) => void
 }
 
 const Profile: React.FC<propsType> = (props) => {
 
-
-
-    // console.log('render', props);
     // установка условия для рендеринга страницы для избежания ненужных ререндеров
     //при обновлении страницы F5, компонент рендерится 1 раз, но если перейти на
     // другую страницу и вернутся обратно - компонент ререндерится 3 раза - почему?
@@ -32,17 +29,17 @@ const Profile: React.FC<propsType> = (props) => {
     return (
         <div>
             <ProfileInfo
-                savePhoto={props.savePhoto}
                 isOwner={props.isOwner}
-                profile={props.profilePage.profile}
-                status={props.profilePage.status}
-                updateStatus={props.updateStatus}
-                saveProfile={props.saveProfile}
+                profile={props.profile}
+                status={props.status}
                 error={props.error}
                 isEditProfileWasSuccesfull={props.isEditProfileWasSuccesfull}
+                savePhoto={props.savePhoto}
+                updateStatus={props.updateStatus}
+                saveProfile={props.saveProfile}
             />
             <MyPosts
-                profilePage={props.profilePage}
+                postData={props.postData}
                 addMessage={props.addMessage}
             />
         </div>

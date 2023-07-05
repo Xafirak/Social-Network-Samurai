@@ -1,23 +1,27 @@
-
 import React, { useState } from "react";
 
 
-type likeBtnPropstype ={
+type likeBtnPropstype = {
     likeCount: number
 }
 
 
-const LikeBtn:React.FC<likeBtnPropstype> = (props) => {
-    const [counter, setCounter] = useState(props.likeCount)
-    
-    function increaseCount () {
-        setCounter(counter + 1)
+const LikeBtn: React.FC<likeBtnPropstype> = ({ likeCount }) => {
+    const [counter, setCounter] = useState(likeCount)
+    const [disabled, setDisabled] = useState(false);
+
+    function increaseCount() {
+        setCounter(counter => counter + 1)
+        setDisabled(true)
     }
 
     return (
         <div>
-            <button onClick={increaseCount} >Like</button>
-            <div style={{color:'pink'}}>Likes: <span>{counter}</span></div>
+            <button
+                disabled={disabled}
+                onClick={() => increaseCount()}
+            >Like</button>
+            <div style={{ color: 'pink' }}>Likes: <span>{counter}</span></div>
         </div>
     );
 };

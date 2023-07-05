@@ -30,34 +30,5 @@ export enum resultCodeForCaptchaEnum {
     captcha = 10,
 }
 
-// type authMeType = {
-//     data: {
-//         id: number
-//         email: string
-//         login: string
-//     }
-//     resultCode: resultCodesEnum
-//     messages: Array<string>
-// }
-
-// type loginMeType = {
-//     data: {
-//         iserId: number
-//     }
-//     resultCode: resultCodesEnum | resultCodeForCaptcha
-//     messages: Array<string>
-// }
-
-
-
-// type getCaptchaUrlType = {
-//     url: string
-// }
-
-// export const SecurityAPI = {
-//     getCaptchaUrl() {
-//         return instance.get<getCaptchaUrlType>(`security/get-captcha-url`);
-//     },
-// };
 
 

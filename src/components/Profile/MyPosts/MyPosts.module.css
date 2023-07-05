@@ -1,7 +1,9 @@
-.postBlock{
-    padding: 10px;
+.postBlock {
+    padding: 5px;
+    margin-top: 5px;
 }
 
-.posts {
-    margin-top: 30px;
+.postBlock_title{
+    display: flex;
+    justify-content: center;
 }

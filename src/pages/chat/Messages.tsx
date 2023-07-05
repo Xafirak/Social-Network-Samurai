@@ -27,7 +27,7 @@ export const Messages: React.FC<{ ws: WebSocket | null }> = ({ ws }) => {
         }
     }, [ws])
 
-    console.log(messages);
+
 
     return (
         <div style={{ height: '500px', overflowY: 'auto' }}>

@@ -3,31 +3,29 @@ import React from 'react';
 import Post from './Post/Post';
 import cl from './MyPosts.module.css';
 import TextInputWithButton from '../../TextInputWithButton/TextInputWithButton';
-import { profileInitialStateType } from '../../../redux/profileReducer';
+import { postDataType } from '../../../types/types';
 
 type myPostsPropsType = {
-    profilePage: profileInitialStateType
+    postData: Array<postDataType>
     addMessage: (message: string) => void
 
 }
-const MyPosts: React.FC<myPostsPropsType> = (props) => {
+const MyPosts: React.FC<myPostsPropsType> = ({ postData, addMessage }) => {
     return (
         <div className={cl.postBlock}>
-            {props.profilePage.postData.map((el: any) => {
+            <h3 className={cl.postBlock_title}>myPosts</h3>
+            {postData.map((el: any) => {
                 return (
-                    <div key={el.id}>
-                        <Post
-                            message={el.message}
-                            likes={el.likes}
-                            key={el.id}
-                        />
-                    </div>
+                    <Post
+                        message={el.message}
+                        likes={el.likes}
+                        key={el.id}
+                    />
                 );
             })}
 
-            <h3>myPosts</h3>
             <TextInputWithButton
-                addMessage={props.addMessage}
+                addMessage={addMessage}
             />
 
         </div>

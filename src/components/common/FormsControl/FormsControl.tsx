@@ -6,11 +6,12 @@ import { validatorType } from '../../../utils/validators/validators';
 import { FieldValidator } from 'final-form';
 
 
+
 export const Textarea = (props: any) => {
     const { input, meta, ...restProps } = props;
     return (
         <FormControl {...props}>
-            <textarea {...input} {...restProps} />
+            <textarea {...input} {...restProps} rows="6" cols="80" style={{ resize: 'none' }} />
         </FormControl>
     );
 };
@@ -58,7 +59,7 @@ export function createField<formKeysType extends string>(
     text = ''
 ) {
     return (
-        <div>
+        <div className={s.Field}>
             <Field
                 validate={validators}
                 name={name}

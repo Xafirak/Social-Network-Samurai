@@ -5,10 +5,6 @@ import { profileAPI } from './../API/priofile-api';
 import { resultCodesEnum } from '../API/api';
 
 
-type profileActionsType = InferActionsTypes<typeof profileActions>
-export type profileInitialStateType = typeof initialState;
-type ThunkType = baseThunkType<profileActionsType>
-
 export const profileActions = {
     addActionCreator: (messageBody: string) => ({
         type: 'ADD_POST',
@@ -186,3 +182,7 @@ const profileReducer = (state = initialState, action: profileActionsType): profi
 };
 
 export default profileReducer;
+
+type profileActionsType = InferActionsTypes<typeof profileActions>
+export type profileInitialStateType = typeof initialState;
+type ThunkType = baseThunkType<profileActionsType>

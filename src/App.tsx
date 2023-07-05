@@ -4,12 +4,6 @@ import './App.css';
 import News from './components/News/News';
 import Music from './components/Music/Music';
 import Settings from './components/Settings/Settings';
-import { NavbarContainer } from './components/Navbar/NavbarContainer';
-import Hooks from './hooks(not part of project)/Hooks';
-import Hover from './hooks(not part of project)/Hover';
-import List from './hooks(not part of project)/List';
-import Shit from './hooks(not part of project)/Shit';
-import AnothaSht from './hooks(not part of project)/anothaSht';
 import { HeaderContainerFunctional } from './components/Header/HeaderContainer';
 import { LoginPage } from './components/Login/Login';
 import { connect } from 'react-redux';
@@ -26,11 +20,11 @@ import { Suspense } from 'react';
 import { Navigate } from 'react-router-dom';
 import ErrorCatch from './ErrorCatch';
 import { UsersPage } from './components/Users/UsersContainer';
-import { Button, Grid, StyledEngineProvider } from '@mui/material';
+import { Grid, StyledEngineProvider } from '@mui/material';
 import { Footer } from './components/Footer/Footer';
 import ChatPage from './pages/chat/ChatPage';
-
-
+import Page404 from './components/page404/Page404';
+import Navbar from './components/Navbar/Navbar';
 
 
 
@@ -66,7 +60,7 @@ class App extends Component<mapAppPropsType & dispatchAppPropsType> {
             <Grid className="app-wrapper">
 
                 <HeaderContainerFunctional />
-                <NavbarContainer />
+                <Navbar />
                 <div className="app-wrapper-content">
                     <ErrorCatch>
                         <Routes>
@@ -102,16 +96,8 @@ class App extends Component<mapAppPropsType & dispatchAppPropsType> {
                             } />
                             <Route
                                 path="*"
-                                element={<div>
-                                    404 NOT FOUND xD
-                                    <Button variant="contained" color='error'> OK</Button>
-                                </div>}
+                                element={<Page404 />}
                             />
-                            {/* <Route path="hooks" element={ <Hooks /> } /> */}
-                            {/* <Route path="hover" element={ <Hover /> } /> */}
-                            {/* <Route path="list" element={ <List /> } /> */}
-                            {/* <Route path="shit" element={ <Shit /> } /> */}
-                            {/* <Route path="anothasht" element={ <AnothaSht /> } /> */}
                         </Routes>
                     </ErrorCatch>
                 </div>
@@ -126,6 +112,7 @@ const DialogsContainter = React.lazy(() =>
 );
 const ProfileFUNC = React.lazy(() =>
     import('./components/Profile/ProfileFUNC')
+
         .then(({ ProfileFUNC }) => ({ default: ProfileFUNC })),
 );
 

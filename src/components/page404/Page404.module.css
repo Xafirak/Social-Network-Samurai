@@ -1,0 +1,25 @@
+.errorPage {
+    display: flex;
+    width: auto;
+    height: 100%;
+    justify-content: space-evenly;
+    flex-direction: column;
+    align-items: center;
+}
+
+.btn {
+    width:10vw;
+    height:5vw;
+    background-image: linear-gradient(90deg, #9943bb 0%,#1f28a8 16%,#79a7d3 30%, #32c02d 40%,#e7e426 68%, #f3a136 84%, #FC4F4F 100%);
+    font-size:3vw;
+}
+
+.btn:after {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn:hover {
+    animation: slidebg 2s linear infinite;
+}

@@ -1,7 +1,6 @@
 import { List, ListItem, ListItemText } from '@mui/material';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { friendsType } from '../../redux/sidebarReducer';
 import classes from './Navbar.module.css';
 import { useSelector } from 'react-redux';
 import { AppStateType } from '../../redux/reduxStore';
@@ -9,8 +8,9 @@ import { AppStateType } from '../../redux/reduxStore';
 
 
 type navbarPropsType = {
-    friends: Array<friendsType>
+
 }
+
 type navbarMenuPropsType = {
     link: string
     name: string
@@ -23,7 +23,7 @@ const Navbar: React.FC<navbarPropsType> = (props) => {
     const friends = useSelector((state: AppStateType) => state.sidebar.friends)
     const friend = friends.map((e) => {
         return (
-            <NavLink to="s" className={classes.friend} key={e.id}>
+            <NavLink to="#" className={classes.friend} key={e.id}>
                 <img src={e.avatar} alt={e.name} />
                 <figcaption className={classes.caption}>{e.name}</figcaption>
             </NavLink>
@@ -50,23 +50,11 @@ const Navbar: React.FC<navbarPropsType> = (props) => {
                             <ListItemText primary={name} />
                         </NavLink>
                     </ListItem>
-
                 </List>
-
-                {/* old */}
-                {/* <NavLink
-                    to={link}
-                    className={(n) =>
-                        n.isActive ? classes.active : classes.item
-                    }
-                >
-                    {name}
-                </NavLink> */}
             </div>
         );
     };
-    // ЗАРЕФАКТОРИТЬ дублирование, готово, надо ли выделять в отдельную
-    // компоненту такое малое кол-во кода?
+
     return (
         <div className={classes.nav}>
 

@@ -43,7 +43,7 @@ const Chat: React.FC = () => {
             setWsChannel(ws)
             ws.addEventListener('close', closeHandler)
         }
-        
+
         createWsChannel()
 
         return () => {

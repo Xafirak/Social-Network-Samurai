@@ -1,7 +1,7 @@
-
 import {
     applyMiddleware,
     combineReducers,
+    configureStore,
     legacy_createStore,
     ThunkAction,
     ThunkDispatch,
@@ -13,7 +13,20 @@ import usersReducer from './usersReducer';
 import authReducer from './auth-reducer';
 import thunkMiddleware from 'redux-thunk';
 import appReducer from './app-reducer';
-import { Action, compose } from 'redux';
+import { Action, compose, createStore } from 'redux';
+
+
+
+// Большое кол-во кода заменяется меньшим
+// type PropsTypes<T> = T extends { [key: string]: infer U } ? U : never
+// export type InferActionsTypes<T extends { [key: string]: (...args: any[]) => any }> = ReturnType<PropsTypes<T>>
+export type InferActionsTypes<T> = T extends { [key: string]: (...args: any[]) => infer U } ? U : never
+
+export type baseThunkType<A extends Action, R = Promise<void>> = ThunkAction<R, AppStateType, unknown, A>
+export type DispatchType = ThunkDispatch<AppStateType, any, Action>
+type rootReducerType = typeof rootReducer
+export type AppStateType = ReturnType<rootReducerType>
+
 
 let rootReducer = combineReducers({
     profilePage: profileReducer,
@@ -24,32 +37,26 @@ let rootReducer = combineReducers({
     app: appReducer,
 });
 
-type rootReducerType = typeof rootReducer
-export type AppStateType = ReturnType<rootReducerType>
-
-// Большое кол-во кода заменяется меньшим
-// type PropsTypes<T> = T extends { [key: string]: infer U } ? U : never
-// export type InferActionsTypes<T extends { [key: string]: (...args: any[]) => any }> = ReturnType<PropsTypes<T>>
-export type InferActionsTypes<T> = T extends { [key: string]: (...args: any[]) => infer U } ? U : never
-
-
-
-export type baseThunkType<A extends Action, R=Promise<void>> = ThunkAction<R, AppStateType, unknown, A>
-export type DispatchType = ThunkDispatch<AppStateType, any, Action>
-
-
-
-
+const store = configureStore({
+    reducer: rootReducer,
+})
 
 // @ts-ignore
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-const store = legacy_createStore(
+
+const store1 = legacy_createStore(
     rootReducer,
     composeEnhancers(applyMiddleware(thunkMiddleware))
 );
 
+
+
+// переписать на новый синтаксис редакса
+// вроде переписал, но чет подозрительно мало
+
+
+
+
 // @ts-ignore
 window.store = store;
 export default store;
-
-// переписать на новый синтаксис редакса

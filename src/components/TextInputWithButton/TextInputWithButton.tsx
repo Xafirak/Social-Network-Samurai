@@ -1,11 +1,13 @@
 
 import { FieldValidator } from 'final-form';
 import React from 'react';
-import { Form, Field } from 'react-final-form';
+import { Form } from 'react-final-form';
 import { iniialStateType } from '../../redux/dialogsReducer';
-import { required, validatorType } from '../../utils/validators/validators';
+import { validatorType } from '../../utils/validators/validators';
 import { maxLengthCreator } from '../../utils/validators/validators';
 import { createField, Textarea } from '../common/FormsControl/FormsControl';
+import classes from './TextInputWithButton.module.css'
+
 
 type TextInputWithButtonPropsType = {
     addMessage: (message: string) => void
@@ -25,7 +27,7 @@ const TextInputWithButton: React.FC<TextInputWithButtonPropsType> = (props) => {
     //     return props.profie ? <div>value = { path }</div> : <div>placeholder = "Твой ответ"</div>;
     // };
 
-    const maxLength10 = maxLengthCreator(10);
+    const maxLength10 = maxLengthCreator(255);
 
     // Эта хрень(validate) не принимает валидаторы по одному,поэтому НАДО создать
     // функцию которая соберет все валидаторы в себя

@@ -6,24 +6,9 @@ import TextInputWithButton from '../../TextInputWithButton/TextInputWithButton';
 import { connect } from 'react-redux';
 import MyPosts from './MyPosts';
 
-
 //==================================================
 // не нужен ибо в ProfileFUNC приходит вся необходимая дата
 // компонента оставлена, чтобы не было диссонанса с видео(там есть тут нету)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 const MyPostsContainer = (props) => {
     const posts = props.state.profilePage.postData.map((el) => {

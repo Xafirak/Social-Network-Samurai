@@ -14,15 +14,19 @@ import { useSelector } from 'react-redux';
 
 
 // ДЗ  избавить компоненту от коннекта и withRouter
-//  ITS ALIVE !!!   ALIVE !!!!
+//  Done
 
 export const ProfileFUNC: React.FC = (props) => {
 
-
-    const profilePage = useSelector((state: AppStateType) => state.profilePage)
+    //как правильно - вытащить из стейта profilePage в отдельную переменную и из
+    // нее вытаскивать нужные данные (error, status, etc.) или для каждой данной 
+    // сделать свой селектор из стейта?
+    const postData = useSelector((state: AppStateType) => state.profilePage.postData)
     const authorizedUserId = useSelector((state: AppStateType) => state.auth.userId)
-    const error = profilePage.error
-    const isEditProfileWasSuccesfull = profilePage.isEditProfileWasSuccesfull
+    const error = useSelector((state: AppStateType) => state.profilePage.error)
+    const status = useSelector((state: AppStateType) => state.profilePage.status)
+    const profile = useSelector((state: AppStateType) => state.profilePage.profile)
+    const isEditProfileWasSuccesfull = useSelector((state: AppStateType) => state.profilePage.isEditProfileWasSuccesfull)
     const params = useParams()
     const dispatch: DispatchType = useDispatch()
 
@@ -50,33 +54,32 @@ export const ProfileFUNC: React.FC = (props) => {
 
     const navigate = useNavigate();
 
-    //как тупому ТСу сказать, что мне насрать, что возможен undefined ????
+
     let anotherUserId: number | undefined = +params.userId!;
     let userId = authorizedUserId;
 
-    function refreshingProfile(a: number | undefined, b: number) {
-        if (!a) {
-            a = b;
-            if (!b) {
+    function refreshingProfile(anotherUserId: number | undefined, userId: number) {
+        if (!anotherUserId) {
+            anotherUserId = userId;
+            if (!userId) {
                 return navigate('/login');
             }
         }
 
-        showProfile1(a);
-        getStatus1(a);
+        showProfile1(anotherUserId);
+        getStatus1(anotherUserId);
     }
 
     useEffect(() => {
         refreshingProfile(anotherUserId as number | undefined, userId as number);
     }, [anotherUserId, userId]);
-    // ниже - попытка убрать ненужные ререндеры (ненужные ли?)
     return (
         <div>
-            {/* {props.profilePage.status && props.profilePage.profile ? ( */}
-            {/* @ts-ignore */}
             <Profile
+                profile={profile}
+                status={status}
                 isOwner={!params.userId}
-                profilePage={profilePage}
+                postData={postData}
                 updateStatus={updateStatus1}
                 addMessage={addActionCreator}
                 savePhoto={savePhoto1}
