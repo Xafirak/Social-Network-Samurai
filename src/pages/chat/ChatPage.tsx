@@ -1,18 +1,6 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
 import { Messages } from './Messages';
-
-// export const ws = new WebSocket('wss://social-network.samuraijs.com/handlers/ChatHandler.ashx')
-
-
-export type ChatMessageType = {
-    message: string
-    photo: string
-    userId: number
-    userName: string
-
-}
 
 
 const ChatPage: React.FC = () => {
@@ -63,23 +51,12 @@ const Chat: React.FC = () => {
 
 
 
-export const Message: React.FC<{ message: ChatMessageType }> = ({ message }) => {
-
-    return (
-        <div>
-            <img width='100' height='100' src={message.photo} alt="" /><b>{message.userName}</b>
-            <br />
-            {message.message}
-        </div>
-    )
-}
-
 
 
 const AddMessageForm: React.FC<{ ws: WebSocket | null }> = ({ ws }) => {
-
     const [message, setMessage] = useState('')
     const [readyStatus, setreadyStatus] = useState<'pending' | 'ready'>('pending')
+    const [drag, setDrag] = useState(false)
 
     useEffect(() => {
         const openHandler = () => {
@@ -97,10 +74,30 @@ const AddMessageForm: React.FC<{ ws: WebSocket | null }> = ({ ws }) => {
         setMessage('')
     }
 
+    function dragStartHandler(e: React.DragEvent<HTMLTextAreaElement>) {
+        e.preventDefault()
+        setDrag(true)
+    }
+
+    function dragLeaveHandler(e: React.DragEvent<HTMLTextAreaElement>){
+        e.preventDefault()
+        setDrag(false)
+    }
+
     return (
         <div>
             <div>
-                <textarea onChange={e => setMessage(e.currentTarget.value)} value={message}></textarea>
+                <textarea
+                    onDragStart={e => dragStartHandler(e)}
+                    onDragLeave={e => dragLeaveHandler(e)}
+                    onDragOver={e => dragStartHandler(e)}
+                    placeholder='Напиши что-нибудь...'
+                    rows={6}
+                    cols={50}
+                    onChange={e => setMessage(e.currentTarget.value)}
+                    value={message}
+                    onKeyDown={e => e.key === 'Enter' ? sendMessage() : null}
+                ></textarea>
             </div>
             <div>
                 <button disabled={ws === null || readyStatus !== 'ready'} onClick={sendMessage}>send</button>

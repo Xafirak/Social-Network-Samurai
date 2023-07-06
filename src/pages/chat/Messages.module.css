@@ -1,0 +1,33 @@
+.messagesWindow {
+    height: 500px;
+    overflow-y: auto;
+}
+
+.userMessage {
+    display: flex;
+    margin-left: 10px;
+    margin-bottom: 0.5rem;
+    width: 90%;
+    border-bottom: 1px solid black;
+}
+
+.userMessage img {
+    width: 60px;
+    height: 60px;
+    border: 2px solid black;
+    border-radius: 10px;
+}
+
+.userMessage_users {
+
+}
+
+.userMessage_author {
+    float: left;
+}
+
+
+.userMessage_message {
+    padding-left: 1rem;
+    margin-bottom: 0.5rem;
+}
