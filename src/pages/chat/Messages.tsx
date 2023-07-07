@@ -32,6 +32,7 @@ export const Messages: React.FC<{ ws: WebSocket | null }> = ({ ws }) => {
                     message={m}
                     authorId={authorizedUserId}
                 />)}
+          
         </div>
     )
 }
@@ -44,26 +45,28 @@ export type ChatMessageType = {
 
 }
 
-export const Message: React.FC<{ message: ChatMessageType, authorId: number | null }> =
+export const Message: React.FC<{
+    message: ChatMessageType,
+    authorId: number | null
+}> =
     ({ message, authorId }) => {
 
         console.log(authorId);
 
+
         return (
             <div className={classes.userMessage}>
-                <div className={
-                    message.userId === authorId ? classes.userMessage_author : classes.userMessage_users
-                }>
+                <div className={message.userId === authorId ? classes.authorMessage : ''}>
                     <img src={message.photo} alt="" />
-                    <b>{message.userName}</b>
-                    <br />
-                    <b>User ID: {message.userId}</b>
-                    <br />
+                    <div className={classes.userMessage_name}>
+                        <b>{message.userName}</b>
+                    </div>
                     <div className={classes.userMessage_message}>
-                        <br />
                         {message.message}
                     </div>
                 </div>
             </div>
         )
     }
+
+

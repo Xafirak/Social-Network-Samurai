@@ -57,6 +57,8 @@ const AddMessageForm: React.FC<{ ws: WebSocket | null }> = ({ ws }) => {
     const [message, setMessage] = useState('')
     const [readyStatus, setreadyStatus] = useState<'pending' | 'ready'>('pending')
     const [drag, setDrag] = useState(false)
+    
+    
 
     useEffect(() => {
         const openHandler = () => {
