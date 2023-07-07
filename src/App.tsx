@@ -80,7 +80,7 @@ class App extends Component<mapAppPropsType & dispatchAppPropsType> {
                                 path="/dialogs"
                                 element={
                                     <Suspense fallback={<Preloader />}>
-                                        <DialogsContainter />
+                                        <Dialogs />
                                     </Suspense>
                                 }
                             />
@@ -107,8 +107,8 @@ class App extends Component<mapAppPropsType & dispatchAppPropsType> {
     }
 }
 
-const DialogsContainter = React.lazy(() =>
-    import('./components/Dialogs/DialogsContainter')
+const Dialogs = React.lazy(() =>
+    import('./components/Dialogs/Dialogs')
 );
 const ProfileFUNC = React.lazy(() =>
     import('./components/Profile/ProfileFUNC')

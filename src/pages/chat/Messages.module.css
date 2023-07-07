@@ -1,4 +1,4 @@
-.messagesWindow {  
+.messagesWindow {
     height: 55vh;
     overflow-y: auto;
     margin: 5px;
@@ -9,8 +9,8 @@
     justify-content: center;
 }
 
-.userMessage {      
-    display: inline-flex;  
+.userMessage {
+    display: inline-flex;
     margin-bottom: 1rem;
     width: 95%;
 }
@@ -24,7 +24,7 @@
 .userMessage_message {
     margin: 0.25rem;
     padding: 0.5rem;
-    
+
     overflow-wrap: break-word;
 }
 
@@ -37,8 +37,4 @@
     background-color: lightblue;
     border-radius: 5px;
     min-width: 200px;
-}
-
-.scrollBtn{
-    position: relative;
 }

@@ -1,6 +1,12 @@
+import { Button } from '@mui/material';
 import React from 'react';
 import { useEffect, useState } from 'react';
 import { Messages } from './Messages';
+import classes from './ChatPage.module.css'
+import { useSelector } from 'react-redux';
+import { AppStateType } from '../../redux/reduxStore';
+import { useNavigate } from 'react-router-dom';
+
 
 
 const ChatPage: React.FC = () => {
@@ -12,9 +18,12 @@ const ChatPage: React.FC = () => {
 }
 
 const Chat: React.FC = () => {
+    const isAuth = useSelector((state: AppStateType) => state.auth.isAuth)
     const [wsChannel, setWsChannel] = useState<WebSocket | null>(null)
+    const navigate = useNavigate()
 
     useEffect(() => {
+        if (isAuth === false) navigate('/login')
         let ws: WebSocket;
 
         const closeHandler = () => {
@@ -38,7 +47,7 @@ const Chat: React.FC = () => {
             ws.removeEventListener('close', closeHandler)
             ws.close()
         }
-    }, [])
+    }, [isAuth])
 
 
     return (
@@ -57,8 +66,8 @@ const AddMessageForm: React.FC<{ ws: WebSocket | null }> = ({ ws }) => {
     const [message, setMessage] = useState('')
     const [readyStatus, setreadyStatus] = useState<'pending' | 'ready'>('pending')
     const [drag, setDrag] = useState(false)
-    
-    
+
+
 
     useEffect(() => {
         const openHandler = () => {
@@ -81,7 +90,7 @@ const AddMessageForm: React.FC<{ ws: WebSocket | null }> = ({ ws }) => {
         setDrag(true)
     }
 
-    function dragLeaveHandler(e: React.DragEvent<HTMLTextAreaElement>){
+    function dragLeaveHandler(e: React.DragEvent<HTMLTextAreaElement>) {
         e.preventDefault()
         setDrag(false)
     }
@@ -101,8 +110,16 @@ const AddMessageForm: React.FC<{ ws: WebSocket | null }> = ({ ws }) => {
                     onKeyDown={e => e.key === 'Enter' ? sendMessage() : null}
                 ></textarea>
             </div>
-            <div>
-                <button disabled={ws === null || readyStatus !== 'ready'} onClick={sendMessage}>send</button>
+            <div className={classes.BtnWrapper}>
+                <Button
+                    variant='contained'
+                    color='inherit'
+                    disabled={ws === null || readyStatus !== 'ready'}
+                    onClick={sendMessage}
+                >
+                    Send
+                </Button>
+                {/* <button disabled={ws === null || readyStatus !== 'ready'} onClick={sendMessage}>send</button> */}
             </div>
         </div>
     )

@@ -5,34 +5,35 @@ import { AppStateType, DispatchType } from "../../redux/reduxStore";
 import { useSelector, useDispatch } from 'react-redux';
 import { Logout } from "../../redux/auth-reducer";
 import { AppBar, Avatar, Button, Toolbar, Typography } from "@mui/material";
+import { showProfile } from "../../redux/profileReducer";
+import { photosType } from '../../types/types'
 
 
-
-
+// import { profileType, photosType, postDataType } from '../types/types';
 
 
 export const Header: React.FC = () => {
-
     const isAuth = useSelector((state: AppStateType) => state.auth.isAuth)
     const login = useSelector((state: AppStateType) => state.auth.login)
     const profilePhoto = useSelector((state: AppStateType) => state.profilePage.profile?.photos.small)
-    const userId = useSelector((state: AppStateType) => state.profilePage.profile?.userId)
-    const authorizedUserId = useSelector((state: AppStateType) => state.auth.userId)
-
+    const userId = useSelector((state: AppStateType) => state.auth.userId)
     const dispatch: DispatchType = useDispatch()
+    const [photo, setPhoto] = useState<string | null | undefined>()
+    const navigate = useNavigate()
 
-    const [photo, setPhoto] = useState('')
-    
+
+
     useEffect(() => {
-        if (authorizedUserId === userId) setPhoto(profilePhoto!)
-
-    })
+        if (userId) {
+            dispatch(showProfile(userId))
+            setPhoto(profilePhoto)
+        }
+    }, [profilePhoto, userId])
 
     const logout = () => {
         dispatch(Logout())
     }
 
-    const navigate = useNavigate()
     const loginButton = () => navigate('/login')
 
 
@@ -56,7 +57,7 @@ export const Header: React.FC = () => {
                     {isAuth ? (
                         <div className={classes.userIconAndButton}>
                             <div className={classes.icon}>
-                                <Avatar alt={login as string} src={photo} />
+                                <Avatar alt={login as string} src={photo!} />
                             </div>
                             <div >
                                 <Typography>
@@ -92,23 +93,6 @@ export const Header: React.FC = () => {
                 </div>
             </Toolbar>
         </AppBar >
-        // <header className={classes.header}>
-        //     <img
-        //         src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse4.mm.bing.net%2Fth%3Fid%3DOIP.sxdELx88HQjlvgfXWUENawHaHa%26pid%3DApi&f=1&ipt=af963e529a877c0c337cfc12d9319d0fc9a9a7e54792582b982c76fb6bb39368&ipo=images"
-        //         alt="Dp"
-        //     />
-
-        //     <div className={classes.loginBlock}>
-        //         {isAuth ? (
-        //             <div>
-        //                 {login} <br />
-        //                 <button onClick={logout}>Logout</button>
-        //             </div>
-        //         ) : (
-        //             <NavLink to={"login"}>Login</NavLink>
-        //         )}
-        //     </div>
-        // </header>
     );
 };
 

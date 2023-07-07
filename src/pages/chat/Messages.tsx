@@ -32,7 +32,6 @@ export const Messages: React.FC<{ ws: WebSocket | null }> = ({ ws }) => {
                     message={m}
                     authorId={authorizedUserId}
                 />)}
-          
         </div>
     )
 }
@@ -50,9 +49,6 @@ export const Message: React.FC<{
     authorId: number | null
 }> =
     ({ message, authorId }) => {
-
-        console.log(authorId);
-
 
         return (
             <div className={classes.userMessage}>

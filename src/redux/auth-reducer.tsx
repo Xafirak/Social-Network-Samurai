@@ -20,11 +20,8 @@ const authReducer = (state = initialState, action: authActionTypes): initialStat
         case 'SET_USER_DATA':
         case 'GET_CAPTCHA_URL_SUCCES':
             return {
-
                 ...state,
                 ...action.payload,
-
-
             };
         case 'SET_ERROR':
             return {
@@ -47,7 +44,6 @@ type ThunkType = baseThunkType<authActionTypes>
 type initialStateType = typeof initialState
 
 const authActions = {
-
     getCaptchaUrlSuccess: (captchaUrl: string) => ({
         type: 'GET_CAPTCHA_URL_SUCCES',
         payload: { captchaUrl },

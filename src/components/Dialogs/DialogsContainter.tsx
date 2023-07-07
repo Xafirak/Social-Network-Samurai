@@ -7,15 +7,16 @@ import Dialogs from "./Dialogs";
 import { dialogActions } from "./../../redux/dialogsReducer"
 import { AppStateType } from "../../redux/reduxStore";
 
-let mapStateToProps = (state: AppStateType) => {
-    return {
-        dialogPage: state.dialogPage,
-    };
-};
 
+// не нужен
 
+// let mapStateToProps = (state: AppStateType) => {
+//     return {
+//         dialogPage: state.dialogPage,
+//     };
+// };
 
-export default compose<React.ComponentType>(
-    connect(mapStateToProps, { ...dialogActions }),
-    WithAuthRedirect
-)(Dialogs);
+// export default compose<React.ComponentType>(
+//     connect(mapStateToProps, { ...dialogActions }),
+//     WithAuthRedirect
+// )(Dialogs);

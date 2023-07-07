@@ -16,7 +16,7 @@ import { useSelector } from 'react-redux';
 // ДЗ  избавить компоненту от коннекта и withRouter
 //  Done
 
-export const ProfileFUNC: React.FC = (props) => {
+export const ProfileFUNC: React.FC = () => {
 
     //как правильно - вытащить из стейта profilePage в отдельную переменную и из
     // нее вытаскивать нужные данные (error, status, etc.) или для каждой данной 
@@ -28,6 +28,7 @@ export const ProfileFUNC: React.FC = (props) => {
     const profile = useSelector((state: AppStateType) => state.profilePage.profile)
     const isEditProfileWasSuccesfull = useSelector((state: AppStateType) => state.profilePage.isEditProfileWasSuccesfull)
     const params = useParams()
+    const navigate = useNavigate();
     const dispatch: DispatchType = useDispatch()
 
     const showProfile1 = (userId: number) => {
@@ -52,7 +53,7 @@ export const ProfileFUNC: React.FC = (props) => {
     }
 
 
-    const navigate = useNavigate();
+
 
 
     let anotherUserId: number | undefined = +params.userId!;
