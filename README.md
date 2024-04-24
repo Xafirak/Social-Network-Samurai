@@ -1,5 +1,15 @@
 # react-samurai
-I tried to make a soical network by myself, looks ugly but i like it =)
+Соц сеть, мой самый первый проект.
+
+## Технологии
+<ol>
+<li>React</li>
+<li>TypeScript</li>
+<li>Redux</li>
+<li>Axios</li>
+<li>Formik</li>
+<li>React-router-dom</li>
+</ol>
 
 ## Скрины (дизайн ужасен, я знаю xD )
 <details>
